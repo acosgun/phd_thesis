@@ -5,13 +5,13 @@
 %% This example is adapted from ucthesis.tex, a part of the
 %% UCTHESIS class package...
 %%
-\title{The Elements of Thesis} %% If you want to specify a linebreak
+\title{People Aware Mobile Robot Navigation} %% If you want to specify a linebreak
                                %% in the thesis title, you MUST use
                                %% \protect\\ instead of \\, as \\ is a
                                %% fragile command that \MakeUpperCase
                                %% will break!
-\author{Perry H. Disdainful}
-\department{School of Industrial and Systems Engineering}
+\author{Akansel Cosgun}
+\department{College of Computing}
 
 %% Can have up to six readers, plus principaladvisor and
 %% committeechair. All have the form
@@ -23,7 +23,7 @@
 %% to the department defined above and Institution defaults to Georgia
 %% Institute of Technology.
 
-\principaladvisor{Professor Alpha Betic}
+\principaladvisor{Professor Henrik Christensen}
 \committeechair{Professor Ignatius Arrogant}
 \firstreader{Professor General Reference}[School of Mathematics]
 \secondreader{Professor Ivory Insular}[Department of Computer Science and Operations Research][North Dakota State University]
@@ -40,7 +40,7 @@
 
 %% \major{Algorithms, Combinatorics, and Optimization} 
 
-\copyrightyear{2010}
+\copyrightyear{2010} 
 \submitdate{August 2010} % Must be the month and year of graduation,
                          % not thesis approval! As of 2010, this means
                          % this text must be May, August, or December
@@ -98,14 +98,12 @@ Why should I provide a summary?  Just read the thesis.
 %%
 \chapter{Introduction}
 
-Every dissertation should have an introduction.  You might not realize
-it, but the introduction should introduce the concepts, background,
-and goals of the dissertation.
+Introduction
 
 \chapter{Map Annotation}
 
 Map Annotation
-
+  
 \section{Related Work}
 
 Related Work
@@ -114,15 +112,23 @@ Related Work
 
 Semantic Maps
 
-\section{User Interfaces}
+\subsection{Waypoints}
 
-User Interfaces
+\subsection{Planar Landmarks}
 
-\section{Pointing Gestures}
+\subsection{Objects}
+
+
+\section{User Interface}
+
+User Interface
+
+
+\section{Pointing Gestures for Human-Robot Interaction}
 
 Pointing Gestures
 
-\chapter{Autonomous Robot Navigation}
+\chapter{Navigation Among People}
 
 Autonomous Robot Navigation
 
@@ -130,17 +136,53 @@ Autonomous Robot Navigation
 
 Related Work
 
+\section{State of Autonomous Robot Navigation}
+
+State of Autonomous Robot Navigation
+
+\section{Finding Goal Points for Navigation}
+
+Finding Goal Points for Navigation
+
 \section{People Aware Navigation}
 
 People Aware Navigation
 
-\chapter{Person Detection and Tracking}
+\section{Speed Maps for Safe Navigation}
 
-Person Detection and Tracking
+Speed Maps for Safer Navigation
+
+\chapter{Multimodal Person Tracking}
+
+The ability to robustly track a person is an important prerequisite for human-robot interaction. To realize any task that involves humans, the challenge is the detection and tracking of humans in the vicinity of the robot considering the robot's movements, occlusions and robot's sensing capabilities. For mobile robot navigation, people of interest are either walking or standing, so we focus on detecting 
 
 \section{Related Work}
 
 Related Work
+
+\section{Person Detection}
+
+Person Detection
+
+\subsection{Leg Detection}
+
+Leg Detectionc  
+
+\subsection{Torso Detection}
+
+Leg Detection
+
+\subsection{Lower Body Detection}
+
+Lower Body Detection
+
+\section{Person Tracking}
+
+Multimodal Person Tracking
+
+\section{Face Recognition}
+
+Face Recognition
 
 \chapter{Person Following}
 
@@ -150,6 +192,25 @@ Person Following
 
 Related Work
 
+\section{Basic Person Following}
+
+Basic Person Following
+
+\section{Situation Aware Person Following}
+
+Situation Aware Person Following
+
+\subsection{Door Passing}
+
+\subsection{User Activity Awareness}
+
+\subsection{Corners}
+
+
+\section{Application To Telepresence Robots}
+
+Application To Telepresence Robots
+
 \chapter{Person Guidance}
 
 Person Guidance
@@ -157,6 +218,14 @@ Person Guidance
 \section{Related Work}
 
 Related Work
+
+\section{Guide Robot}
+
+Guide Robot
+
+\section{Application To Blind Users}
+
+Application To Blind Users
 
 \chapter{Conclusion}
 
@@ -176,28 +245,24 @@ The Great Gatsby & F. Scott Fitzgerald \\ \hline
 \end{center}
 \end{table}
 %%
-\chapter{Previous Work}
 
-Some other research was once performed.
-
-\begin{figure}
-\caption{A first figure.}
-\end{figure}
-
-\begin{figure}
-\caption{A second figure.}
-\end{figure}
-%%
-\chapter{Conclusion}
 
 \nocite{*}
 %% We need this since this file doesn't ACTUALLY \cite anything...
 %%
 \appendix
-\chapter{Some Ancillary Stuff}
+\chapter{QR Code Based Location Initialization}
 
-Ancillary material should be put in appendices, which 
-appear just before the bibliography. 
+QR Code Based Location Initialization
+
+\chapter{Assisted Remote Control}
+
+Assisted Remote Control
+
+\chapter{Vibration Pattern Analysis for Haptic Belts}
+
+Vibration Pattern Analysis for Haptic Belts
+
 
 \begin{postliminary}
 \references
