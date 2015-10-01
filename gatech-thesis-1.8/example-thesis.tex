@@ -308,14 +308,71 @@ First, the centroids each of the two candidate leg segments are found.  These po
 \subsection{Torso Detection}
 \label{sec:multimodal_torso_detection}
 
-In this section, we describe our torso detection approach. For this detector, we used another Hokuyo UTM 30-LX laser scanner, placed at torso height ($1.27m$). Our approach relies on fitting an ellipse to laser segments and determining the detection result by interpreting the axis lengths. Our torso detector allows us to detect the orientation of the person unlike the laser-based leg detectors, therefore this detector is also suitable for applications that relies on extracting the orientation of the person from a single laser scan.
+In this section, we describe our torso detection approach. For this detector, we used another Hokuyo UTM 30-LX laser scanner, placed at torso height ($1.27m$). Our approach relies on fitting an ellipse to laser segments and determining the detection result by interpreting the axis lengths (Figure \ref{fig:ellipse}). Our torso detector allows us to detect the orientation of the person unlike the laser-based leg detectors, therefore this detector is also suitable for applications that relies on extracting the orientation of the person from a single laser scan. 
 
-The first step to detect torsos in a laser scan is to segment the laser scan. We use the same segmentation technique used for leg detection, explained in Section \ref{sec:multimodal_leg_detection}. We then fit an ellipse to each laser segment. We use the ellipse fitting method proposed by 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.35\textwidth]{pics/ellipse}
+\caption{Our torso detector fits and ellipse to the human torso and estimate its position and orientation.}
+\label{fig:ellipse}
+\end{figure}
+
+The first step to detect torsos in a laser scan is to segment the laser scan. We use the same segmentation technique used for leg detection, explained in Section \ref{sec:multimodal_leg_detection}. We then fit an ellipse to each laser segment. We use a numerical ellipse fitting method iterative method that solves the problem with a generalized \cite{fitzgibbon1999direct}. This ellipse fitting method is robust, efficient and ellipse-specific, so that even very noisy sensor data will always return an ellipse. Compared to iterative methods, it is computationally very efficient, therefore the speed of the calculations is limited to the laser scan refresh rate.
+
+The ellipse fitting algorithm provides us with the centroid and orientation of the ellipse as well as the minor and major axis lengths. We use the axis lengths and their ratios in order to determine if the laser segment is a person. We first gathered data, and found the average and standard deviation of these two features. We then find the weighted Mahalanobis distance to the averages. This is the same method we used for leg detection, therefore the reader is referred to Section \ref{sec:multimodal_leg_detection} for more detail.
+
+\subsubsection{Evaluation of Torso Detection}
+
+In order to evaluate the accuracy of the position and orientation estimations of our torso detection method, we collected torso data from 23 people. Subjects were instructed to stand on 4 targets at different distances with 8 different orientations on each target. Experimental setup from the sensor's view is shown in Figure~\ref{fig:torso_tracking_exp_setup}. For each pose at every target, we logged the position and orientation estimation of the torso detector and compared it with ground truth, which is fixed.
+
+\begin{figure}[h]
+\centering
+        \subfigure{%
+            \includegraphics[width=0.2\textwidth]{pics/exp0}
+        }%
+        \subfigure{%
+            \includegraphics[width=0.211\textwidth]{pics/exp1}
+        }%
+        \subfigure{%
+           \includegraphics[width=0.205\textwidth]{pics/exp2}
+        } %  ------- End of the first row ----------------------%
+        \subfigure{%
+           \includegraphics[width=0.197\textwidth]{pics/exp3}
+        }\\ %  ------- End of the first row ----------------------%
+    \caption{%
+	Experimental setup for the evaluation study of the Human Tracker.
+     }%
+   \label{fig:torso_tracking_exp_setup}
+\end{figure}
 
 
+Table~\ref{table:torso_tracking_results} shows the angular error at every target distance and human orientation with respect to the laser scanner. 
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{cSSSSSSSSS}    
+ \toprule 
+Distance To Laser & {N} & {NE} & {E} & {SE} & {S} & {SW} & {W} & {NW} & {ALL}\\
+\midrule
+{$1.0m$} & {$4^{\circ}$} & {$12^{\circ}$} & {$22^{\circ}$} & {$13^{\circ}$} & {$5^{\circ}$} & {$7^{\circ}$} & {$26^{\circ}$} & {$17^{\circ}$} & {$13^{\circ}$} \\
+{$2.5m$} & {$5^{\circ}$} & {$16^{\circ}$} & {$19^{\circ}$} & {$10^{\circ}$} & {$3^{\circ}$} & {$6^{\circ}$} & {$14^{\circ}$} & {$17^{\circ}$} & {$11^{\circ}$} \\ 
+
+{$4.0m$} & {$4^{\circ}$} & {$10^{\circ}$} & {$30^{\circ}$} & {$16^{\circ}$} & {$7^{\circ}$} & {$11^{\circ}$} & {$21^{\circ}$} & {$17^{\circ}$} & {$15^{\circ}$} \\ 
+{$5.5m$} & {$5^{\circ}$} & {$11^{\circ}$} & {$41^{\circ}$} & {$18^{\circ}$} & {$10^{\circ}$} & {$6^{\circ}$} & {$38^{\circ}$} & {$23^{\circ}$} & {$19^{\circ}$} \\ 
+
+{ALL} & {$4^{\circ}$} & {$12^{\circ}$} & {$27^{\circ}$} & {$14^{\circ}$} & {$6^{\circ}$} & {$7^{\circ}$} & {$24^{\circ}$} & {$18^{\circ}$} & {$14.5^{\circ}$} \\
+\bottomrule
+\end{tabular}
+\caption{Average orientation error of the torso detector with respect to distance from sensor and body pose in a study with 23 people}
+\label{table:torso_tracking_results}
+\end{table}
+
+The average positional error was about $5cm$ regardless of the distance and the orientation of the human. The average orientation error throughout all the experiments was $14.5^{\circ}$. Error in orientation, however, varied greatly by pose of the person with respect to the laser scanner. Average error in orientation differed slightly with respect to the distance from the sensor and was the least with $11^{\circ}$ when the humans were $2.5m$ away from the sensor. We attribute to the fact that when humans closer than $2.5m$ to the laser scanner, it captures more of the arms, which makes the fitted ellipse slightly worse. The orientation of the human with respect to the sensor had a significant effect on orientation error. Least error was achieved when people faced the sensor  ($4^{\circ}$) or the opposite way ($6^{\circ}$). On the other hand, average orientation error was $24^{\circ}-27^{\circ}$ when humans are perpendicular to the sensor, because a large portion of the torso is not visible to the laser scanner in that configuration.
 
 \section{Person Tracking}
 \label{sec:multimodal_person_tracking}
+
+
 
 Multimodal Person Tracking
 
