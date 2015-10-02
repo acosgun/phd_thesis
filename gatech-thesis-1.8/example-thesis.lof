@@ -4,4 +4,6 @@
 \contentsline {figure}{\numberline {4}{\ignorespaces Two person detections are seen in this figure. Our leg segment association algorithm propagates pixels vertically from candidate leg segments and connects leg pairs.}}{11}
 \contentsline {figure}{\numberline {5}{\ignorespaces Flow chart for determining if two leg segment candidates belong to a person.}}{12}
 \contentsline {figure}{\numberline {6}{\ignorespaces Our torso detector fits and ellipse to the human torso and estimate its position and orientation.}}{13}
-\contentsline {figure}{\numberline {7}{\ignorespaces Experimental setup for the evaluation study of the Human Tracker. }}{14}
+\contentsline {figure}{\numberline {7}{\ignorespaces Torso detection rate vs weighed Mahalanobis Distance Threshold in our dataset}}{14}
+\contentsline {figure}{\numberline {8}{\ignorespaces Experimental setup for the evaluation study of the Torso Detector. }}{15}
+\contentsline {figure}{\numberline {9}{\ignorespaces Example results of our person recognition method is shown in the image. We use $Eigenfaces$ face recognition method and optionally shirt color recognition.}}{20}
