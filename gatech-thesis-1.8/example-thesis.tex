@@ -176,12 +176,277 @@ Trautman~\cite{trautman2010unfreezing} introduces the 'freezing problem', where 
 \section{Goal Points for Navigation}
 \label{sec:navigation_finding_goal_points_for_navigation}
 
-As presented in Section TODO, our interactive system allows a user to annotate planar landmarks and tabletop objects.
+As presented in Section TODO, our interactive system allows a user to annotate landmarks. After completing the $Home Tour$, the robot can navigate to or towards the labeled entities.
+A user can enter a navigation destination to the robot in three distinct ways: via labeled waypoints, planar landmarks or objects.
+
+\subsection{Labeled Waypoints:} If a waypoint is labeled and saved, the robot attaches that label to the explicit coordinates, namely position and orientation. Therefore, if the robot is instructed to navigate to a labeled waypoint, then the goal is readily the pose of the waypoint.
+\subsection{Labeled Planar Landmarks:} If the label is attached to planar landmark, or a set of planar landmarks, we use the following methodology depending on the number of landmarks attached to the corresponding label:
+
+\subsubsection{Only a single plane has the corresponding label: }
+\label{sec:navigation_goal_single_label}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.6\textwidth]{pics/single_plane}
+\caption{Top down point cloud view of a room. A planar landmark with label $Table$ has previously been annotated by a user. The convex hull for the planar landmark is shown in red lines. When asked to navigate to $Table$, the robot calculates a goal pose, which is shown as the yellow point.}
+\label{fig:single_plane}
+\end{figure}
+
+We assume that the robot should navigate to the closest edge of the plane, so we select the closest vertex on the landmark's boundary to the robot's current position. This point is projected down to the ground plane, as our robot navigates on the floor. We calculate a line between this point and the robot's current pose, and navigate to a point on this line a meter away from the point, and facing this point. This results in the robot navigating to near the desired landmark, and facing it. This method is suitable for both horizontal planes such as tables, or vertical planes such as doors. An example for calculating a goal for a single labeled planar landmark is shown in Figure \ref{fig:single_plane}. 
+
+where a the goal point corresponding to the singular label $Table$. 
+
+\subsubsection{Multiple planes are attached to the same label: }
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.65\textwidth]{pics/double_plane}
+\caption{Top down point cloud view of a hallway. The user has previously annotated two planar landmarks with the same label, $Hallway$. When asked to navigate to $Hallway$, the robot calculates a goal pose, which is shown as the yellow point.}
+\label{fig:double_plane}
+\end{figure}
+
+We assume that the requested label corresponds to a region of space such as a room or corridor. In this case, we project the points of all planes with this label to the ground plane, and compute the convex hull. For the purposes of navigating to this label, we simply navigate to the centroid of the hull. While navigating to a labeled region is a simple task, this labeled region could also be helpful in the context of more complex tasks, such as specifying a finite region of the map for an object search task. An example for calculating a goal for a two labeled planar landmarks is shown in Figure \ref{fig:double_plane}. 
+
+
+\subsection{Labeled Objects:} As discussed in Section TODO, we first perform planar surface detection before detecting tabletop objects. When the robot is asked to navigate to a labeled object, the planar surface that the object lies on is given as the goal landmark. The robot calculates the goal position as described in the single labeled landmark case in Section \ref{sec:navigation_goal_single_label}.
 
 \section{People Aware Navigation}
 \label{sec:navigation_people_aware_navigation}
 
 People Aware Navigation
+
+\subsection{Global Planner}
+
+\subsubsection{Static Planner}
+Static planner takes the start and goal positions and a 2D grid map as input and aims to find a set of waypoints that connects the start and goal cells. The output path has the minimum cost with regards to a cost function with 3 parameters: path length, safety and disturbance. We use A* search with Euclidean heuristics on a 8-connected grid map to find the minimum cost path. The configuration space obstacles are found by inflating the map obstacles for as much as the radius of the robot with the assumption that the robot is circular.
+
+\textbf{Path length cost:}  Each action $a$ of the robot (moving to one of the 8 adjacent cells) has a non-negative action cost $Cost_{a}(x_{i},y_{i},a)$. If the destination cell is occupied by a configuration space obstacle, then the action cost is infinite. Otherwise, it is the distance in meters. The action cost is thus defined as:
+\[
+Cost_{a}(x_{i},y_{i},a)=\left\{ \begin{array}{cl}
+u & \textrm{if $a$ = N, E, S, W}\\
+u\sqrt{2} & \textrm{if $a$ = NW, NE, SW, SE}\\
+\infty & \textrm{if  $Cell(x_{i+1}, y_{i+1})$ in obstacle} \end{array}\right.
+\]
+where N,NW,.. are the grid cell expansion directions and $u$ is the grid cell size. The resulting path length cost of a path $P$ is then the sum of all action costs: 
+\[
+Cost_{path}(P) = \sum\limits_{a \in P} Cost_{a}(x_{i},y_{i},a)
+\]
+
+\textbf{Safety cost:} The notion of safety is the absolute need of any human-robot interaction scenario. This cost is a human centered 2D Gaussian form of cost distribution and aims to keep a distance between the robot and the humans in the environment. While some approaches used un-isotropic cost functions to account for human orientation, we use a isotropic Gaussian for its simplicity. Each cell coordinate around a human contains a cost inversely proportional to the distance. Since the safety loses its importance when the robot is sufficiently far away from the human, safety cost becomes zero after a threshold distance. If there are multiple people in an environment, the safety cost of a cell takes its value from the closest human.
+\[
+Cost_{safety}(x,y)=\left\{ \begin{array}{cl}
+u\max_{h\in H}(\mathcal{N}(\mu_h,\sum)) & \textrm{if $d<d_{max}$}\\
+0 & \textrm{if $d\geq d_{max}$}\\
+\end{array}\right.
+\]
+
+where d is the distance to the closest human, H is all humans, $\mu_h = (|x - h.x|,|y - h.y|)$ and $\sum = \bigl(\begin{smallmatrix}
+0.5&0\\ 0&0.5
+\end{smallmatrix} \bigr)$ is a fixed covariance matrix. The multiplication by the grid cell size compensates for the grid map resolution. Otherwise, for example, if a very fine map was used, safety cost would dominate the path length and disturbance costs, which are independent of the map resolution.
+ 
+\textbf{Disturbance cost:} This cost is aimed to represent the cases where the robot potentially disturbs the interaction of a group of humans. For example, if two people are facing each other and talking, then the robot should not cross between them.  We model this with a disturbance cost that is introduced if a path crosses between two people. We do not detect if there actually is conversation between the people, but estimate the disturbance cost using body poses of agents. This cost increases if body orientations of two people are facing each other and is inversely proportional on the distance between the two humans.
+
+For each step taken in the grid, we check if the line segment from the current position to the  projected position intersects a line segment between all pairs of humans. To illustrate, let's assume the robot crosses the line between human A and human B in Figure~\ref{fig:disturbance}. 
+
+The disturbance cost is calculated as:
+\begin{equation*} 
+\begin{split} 
+Cost_{dist}(x,y,a)=\max(0, f(d).(\vec{AA'}.\vec{AB}+\vec{BB'}.\vec{BA})) \\
+f(d) = \frac{1}{d}-\frac{1}{d_{max}}
+\end{split} 
+\end{equation*}
+
+where all the vectors are normalized and $d_{max}$ is the maximum distance between the humans that returns a disturbance cost. Figure~\ref{fig:disturbance_ex} illustrates several examples of disturbance costs with $d_{max}=3$ meters.
+
+\begin{figure}[ht!]
+\centering
+%
+        \subfigure[]{%
+            \label{fig:disturbance}
+            \includegraphics[width=0.32\textwidth]{pics/disturbance_crop}
+        }%
+        \subfigure[]{%
+           \label{fig:disturbance_ex}
+           \includegraphics[width=0.4\textwidth]{pics/disturbance_ex_crop}
+        }        
+    \caption{%
+	Disturbance costs in different human-human configurations and distances. A path that crosses the dashed lines incurs the disturbance cost calculated on the right side.
+     }%
+   \label{fig:sim}
+   \vspace{-0.2cm}
+\end{figure}
+
+
+
+\textbf{Total Cost:} The total cost of a path $P$ is computed with a weighted average of path length, safety and disturbance costs. We use A* search to find the minimum cost static path.
+\[
+Cost_{Total}(P) = Cost_{path}+w_{s}.Cost_{safety} + w_d.Cost_{dist}
+\]
+
+\subsubsection{Dynamic Planner}
+Dynamic planner is responsible for reasoning about how people will react to robot motions. Moreover, paths from static plans are not smooth, therefore robot motion might not be easy to understand for human observers. Dynamic planner receives the static plan and simulates only parts of it where humans are close. We use Social Forces Model (SFM)~\cite{helbing1995social} to simulate the motions of both humans and the robot. Interaction between people are modeled as attractive and repulsive forces in SFM, similar to the Potential Field Method for robot navigation. The solution to the goal is found iteratively, as forces are recomputed for every robot position during planning.
+
+First, groups of people are found on floor plane by clustering with respect to their positions. Simple euclidean distance thresholding is used for clustering. In our current implementation, a group region is defined as a rectangle, although other shapes are also possible. Dynamic planner receives the static plan and finds out where it enters and exits each group region if it intersects the region. Goal of the dynamic planner is to find a sub-plan between those two points. Forces apply to all agents, including the robot and humans. We defined 4 forces acting on the agents:
+
+\begin{itemize}
+  \item $F_{goal}$ : attraction towards a sub-goal
+  \item $F_{social}$ : repulsion from other agents
+  \item $F_{obs}$ : repulsion from nearest obstacle
+  \item $F_{group}$ : attraction or repulsion towards group members
+\end{itemize}
+
+The forces acting on the robot at the first iteration of dynamic planning are illustrated on the robot in Figure~\ref{fig:forces_robot}. The force magnitudes with respect to distances between entities are plotted in~\ref{fig:socialforces}. 
+
+\begin{figure}[ht!]
+\centering
+%
+        \subfigure[]{%
+            \label{fig:forces_robot}
+            \includegraphics[width=0.43\textwidth]{pics/forces_robot_crop}
+        }%
+        \subfigure[]{%
+           \label{fig:socialforces}
+           \includegraphics[width=0.53\textwidth]{pics/socialforces}
+        }        
+    \caption{%
+	a) Social forces acting on the robot, including $F_{goal}$,$F_{social}$,$F_{obs}$, are shown at the first iteration of the dynamic planner. Note that $F_{group}=0$ as the robot does not belong to a group. The group force (not shown) exists, however, for the humans as they are in the same group region. b) Social forces with respect to the distance towards the corresponding entity.
+     }%
+   \label{fig:forces}
+\end{figure}
+
+
+Starting from the first group region that intersects the static plan, the following procedure is applied within every group region: At every iteration, first the resultant force vector acting on the robot is found. Then the planner takes a step in the direction of the $F$ vector for a fixed step size. Then each of the humans in the group takes a step towards the resultant force that is acting on them. The planner continues the iterations until a solution is found. If a solution is found, the calculated sub-plan replaces the static plan in this group region. Potential fields are known to stuck to local minima~\cite{koren1991potential}, and the planner might go into infinite loop. We stop the planner after a number of iterations and accept the static plan in the corresponding group region if that happens.
+
+We assume that humans have a cognitive model of the robot, by thinking that the robot has a limited Field of View (FOV). When the robot has gone past a human (out of the FOV), then we make the repulsion force $F_{social}=0$. We think that humans behave that way: as someone has walks past and headed the other way, the social effect is zero.
+
+\subsection{Local Planner}
+
+The trajectory planner is responsible of computing the linear and angular velocity necessary to follow the dynamic path. We use Dynamic Window Approach (DWA)~\cite{fox1997dynamic} for obstacle avoidance of non-holonomic robots. (TODO: DWA our version, derive motion model, vs. ) DWA samples linear and angular robot velocities and simulates the robot trajectory for each of them. First, a waypoint on the dynamic path is chosen as a sub-goal. At every control iteration, the waypoint is chosen as the first point ahead of the robot that is further than a distance threshold. We found that a threshold of 0.25 meters was sufficient. Robot is simulated with each velocity combination and the trajectory that gets closest to the sub-goal is sent to the motor controllers.
+
+\subsection{Results}
+
+\subsubsection{Simulation}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/room_sol_crop}
+\caption{"Room Problem" revisited. The resulting static plan and dynamic plans are shown in green and orange, respectively.}
+\label{fig:room_sol}
+\end{figure}
+
+
+
+\begin{figure}[ht!]
+\centering
+        \subfigure[]{%
+            \label{fig:sim2}
+            \includegraphics[width=0.6\columnwidth]{pics/sim2_crop}
+        } \\
+        \subfigure[]{%
+           \label{fig:sim3}
+           \includegraphics[width=0.6\columnwidth]{pics/sim3_crop}
+        }
+	\subfigure[]{%
+           \label{fig:sim1}
+           \includegraphics[width=0.6\columnwidth]{pics/sim1_crop}
+        }
+        
+    \caption{%
+	Paths differ drastically with the poses and grouping of humans. a) The robot takes shortest route, traveling in the vicinity of a group of two and another individual. b) third individual joins the group. Robot takes a longer path that doesn't have humans on path. c) fourth person changes his position, leading the robot to take the longest route.
+     }%
+   \label{fig:sim}
+\end{figure}
+
+
+\textbf{Room Problem: } In this scenario, the robot is outside the room and a point inside the room is given as the goal (Figure~\ref{fig:room_sol}). Traditional planners can not return a solution in this scenario because there is not enough space for the robot to navigate inside. There are two people standing at the doorway and there are two more standing people inside. The static plan and dynamic plans are shown in green and orange, respectively. This path is planned for the current time but makes assumptions about future positions of humans. Note that the dynamic planner modifies only the parts of plan inside group regions (blue rectangles). In the first group region (doorway), the static plan involves going between the humans. Dynamic simulation suggests that people will get closer to each other if the robot drives towards the side. In the second group region, since two humans are oriented to each other, going between them would add a high disturbance cost, therefore the static plan avoids going between them. Safety costs encourages staying far from the humans, but not too far because a longer path would increase the path length cost. The robot is further led to stay closer to the room boundaries in the dynamic planner due to the repulsive forces from both humans.
+
+\textbf{Office Environment: } Goal of the robot is to navigate to a goal position in an office environment with 4 standing people (Figure~\ref{fig:sim}). In this scenario, we show how the planned path is drastically changing with the poses of humans even though the start and goal position of the robot doesn't change. There are 3 main ways the robot can navigate to its goal: left, center or right corridor. 
+
+In the first configuration in Figure~\ref{fig:sim2}, two people are grouped together as they are looking at each other and likely conversing. The robot decides to take the center corridor, first slightly disturbing the speaking duo, then switches sides in the corridor and reaches its goal. In the figure, the dynamic path (pink line) is overlaid on the static path (green line). 
+
+In the second configuration in Figure~\ref{fig:sim3}, The third person at the center corridor joins the conversation. Now we have 2 group regions (rectangles) in the scene. Since passing through a group of 3 people would introduce a high disturbance cost in addition to the safety cost, the robot decides to take a longer route (left corridor). Since this path does not intersect any group regions, no dynamic simulation is done.
+
+In the third configuration in Figure~\ref{fig:sim1}, the group of three hasn't moved, but the fourth person person has changed its position. In this case, if the left corridor is taken again, an additional safety cost would be incurred. Therefore the robot decides to take the longest route (right corridor). Again, since the robot travels far from humans, no dynamic simulation is done.
+
+\subsubsection{Real Robot}
+
+We demonstrate our anticipatory navigation planner on the real system in two environments: hallway and kitchen. Each scenario is run twice under different human positions and behaviors in order to show how the planner responds.
+
+\textbf{Hallway passing: } In this scenario (Figure~\ref{fig:corridor}), robot's goal is to navigate to the end of the hallway. In the first run, humans move as the robot anticipates. In the second run, humans do not move as anticipated, and the robot adjusts its path. Each step is described in the caption of the figure. In both cases, the initial plan is to disturb the interaction by going between the two. This is because the safety cost for getting close to one of the humans was more dominant than the disturbance cost.
+
+\begin{figure*}[ht!]
+\centering
+%
+        \subfigure[]{%
+            \label{fig:corridor1}
+            \includegraphics[width=0.58\columnwidth/2]{pics/corridor1_crop}
+        }%
+        \subfigure[]{%
+           \label{fig:corridor2}
+           \includegraphics[width=0.58\columnwidth/2]{pics/corridor2_crop}
+        }
+        \subfigure[]{%
+           \label{fig:corridor3}
+           \includegraphics[width=0.58\columnwidth/2]{pics/corridor3_crop}
+        }
+\subfigure[]{%
+           \label{fig:corridor4}
+           \includegraphics[width=0.58\columnwidth/2]{pics/corridor4_crop}
+        }
+\subfigure[]{%
+           \label{fig:corridor5}
+           \includegraphics[width=0.58\columnwidth/2]{pics/corridor5_crop}
+        }
+\subfigure[]{%
+           \label{fig:corridor6}
+           \includegraphics[width=0.58\columnwidth/2]{pics/corridor6_crop}
+        }
+    \caption{%
+	The Hallway scenario. 2 runs are shown in first and second rows.The static plan (green line) and dynamic plan refinement (pink line) are shown. First run: a) Navigation starts. The dynamic planner anticipates that people will give way to the robot when it starts to move towards them. b) Humans notice the robot, and give way by increasing the separation between them. The robot has entered the group region, therefore the velocity is halved. c) The robot continues towards its goal and humans regroup. Second run: d) both the static and dynamic plan involves going in between humans again e) human on the right gets closer to the other person. Since a human made significant movement, dynamic planner re-plans. Plan no longer involves going in between. f) static planner periodic re-plan triggers, leading to robot to stick to the wall to the right.
+     }%
+   \label{fig:corridor}
+\end{figure*}
+
+\textbf{Narrow corridor:} In this scenario (Figure~\ref{fig:kitchen}), robot's goal is to drive towards the exit door. There are 3 people nearby the robot. The robot can either take the shorter route that is the direct path, or take a longer path that is to the left of the table. Each important step is described in the caption of the figure. The first run shows that the robot may plan hoping to influence the human. The second run shows that the robot may take a longer route if the disturbance and safety costs are going to be large.
+
+\begin{figure*}[ht!]
+\centering
+%
+        \subfigure[]{%
+            \label{fig:corridor1}
+            \includegraphics[width=0.64\columnwidth/2]{pics/kitchen1_crop}
+        }%
+        \subfigure[]{%
+           \label{fig:corridor3}
+           \includegraphics[width=0.64\columnwidth/2]{pics/kitchen3_crop}
+        }
+\subfigure[]{%
+           \label{fig:corridor4}
+           \includegraphics[width=0.6\columnwidth/2]{pics/kitchen4_crop}
+        }        
+\subfigure[]{%
+            \label{fig:corridor1}
+            \includegraphics[width=0.64\columnwidth/2]{pics/kitchen5_crop}
+        }%
+        \subfigure[]{%
+           \label{fig:corridor3}
+           \includegraphics[width=0.65\columnwidth/2]{pics/kitchen6_crop}
+        }
+\subfigure[]{%
+           \label{fig:corridor4}
+           \includegraphics[width=0.65\columnwidth/2]{pics/kitchen7_crop}
+        }
+        
+    \caption{%
+	The Kitchen scenario. In the first run, there are two people blocking the path to the left and one person at the narrow corridor. a) robot decides to take the shorter route, because it would disturb one person instead of two. There is not enough space to pass, and dynamic planner assumes the person would get out of the bottleneck to give way. b) human behaves as robot anticipated and gets out of the narrow passage. robot slows down because it enters the human region. c) person gets back to his original position, robot reaches the goal. In the second run: d) there are two people at the narrow corridor and one person on the left. The robot decides to take the longer route and pass the third person from left. The safety cost from the two others would be too high if the robot took the direct route. e) the person steps back as he recognizes the robot. since the person has moved, the dynamic planner re-plans and decides to pass from right. f) after the robot passes the person, it proceeds to its goal.
+     }%
+   \label{fig:kitchen}
+   \vspace{-0.3cm}
+\end{figure*}
+
+
+
 
 \section{Speed Limits for Safe Navigation}
 \label{sec:navigation_speed_limits}
