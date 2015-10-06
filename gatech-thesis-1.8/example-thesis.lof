@@ -1,37 +1,38 @@
 \contentsline {figure}{\numberline {1}{\ignorespaces Caption}}{6}
 \contentsline {figure}{\numberline {2}{\ignorespaces Top down point cloud view of a room. A planar landmark with label $Table$ has previously been annotated by a user. The convex hull for the planar landmark is shown in red lines. When asked to navigate to $Table$, the robot calculates a goal pose, which is shown as the yellow point.}}{10}
 \contentsline {figure}{\numberline {3}{\ignorespaces Top down point cloud view of a hallway. The user has previously annotated two planar landmarks with the same label, $Hallway$. When asked to navigate to $Hallway$, the robot calculates a goal pose, which is shown as the yellow point.}}{11}
-\contentsline {figure}{\numberline {4}{\ignorespaces Disturbance costs in different human-human configurations and distances. A path that crosses the dashed lines incurs the disturbance cost calculated on the right side. }}{14}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{14}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{14}
-\contentsline {figure}{\numberline {5}{\ignorespaces a) Social forces acting on the robot, including $F_{goal}$,$F_{social}$,$F_{obs}$, are shown at the first iteration of the dynamic planner. Note that $F_{group}=0$ as the robot does not belong to a group. The group force (not shown) exists, however, for the humans as they are in the same group region. b) Social forces with respect to the distance towards the corresponding entity. }}{15}
+\contentsline {figure}{\numberline {4}{\ignorespaces Standard path planners fail to produce a solution to the 'room problem'. Our people-aware planner anticipates that the human can give way to the robot if it approaches towards its goal.}}{12}
+\contentsline {figure}{\numberline {5}{\ignorespaces Disturbance costs in different human-human configurations and distances. A path that crosses the dashed lines incurs the disturbance cost calculated on the right side. }}{15}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{15}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{15}
-\contentsline {figure}{\numberline {6}{\ignorespaces "Room Problem" revisited. The resulting static plan and dynamic plans are shown in green and orange, respectively.}}{17}
-\contentsline {figure}{\numberline {7}{\ignorespaces Paths differ drastically with the poses and grouping of humans. a) The robot takes shortest route, traveling in the vicinity of a group of two and another individual. b) third individual joins the group. Robot takes a longer path that doesn't have humans on path. c) fourth person changes his position, leading the robot to take the longest route. }}{20}
+\contentsline {figure}{\numberline {6}{\ignorespaces a) Social forces acting on the robot, including $F_{goal}$,$F_{social}$,$F_{obs}$, are shown at the first iteration of the dynamic planner. Note that $F_{group}=0$ as the robot does not belong to a group. The group force (not shown) exists, however, for the humans as they are in the same group region. b) Social forces with respect to the distance towards the corresponding entity. }}{17}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{17}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{17}
+\contentsline {figure}{\numberline {7}{\ignorespaces "Room Problem". The robot is outside a room and the goal is inside the room. Traditional planners can not solve the problem because two people are blocking the doorway. Our planner generates a tentative path, with the initial global plan shown in green and the dynamic refinements are shown in orange.}}{19}
+\contentsline {figure}{\numberline {8}{\ignorespaces Paths differ drastically with the poses and grouping of humans. a) The robot takes shortest route, traveling in the vicinity of a group of two and another individual. b) third individual joins the group. Robot takes a longer path that doesn't have humans on path. c) fourth person changes his position, leading the robot to take the longest route. }}{20}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{20}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{20}
 \contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{20}
-\contentsline {figure}{\numberline {8}{\ignorespaces The Hallway scenario. 2 runs are shown in first and second rows.The static plan (green line) and dynamic plan refinement (pink line) are shown. First run: a) Navigation starts. The dynamic planner anticipates that people will give way to the robot when it starts to move towards them. b) Humans notice the robot, and give way by increasing the separation between them. The robot has entered the group region, therefore the velocity is halved. c) The robot continues towards its goal and humans regroup. Second run: d) both the static and dynamic plan involves going in between humans again e) human on the right gets closer to the other person. Since a human made significant movement, dynamic planner re-plans. Plan no longer involves going in between. f) static planner periodic re-plan triggers, leading to robot to stick to the wall to the right. }}{21}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{21}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{21}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{21}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{21}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{21}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{21}
-\contentsline {figure}{\numberline {9}{\ignorespaces The Kitchen scenario. In the first run, there are two people blocking the path to the left and one person at the narrow corridor. a) robot decides to take the shorter route, because it would disturb one person instead of two. There is not enough space to pass, and dynamic planner assumes the person would get out of the bottleneck to give way. b) human behaves as robot anticipated and gets out of the narrow passage. robot slows down because it enters the human region. c) person gets back to his original position, robot reaches the goal. In the second run: d) there are two people at the narrow corridor and one person on the left. The robot decides to take the longer route and pass the third person from left. The safety cost from the two others would be too high if the robot took the direct route. e) the person steps back as he recognizes the robot. since the person has moved, the dynamic planner re-plans and decides to pass from right. f) after the robot passes the person, it proceeds to its goal. }}{22}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{22}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{22}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{22}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{22}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{22}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{22}
-\contentsline {figure}{\numberline {10}{\ignorespaces Circularity criterion in a perfect circle is: $|P_0P_n|d_{mid}=0.5$}}{28}
-\contentsline {figure}{\numberline {11}{\ignorespaces Circularity criterion in a this laser segment is: $|P_0P_{10}|/d_{mid}$}}{28}
-\contentsline {figure}{\numberline {12}{\ignorespaces Inscribed angles of an arc are shown in the figure. Inscribed Angle Variance (IAV) is calculated by taking the average of all inscribed angles on a laser segment.}}{28}
-\contentsline {figure}{\numberline {13}{\ignorespaces Two person detections are seen in this figure. Our leg segment association algorithm propagates pixels vertically from candidate leg segments and connects leg pairs.}}{30}
-\contentsline {figure}{\numberline {14}{\ignorespaces Flow chart for determining if two leg segment candidates belong to a person.}}{31}
-\contentsline {figure}{\numberline {15}{\ignorespaces Our torso detector fits and ellipse to the human torso and estimate its position and orientation.}}{32}
-\contentsline {figure}{\numberline {16}{\ignorespaces Torso detection rate vs weighed Mahalanobis Distance Threshold in our dataset}}{34}
-\contentsline {figure}{\numberline {17}{\ignorespaces Experimental setup for the evaluation study of the Torso Detector. }}{35}
-\contentsline {figure}{\numberline {18}{\ignorespaces Example results of our person recognition method is shown in the image. We use $Eigenfaces$ face recognition method and optionally shirt color recognition.}}{39}
+\contentsline {figure}{\numberline {9}{\ignorespaces The Hallway scenario. 2 runs are shown in first and second rows.The static plan (green line) and dynamic plan refinement (pink line) are shown. First run: a) Navigation starts. The dynamic planner anticipates that people will give way to the robot when it starts to move towards them. b) Humans notice the robot, and give way by increasing the separation between them. c) The robot continues towards its goal and humans regroup. Second run: d) both the static and dynamic plan involves going in between humans again e) human on the right gets closer to the other person. Since a human made significant movement, dynamic planner re-plans. Plan no longer involves going in between. f) static planner periodic re-plan triggers, leading to robot to stick to the wall to the right. }}{23}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{23}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{23}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{23}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{23}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{23}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{23}
+\contentsline {figure}{\numberline {10}{\ignorespaces The Kitchen scenario. In the first run, there are two people blocking the path to the left and one person at the narrow corridor. a) robot decides to take the shorter route, because it would disturb one person instead of two. There is not enough space to pass, and dynamic planner assumes the person would get out of the bottleneck to give way. b) human behaves as robot anticipated and gets out of the narrow passage. robot slows down because it enters the human region. c) person gets back to his original position, robot reaches the goal. In the second run: d) there are two people at the narrow corridor and one person on the left. The robot decides to take the longer route and pass the third person from left. The safety cost from the two others would be too high if the robot took the direct route. e) the person steps back as he recognizes the robot. since the person has moved, the dynamic planner re-plans and decides to pass from right. f) after the robot passes the person, it proceeds to its goal. }}{24}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{24}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{24}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{24}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{24}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{24}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{24}
+\contentsline {figure}{\numberline {11}{\ignorespaces Circularity criterion in a perfect circle is: $|P_0P_n|d_{mid}=0.5$}}{30}
+\contentsline {figure}{\numberline {12}{\ignorespaces Circularity criterion in a this laser segment is: $|P_0P_{10}|/d_{mid}$}}{30}
+\contentsline {figure}{\numberline {13}{\ignorespaces Inscribed angles of an arc are shown in the figure. Inscribed Angle Variance (IAV) is calculated by taking the average of all inscribed angles on a laser segment.}}{30}
+\contentsline {figure}{\numberline {14}{\ignorespaces Two person detections are seen in this figure. Our leg segment association algorithm propagates pixels vertically from candidate leg segments and connects leg pairs.}}{32}
+\contentsline {figure}{\numberline {15}{\ignorespaces Flow chart for determining if two leg segment candidates belong to a person.}}{33}
+\contentsline {figure}{\numberline {16}{\ignorespaces Our torso detector fits and ellipse to the human torso and estimate its position and orientation.}}{34}
+\contentsline {figure}{\numberline {17}{\ignorespaces Torso detection rate vs weighed Mahalanobis Distance Threshold in our dataset}}{36}
+\contentsline {figure}{\numberline {18}{\ignorespaces Experimental setup for the evaluation study of the Torso Detector. }}{36}
+\contentsline {figure}{\numberline {19}{\ignorespaces Example results of our person recognition method is shown in the image. We use $Eigenfaces$ face recognition method and optionally shirt color recognition.}}{41}
