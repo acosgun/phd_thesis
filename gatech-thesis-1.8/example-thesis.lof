@@ -27,12 +27,25 @@
 \contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{24}
 \contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{24}
 \contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{24}
-\contentsline {figure}{\numberline {11}{\ignorespaces Circularity criterion in a perfect circle is: $|P_0P_n|d_{mid}=0.5$}}{30}
-\contentsline {figure}{\numberline {12}{\ignorespaces Circularity criterion in a this laser segment is: $|P_0P_{10}|/d_{mid}$}}{30}
-\contentsline {figure}{\numberline {13}{\ignorespaces Inscribed angles of an arc are shown in the figure. Inscribed Angle Variance (IAV) is calculated by taking the average of all inscribed angles on a laser segment.}}{30}
-\contentsline {figure}{\numberline {14}{\ignorespaces Two person detections are seen in this figure. Our leg segment association algorithm propagates pixels vertically from candidate leg segments and connects leg pairs.}}{32}
-\contentsline {figure}{\numberline {15}{\ignorespaces Flow chart for determining if two leg segment candidates belong to a person.}}{33}
-\contentsline {figure}{\numberline {16}{\ignorespaces Our torso detector fits and ellipse to the human torso and estimate its position and orientation.}}{34}
-\contentsline {figure}{\numberline {17}{\ignorespaces Torso detection rate vs weighed Mahalanobis Distance Threshold in our dataset}}{36}
-\contentsline {figure}{\numberline {18}{\ignorespaces Experimental setup for the evaluation study of the Torso Detector. }}{36}
-\contentsline {figure}{\numberline {19}{\ignorespaces Example results of our person recognition method is shown in the image. We use $Eigenfaces$ face recognition method and optionally shirt color recognition.}}{41}
+\contentsline {figure}{\numberline {11}{\ignorespaces Designed speed limits for. The robot has to be relatively slow in red zones, can have moderate speed in yellow zones and is allowed to move relatively faster in green zones.}}{25}
+\contentsline {figure}{\numberline {12}{\ignorespaces Comparison study of using a maximum top speed versus using location-dependent speed limits. Robot is given a fixed goal location. Right around the corner, there is a bystander human, who is not visible to the robot until the robot makes the turn. Points annotate robot position measured at fixed time intervals. a) Speed map of a corridor intersection at the second floor of College of Computing at Georgia Tech. b) Robot's top speed is fixed at $1.0m/s$. Note that the distance between robot positions are mostly constant. The robot gets very close to the bystander because it is moving relatively fast when it turned the corner. c) The robot is allowed to move with $1.5m/s$ in green, $0.5m/s$ in yellow and $0.15m/s$ in red zones. Colors of the sampled points on the path show the associated speed zone. It can be seen by looking at robot's positions that this approach was more gracious turning the corner and respecting human's personal space.}}{28}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{28}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{28}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{28}
+\contentsline {figure}{\numberline {13}{\ignorespaces Circularity criterion in a perfect circle is: $|P_0P_n|d_{mid}=0.5$}}{34}
+\contentsline {figure}{\numberline {14}{\ignorespaces Circularity criterion in a this laser segment is: $|P_0P_{10}|/d_{mid}$}}{34}
+\contentsline {figure}{\numberline {15}{\ignorespaces Inscribed angles of an arc are shown in the figure. Inscribed Angle Variance (IAV) is calculated by taking the average of all inscribed angles on a laser segment.}}{34}
+\contentsline {figure}{\numberline {16}{\ignorespaces Two person detections are seen in this figure. Our leg segment association algorithm propagates pixels vertically from candidate leg segments and connects leg pairs.}}{36}
+\contentsline {figure}{\numberline {17}{\ignorespaces Flow chart for determining if two leg segment candidates belong to a person.}}{37}
+\contentsline {figure}{\numberline {18}{\ignorespaces Our torso detector fits and ellipse to the human torso and estimate its position and orientation.}}{38}
+\contentsline {figure}{\numberline {19}{\ignorespaces Torso detection rate vs weighed Mahalanobis Distance Threshold in our dataset}}{40}
+\contentsline {figure}{\numberline {20}{\ignorespaces Experimental setup for the evaluation study of the Torso Detector. }}{40}
+\contentsline {figure}{\numberline {21}{\ignorespaces Example results of our person recognition method is shown in the image. We use $Eigenfaces$ face recognition method and optionally shirt color recognition.}}{45}
+\contentsline {figure}{\numberline {22}{\ignorespaces Overhead view of relevant ranges for person following. Robot is represented as the triangle in the middle.}}{50}
+\contentsline {figure}{\numberline {23}{\ignorespaces An illustration of how the goal position is calculated when the user is in the social space $[1.2m-3.5m]$.}}{51}
+\contentsline {figure}{\numberline {24}{\ignorespaces The telepresence robot platform we used for our experiments.}}{54}
+\contentsline {figure}{\numberline {25}{\ignorespaces User Interface of the robot for the remote user.}}{55}
+\contentsline {figure}{\numberline {26}{\ignorespaces Speed profile of a person guiding robot as a function of the distance to the user.}}{64}
+\contentsline {figure}{\numberline {27}{\ignorespaces Comparison of robot and human speeds with respect to time. a) Standard ROS Navigation b) Our approach: accelerations are less steeper than a), which employs the dynamic speed adjustment for guidance. }}{65}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{65}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{65}

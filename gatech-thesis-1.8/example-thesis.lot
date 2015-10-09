@@ -1,3 +1,4 @@
-\contentsline {table}{\numberline {1}{\ignorespaces Table shows average and standard deviations of geometric leg features calculated in our dataset.}}{31}
-\contentsline {table}{\numberline {2}{\ignorespaces Table shows average and standard deviations of geometric features for a human torso in laser scans.}}{35}
-\contentsline {table}{\numberline {3}{\ignorespaces Average orientation error of the torso detector with respect to distance from sensor and body pose in a study with 23 people}}{37}
+\contentsline {table}{\numberline {1}{\ignorespaces Table shows average and standard deviations of geometric leg features calculated in our dataset.}}{35}
+\contentsline {table}{\numberline {2}{\ignorespaces Table shows average and standard deviations of geometric features for a human torso in laser scans.}}{39}
+\contentsline {table}{\numberline {3}{\ignorespaces Average orientation error of the torso detector with respect to distance from sensor and body pose in a study with 23 people}}{41}
+\contentsline {table}{\numberline {4}{\ignorespaces Survey results of the user study for person following for telepresence robots. Table displays survey question average and standard deviations for the two conditions: Autonomous Person Following and Manual Person Following.}}{58}
