@@ -4,6 +4,7 @@
 \usepackage{multirow}
 \usepackage{siunitx}
 \usepackage{amsmath}
+\usepackage{lscape}
 %\usepackage[round]{natbib}
 \newcolumntype{x}[1]{>{\raggedleft\hspace{0pt}}p{#1}}
 
@@ -29,13 +30,12 @@
 %% to the department defined above and Institution defaults to Georgia
 %% Institute of Technology.
 
-\principaladvisor{Professor Henrik Christensen}
-\committeechair{Professor Ignatius Arrogant}
-\firstreader{Professor General Reference}[School of Mathematics]
-\secondreader{Professor Ivory Insular}[Department of Computer Science and Operations Research][North Dakota State University]
-\thirdreader{Professor Earl Grey}
-\fourthreader{Professor John Smith}
-\fifthreader{Professor Jane Doe}[Another Department With a Long Name][Another Institution]
+\principaladvisor{Professor Henrik Iskov Christensen}
+%\committeechair{Professor Ignatius Arrogant}
+\firstreader{Professor Andrea Thomaz}[College of Computing]
+\secondreader{Professor Irfan Essa}[College of Computing]
+\thirdreader{Professor Ayanna Howard}[School of Electrical and Computer Engineering]
+\fourthreader{Dr Emrah Akin Sisbot}[Toyota InfoTechnology Center][]
 %\setcounter{secnumdepth}{2}
 \degree{Doctor of Philosophy}
 
@@ -46,15 +46,15 @@
 
 %% \major{Algorithms, Combinatorics, and Optimization} 
 
-\copyrightyear{2010} 
-\submitdate{August 2010} % Must be the month and year of graduation,
+\copyrightyear{2015} 
+\submitdate{November 2015} % Must be the month and year of graduation,
                          % not thesis approval! As of 2010, this means
                          % this text must be May, August, or December
                          % followed by the year.
 
 %% The date the last committee member signs the thesis form. Printed
 %% on the approval page.
-\approveddate{1 July 2010}
+\approveddate{X November 2015}
 
 
 \bibfiles{example-thesis}
@@ -79,21 +79,25 @@
 \bibliographystyle{gatech-thesis}
 %%
 \begin{preliminary}
-\begin{dedication}
-\null\vfil
-{\large
-\begin{center}
-To myself,\\\vspace{12pt}
-Perry H. Disdainful,\\\vspace{12pt}
-the only person worthy of my company.
-\end{center}}
-\vfil\null
-\end{dedication}
+
+% Dedication
+%\begin{dedication}
+%\null\vfil
+%{\large
+%\begin{center}
+%To myself,\\\vspace{12pt}
+%Perry H. Disdainful,\\\vspace{12pt}
+%the only person worthy of my company.
+%\end{center}}
+%\vfil\null
+%\end{dedication}
+
+
 \begin{preface}
-Theses have elements.  Isn't that nice?
+Preface
 \end{preface}
 \begin{acknowledgements}
-I want to thank people
+Acknowledgements
 \end{acknowledgements}
 % print table of contents, figures and tables here.
 \contents
@@ -115,43 +119,18 @@ Why should I provide a summary?  Just read the thesis.
 \chapter{Map Annotation}
 \label{chapter:map_annotation}
 
-Robots that operate in human environments will need to be able to accept commands from human users. As mentioned in Section TODO, the robot keeps a metric map in its own coordinate frame. Requiring users to understand the robot's representation of the world and provide metric commands may not be an interaction with the robot. For example, it is not easy to understand look at the map of the robot and provide an explicit  goal with coordinates $(1.2,4.5,0.0)$. The world representation of robots should enable communication between users and robots. Maps should also include spatial information to support the tasks. If the task is more complex than obstacle avoidance, the map should include more than just obstacle occupancy information. For example, if the tasks involve landmarks, objects, or people, a robot's map should be able to represent these information. For these reasons, adding semantic information to robot maps is essential.
+Robots that operate in human environments will need to be able to accept commands from human users. As mentioned in Chapter \ref{chapter:introduction}, the robot keeps a metric map in its own coordinate frame. Requiring users to understand the robot's representation of the world and provide metric commands may not be an interaction with the robot. For example, it is not easy to understand look at the map of the robot and provide an explicit  goal with coordinates $(1.2,4.5,0.0)$. The world representation of robots should enable communication between users and robots. Maps should also include spatial information to support the tasks. If the task is more complex than obstacle avoidance, the map should include more than just obstacle occupancy information. For example, if the tasks involve landmarks, objects, or people, a robot's map should be able to represent these information. For these reasons, adding semantic information to robot maps is essential.
 
 If the map representation includes more than explicit coordinates, such as landmarks and objects, there is a need to establish a common ground between the robot and the users to the all can refer to the same entity. There are several methods to support the annotation. For example, while the robot is building its representation of the environment, it can recognize objects or landmarks such as doors, tables, rooms and automatically add these features to its map. However, such a system may result in ambiguities. For example, recognition errors may result in undesirable outcomes. Moreover, automatic recognition does not allow unique labels, such as \textit{"John's Room"}. Attaching custom labels to landmarks not only serves a common ground between the robot and users, but also frees the robot from having to be equipped with object and landmark recognition capability.
-
-%Our mapping representation allow adding 
 
 We use a map representation that includes 2D waypoints, 3D polygons that represents the boundary of surfaces and objects along with a corresponding label that is provided by the user. We give more detail about waypoints in Section \ref{sec:map_waypoints}, planar surfaces in Section \ref{sec:map_landmarks} and objects in Section \ref{sec:map_objects}.
 
 To label landmarks and objects in the semantic map, we use an interactive system that uses a combination of a graphical user interface (GUI) and pointing gestures. Using the GUI, users can command the robot to follow them, add waypoints along the robot's path and add landmarks or objects to the map by pointing at them and entering a label. Our GUI is shown in Section \ref{sec:map_ui} and our work in pointing gestures is given in Section \ref{sec:pointing_gestures}.
 
-
-
-%Map Annotation
-
-
-%In mobile robotics, the standard practice for mapping and
-%localization is described as follows: When the robot is first
-%taken to a new environment, it has to map the environment.
-%There has been extensive research on Simultaneous Mapping
-%and Localization (SLAM) literature. The usual output is a
-%binary 2D grid map where 1’s represents an obstacle and
-%a 0’s represent free space. Once the map is created, the
-%robot can localize itself in the map while in operation.
-%Every time the robot is restarted, it has to start with an
-%initial estimation of its location. Although there are global
-%localization methods developed in the community, the usual
-%practice is that the robotics expert manually provides an
-%approximate initial location of the robot, then the localization
-%method corrects the localization estimation as the robot
-%moves in the environment.
-
-
 \section{Related Work}
 \label{sec:map_relevant_work}
 
-
-One of the key concepts in semantic mapping is establishing $"common ground"$ TODOcite. For humans and robots to refer to the same structures and objects, the references must be grounded. Many spatial tasks may require various terms to be grounded in the map.
+One of the key concepts in semantic mapping is establishing \textit{common ground} \cite{clark1991grounding}. For humans and robots to refer to the same structures and objects, the references must be grounded. Many spatial tasks may require various terms to be grounded in the map.
 
 TODO
 
@@ -177,12 +156,12 @@ and the extent of the hallway. Another example is that the
 user can label a coffee table, which is a movable object.
 Instead of saving a fixed coordinate location for the landmark,
 robot can save the planar surface and can potentially
-detect that it moved. This gives the robot robustness in its operations and a method to potentially use the planar surfaces as features in localization [TODO, Atrevor]. For this reason, using semantic information is preferred whenever possible.
+detect that it moved. This gives the robot robustness in its operations and a method to potentially use the planar surfaces as features in localization \cite{trevor2012planar}. For this reason, using semantic information is preferred whenever possible.
 
 In this type of semantic information, we keep track of a set of observed planar surfaces as part of the map representation. Planes represented in the hessian normal form. Since the observed planes do not have infinite extent, we bound the observed area with a polygon - in this case, the convex hull of all the observed points on the plane. The convex hull is accompanied with a user-provided label. 
 
 We use a front-facing RGB-D camera to acquire suitable data. Planes are extracted from the point cloud by an iterative RANdom SAmple Consensus (RANSAC) method, which allows us to find all planes meeting constraints for size and number of inliers. A clustering step is performed on extracted planes to separate multiple coplanar surfaces, such as two tables with
-the same height, but at different locations. We make use of the Point Cloud Library (PCL) [TODO] for much of our point cloud processing.
+the same height, but at different locations. We make use of the Point Cloud Library (PCL) \cite{rusu20113d} for much of our point cloud processing.
 
 In order to label a planar landmark, the user goes through the sequence:
 
@@ -192,7 +171,7 @@ In order to label a planar landmark, the user goes through the sequence:
 \item User performs a pointing gesture towards the landmarks of interest
 \end{enumerate}
 
-The act of labeling a table from the view of the RGB-D camera planted on the robot is shown in Figure TODO. After the labeling process, the planar landmark is added to the map representation.
+The act of labeling a table from the view of the RGB-D camera planted on the robot is shown in Figure \ref{fig:pointing_table_desk}. After the labeling process, the planar landmark is added to the map representation.
 
 \begin{figure}[ht!]
 \centering
@@ -233,7 +212,7 @@ We developed an on-board tablet interface to enable interaction between the user
 \item Modify IP Address and Port of the TCP connection
 \end{itemize}
 
-A screenshot of our tablet user interface is shown in Figure TODO.
+A screenshot of our tablet user interface is shown in Figure \ref{fig:ui}.
 
 \begin{figure}[ht!]
 \centering
@@ -293,9 +272,9 @@ When a pointing gesture recognition request is received from a higher level proc
 The first condition requires the arm of the person to be extended, while the second ensures that the gesture is consistent for some time period. The parameters are empirically determined as: $\emph{T}=30s$, $\phi_{g}=45^{\circ}$ and $\Delta t_{g}=0.5s$.
 
 \subsection{Representing Pointing Directions}
-\label{sec:representing_pointing_directions}
+\label{sec:pointing_representing_pointing_directions}
 
-We represent a pointing ray in two angles: a ``horizontal'' / ``azimuth'' sense we denote as $\theta$ and a ``vertical'' / ``altitude'' sense we denote as $\psi$. We first attach a coordinate frame to the hand point, with its z-axis oriented in either Elbow-hand $\vec{v}_{eh}$ or Head-Hand $\vec{v}_{hh}$ directions. The hand was chosen as the origin for this coordinate system because both of head-hand and elbow-hand pointing methods include the user's hand. The transformation between the sensor frame and the hand frame $^{sensor}T_{hand}$ is calculated by using an angle-axis rotation. An illustration of the hand coordinate frame for Elbow-Hand method and corresponding angles are shown graphically in Figure TODO.
+We represent a pointing ray in two angles: a ``horizontal'' / ``azimuth'' sense we denote as $\theta$ and a ``vertical'' / ``altitude'' sense we denote as $\psi$. We first attach a coordinate frame to the hand point, with its z-axis oriented in either Elbow-hand $\vec{v}_{eh}$ or Head-Hand $\vec{v}_{hh}$ directions. The hand was chosen as the origin for this coordinate system because both of head-hand and elbow-hand pointing methods include the user's hand. The transformation between the sensor frame and the hand frame $^{sensor}T_{hand}$ is calculated by using an angle-axis rotation. An illustration of the hand coordinate frame for Elbow-Hand method and corresponding angles are shown graphically in Figure \ref{fig:pointing_angle_errors}.
 
 \begin{figure}[ht!]
 \centering
@@ -310,13 +289,13 @@ $$^{hand}p_{target} = T_{hand} * p_{target}$$
 We calculate the horizontal and vertical angles for a target point as $^{hand}p_{target} = (x_{targ}, y_{targ}, z_{targ})$ follows:
 $$[\theta_{target}\;\psi_{target}]=[atan2(x_{targ}, z_{targ})\;atan2(y_{targ}, z_{targ})]$$
 
-Where $atan2(y,x)$ is a function returns the value of the angle $\arctan(\frac{y}{x})$ with the correct sign. This representation allows us to calculate the angular errors in our error analysis experiments in Section TODO. The angles for each object is then used to find the intended target, as explained in the following section.
+Where $atan2(y,x)$ is a function returns the value of the angle $\arctan(\frac{y}{x})$ with the correct sign. This representation allows us to calculate the angular errors in our error analysis experiments in Section \ref{sec:pointing_error_analysis}. The angles for each object is then used to find the intended target, as explained in the following section.
 
 
 \subsection{Determining Intended Target}
 \label{sec:pointing_determining_intended_target}
 
-We propose a probabilistic approach to determine the referred target by using statistical data from previous pointing gesture observations. We observed that head-hand and elbow-hand methods, implemented using two skeleton trackers, returned different angle errors in spherical coordinates. Our approach relies on learning statistics of each of these approaches, and compensating the error when the target object is searched for. First, given a set of prior pointing observations, we calculate the mean and variance of the vertical and horizontal angle errors for each pointing method. This analysis will be presented in Section TODO. Given an input gesture, we apply correction to the pointing direction and find the Mahalanobis distance to each object in the scene.
+We propose a probabilistic approach to determine the referred target by using statistical data from previous pointing gesture observations. We observed that head-hand and elbow-hand methods, implemented using two skeleton trackers, returned different angle errors in spherical coordinates. Our approach relies on learning statistics of each of these approaches, and compensating the error when the target object is searched for. First, given a set of prior pointing observations, we calculate the mean and variance of the vertical and horizontal angle errors for each pointing method. This analysis will be presented in Section \ref{sec:pointing_error_analysis}. Given an input gesture, we apply correction to the pointing direction and find the Mahalanobis distance to each object in the scene.
 
 When a pointing gesture is recognized, and the angle pair $$[\theta_{target}\;\psi_{target}]$$ is found as described in the previous section, we first apply a correction by subtracting the mean terms from measured angles:
 $$[\theta_{cor}\;\;\psi_{cor}]=[\theta_{target}-\mu_{\theta}\;\;\;\psi_{target}-\mu_{\psi}]$$
@@ -326,7 +305,7 @@ $$S_{type} = \begin{bmatrix}
 \sigma_{\theta}&0\\ 0&\sigma_{\psi}
 \end{bmatrix} $$
 
-We get the values for $\mu_{\theta}, \mu_{\psi}, \sigma_{\theta} ,\sigma_{\psi}$ from Tables~\ref{table:horizontal} and~\ref{table:vertical} for the corresponding gesture type and target. We then compute the mahalanobis distance to the target by:
+We get the values for $\mu_{\theta}, \mu_{\psi}, \sigma_{\theta} ,\sigma_{\psi}$ from Tables \ref{table:pointing_horizontal} and \ref{table:pointing_vertical} for the corresponding gesture type and target. We then compute the mahalanobis distance to the target by:
 $$D_{mah}(target,method)=\sqrt{ [\theta_{cor}\;\psi_{cor}]^T S_{method}^{-1} [\theta_{cor}\;\psi_{cor}]}$$
  
 We use $D_{mah}$ to estimate which target or object is intended. We consider two use cases: the objects are represented as a 3D point or a point cloud. For point targets, we first filter out targets that have a Mahalanobis distance larger than a threshold $D_{mah} > D_{thresh}$. If none of the targets has a $D_{mah}$ lower than the threshold, then we say the user did not point to any targets. If there are multiple targets that has $D_{mah} <= D_{thresh}$ , then we determine ambiguity by employing a ratio test. The ratio of the least $D_{mah}$ and the second-least $D_{mah}$ among all targets is compared with a threshold to determine if there is ambiguity. If the ratio is higher than a threshold, then the robot can ask the person to solve the ambiguity.
@@ -334,7 +313,7 @@ We use $D_{mah}$ to estimate which target or object is intended. We consider two
 If the target objects are represented as point clouds, we then compute the horizontal and vertical angles for every point in the point cloud and find the minimum mahalanobis distance among all. The distance to an object is then represented by this minimum value. Usage of the point cloud instead of the centroid for determining the intended object has several advantages. First, it yields better estimations due to the coverage of the full point cloud. Second, it takes into account the size of the object. For example, if a person is pointing to a chair or door, it is very unlikely that he/she will target the centroid of it. If the point cloud is used, then we can easily tell that the object is targeted.
 
  
-\section{Data Collection}
+\subsection{Data Collection}
 \label{sec:pointing_data_collection}
 
 To evaluate the accuracy of pointing gestures, we created a test environment with 7 targets placed on planar surfaces in view of a Kinect sensor (Figure \ref{fig:ground_truth_targets}). Depth data was collected from six users, who pointed at each of the seven targets with their right arm while standing at 2 meters away from the sensor. Targets 1 through 4 were on tables positioned around the user, while targets 5 through 7 were located on a wall to the user's right. Our use case is on a mobile robot platform capable of positioning itself relative to the user.  For this reason, we can assume that the user is always centered in the image, as the robot can easily rotate to face the user and can position itself at a desired distance from the user.
@@ -363,39 +342,47 @@ We make use of plane extraction technique in a point cloud to have an accurate g
 \label{fig:xedoni}
 \end{figure}
 
+\begin{landscape}
+
+
 
 \begin{figure*}[ht!]
 \centering
-\includegraphics[width=1.0\textwidth]{pics/projections.pdf}
+\includegraphics[width=1.5\textwidth]{pics/projections.pdf}
 \caption{Euclidean distance error in cartesian coordinates for each method and target. The gesture ray intersection points in centimeters with the target plane, are shown here for each target (T1-T7) as the columns.  Each subject's points are shown in separate colors.  There are 30 points from each subject, corresponding to the 30 frames recorded for the pointing gesture at each target.  Axes are shown in centimeters.  The circle drawn in the center of each plot has the same diameter (13 cm) as the physical target objects used.}
 \label{fig:euclidean_projections}
 \end{figure*}
+
+\end{landscape}
 
 In order to be able to do a fair comparison between MS-SDK and OpenNI skeleton trackers, we used the same dataset for both. MS-SDK and OpenNI use different device drivers, therefore can not be directly used on the live depth stream at the same time. Because of this, we extract the skeleton data offline in multiple stages. The pipeline for the data capture procedure is illustrated in Figure \ref{fig:xedoni}. We first save the depth streams as .xed files using Microsoft Kinect Studio program. The acquired .xed file is converted to .oni in a OpenNI recorder application by streaming the depth stream to through Kinect Studio. The .oni is then played back in skeleton tracking application in OpenNI, which writes the OpenNI skeleton data to a .txt file. MS-SDK skeleton data is obtained by playing back the original .xed in the skeleton tracking application.
 
 \subsection{Pointing Gesture Annotation}
 \label{sec:pointing_gesture_annotation}
 
-To factor out the effectiveness of our pointing gesture recognition method described in Section TODO, we manually labeled when each pointing gesture began for data collection. Starting from the onset of the pointing gesture as annotated by the experimenter, the following $30$ sensor frames were used as the pointing gesture. This corresponds to a recording of $1$ second in the Kinect sensor stream. For each frame, we extracted skeleton data using both the MS-SDK and the OpenNI.
+To factor out the effectiveness of our pointing gesture recognition method described in Section \ref{sec:pointing_pointing_gesture_recognition}, we manually labeled when each pointing gesture began for data collection. Starting from the onset of the pointing gesture as annotated by the experimenter, the following $30$ sensor frames were used as the pointing gesture. This corresponds to a recording of $1$ second in the Kinect sensor stream. For each frame, we extracted skeleton data using both the MS-SDK and the OpenNI.
 
-\section{Error Analysis}
-\label{sec:pointing_gesture_error}
+\subsection{Error Analysis}
+\label{sec:pointing_error_analysis}
 
-The four rays corresponding to the four different pointing approaches described in Section TODO were used for our error analysis.  As described in Section TODO, the ground truth target positions are available. We computed two types of errors for each gesture and target: 
+The four rays corresponding to the four different pointing approaches described in Section \ref{sec:pointing_pointing_gesture_recognition} were used for our error analysis.  As described in Section \ref{sec:ground_truth_points}, the ground truth target positions are available. We computed two types of errors for each gesture and target:
 
 \begin{itemize}
 \item Euclidean error of ray intersections with target planes (Figure \ref{fig:euclidean_projections})
-\item Angular error in spherical coordinates (Tables \ref{table:pointing_horizontal},\ref{table:vertical} and Figure \ref{fig:angular_boxplots})
+\item Angular error in spherical coordinates (Tables \ref{table:pointing_horizontal},\ref{table:pointing_vertical} and Figure \ref{fig:pointing_angular_boxplots})
 \end{itemize}
 
 We elaborate our error analysis subsequent sections:
 
-\subsubsection{Euclidean error}
-\label{sec:pointing_euclidean_error}
 
-\begin{table*}[ht!]
+
+
+\begin{landscape}% Landscape page
+\begin{center}
+
+\begin{table*}
 \centering
-\begin{tabular}{c| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} p{0.69cm}|}
+\begin{tabular}{c| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} p{1.0cm}|}
 \cline{2-17}
 & \multicolumn{4}{c|}{Target 1} & \multicolumn{4}{c|}{Target 2} & \multicolumn{4}{c|}{Target 3} & \multicolumn{4}{c|}{Target 4} \\ \cline{2-17}
 & \multicolumn{2}{c|}{$\theta$} & \multicolumn{2}{c|}{$\psi$} & \multicolumn{2}{c|}{$\theta$} & \multicolumn{2}{c|}{$\psi$}  & \multicolumn{2}{c|}{$\theta$} & \multicolumn{2}{c|}{$\psi$}  & \multicolumn{2}{c|}{$\theta$} & \multicolumn{2}{c|}{$\psi$}\\ \cline{2-17}
@@ -405,13 +392,15 @@ We elaborate our error analysis subsequent sections:
 \multicolumn{1}{ |c|}{\textbf{\scriptsize{MS-Head-Hand}}}& 7.7 & 2.6  & -12.0 & 5.3  & 10.8 & 6.4  & -9.1 & 3.2  & 2.2 & 2.0 & -8.3   & 3.2  & -4.0 & 1.7  & -4.3 &\multicolumn{1}{r|}{3.2} \\ \hline
 \multicolumn{1}{ |c|}{\textbf{\scriptsize{NI-Head-Hand}}}& 8.5 & 2.6 & -11.7 & 6.1  & 10.2 & 6.7  & -5.7 & 8.0  & 2.0 & 2.3  & -2.9    & 4.7  & -3.2 & 2.5  & 1.45 &\multicolumn{1}{r|}{4.8} \\ \hline
 \end{tabular}
-\caption{$\mu$ and $\sigma$ angular errors in degrees for each of Targets 1-4 (Figure \ref{fig:ground_truth_targets}), for each pointing method.}
+\caption{$\mu$ and $\sigma$ angular errors in degrees for each of Targets 1-4 (Figure \ref{fig:ground_truth_targets}), for each pointing method. The aggregate $\mu$ and $\sigma$ is also shown.}
 \label{table:pointing_horizontal}
 \end{table*}
 
-\begin{table*}[ht!]
+\vspace*{\fill}
+
+\begin{table*}
 \centering
-\begin{tabular}{c| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} x{0.69cm}| @{} p{0.69cm}|}
+\begin{tabular}{c| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} x{1.0cm}| @{} p{1.0cm}|}
 \cline{2-17}
 & \multicolumn{4}{c|}{Target 5} & \multicolumn{4}{c|}{Target 6} & \multicolumn{4}{c|}{Target 7} & \multicolumn{4}{c|}{ALL TARGETS} \\ \cline{2-17}
 & \multicolumn{2}{c|}{$\theta$} & \multicolumn{2}{c|}{$\psi$} & \multicolumn{2}{c|}{$\theta$} & \multicolumn{2}{c|}{$\psi$}  & \multicolumn{2}{c|}{$\theta$} & \multicolumn{2}{c|}{$\psi$}  & \multicolumn{2}{c|}{$\theta$} & \multicolumn{2}{c|}{$\psi$}\\ \cline{2-17}
@@ -425,11 +414,18 @@ We elaborate our error analysis subsequent sections:
 \label{table:pointing_vertical}
 \end{table*}
 
+\end{center}
+\end{landscape}
+
+
+\subsubsection{Euclidean error}
+\label{sec:pointing_euclidean_error}
+
 \begin{figure*}[ht!]%[thpb]
 \centering
 \includegraphics[width=1.0\textwidth]{pics/boxplots_largerfont}
 \caption{Box plots of the errors in spherical coordinates $\theta$ and $\psi$ for each pointing method.}
-\label{fig:angular_boxplots}
+\label{fig:pointing_angular_boxplots}
 \end{figure*}
 
 Given a ray $\vec{v}$ in the sensors frame from one of the pointing gesture approaches, and a ground truth target point $p_{target}$ lying on a target planar surface, the ray-plane intersection between $\vec{v}$ and plane was computed for each ray, resulting in a 3D point lying on the plane. Figure \ref{fig:euclidean_projections} shows the 2D projections for all 30 measurements from each subject (shown in different colors) and each target. For ease of display, the 3D intersection coordinates with the target planes are displayed in a 2D coordinate system attached to the target plane, with the ground truth target point as the origin.  
@@ -439,11 +435,11 @@ As can be seen in Figure \ref{fig:euclidean_projections},  the pointing gesture 
 \subsubsection{Angular Error}
 \label{sec:pointing_angular_error}
 
-We computed the mean and standard deviations of the angular errors in the spherical coordinate system for each pointing gesture method and target. Section TODO describes in detail how the angles $(\theta, \psi)$ are found. The mean and standard deviation analyses are given in Tables \ref{table:pointing_horizontal} and \ref{table:vertical}.  The aggregate errors are also displayed as a  box plot in Figure~\ref{fig:pointing_angular_boxplots}.
+We computed the mean and standard deviations of the angular errors in the spherical coordinate system for each pointing gesture method and target. Section \ref{sec:pointing_representing_pointing_directions} describes in detail how the angles $(\theta, \psi)$ are found. The mean and standard deviation values are given in Tables \ref{table:pointing_horizontal} and \ref{table:pointing_vertical}.  The aggregate errors are also displayed as a  box plot in Figure \ref{fig:pointing_angular_boxplots}.
 
 Several observations can be made from these results. The data from the elbow-hand pointing method reports that users typically point about 11 degrees to the left of the intended target direction, and about 9 above the target direction. Similarly, the data from the head-hand pointing method reports that users typically point about 2 degrees to the left of the intended pointing direction, but with a higher standard deviation than the elbow-hand method.  On average, the vertical angle $\psi$ was about 5 degrees below the intended direction for the OpenNI tracker and 10 degrees below for the MS-SDK tracker, with a higher standard deviation than the elbow-hand methods.  The disparity between the two skeleton trackers for this pointing method is because they report different points for the head position, with the MS-SDK head position typically being reported higher than the OpenNI head position. The overall performance of the OpenNI and MS-SDK skeleton trackers, however, is fairly similar, with the MS-SDK having slightly less variation for our dataset.
 
-As can be seen in the aggregate box plot in Figure \ref{fig:angular_boxplots}, the horizontal angle $\theta$ has a higher variation than the vertical angle $\psi$.  Examining the errors for individual target locations shows that this error changes significantly with the target location.  As future work, it would be interesting to collect data for a higher density of target locations to attempt to parameterize any angular correction that might be applied.
+As can be seen in the aggregate box plot in Figure \ref{fig:pointing_angular_boxplots}, the horizontal angle $\theta$ has a higher variation than the vertical angle $\psi$.  Examining the errors for individual target locations shows that this error changes significantly with the target location.  As future work, it would be interesting to collect data for a higher density of target locations to attempt to parameterize any angular correction that might be applied.
 
 \subsection{Evaluation}
 \label{sec:pointing_evaluation}
@@ -476,11 +472,10 @@ Using the error analysis and pointing gesture model we presented in previous sec
 
 
 \caption{Example scenarios from the object separation test is shown. Our experiments covered separations between 2cm (left images) and 30cm (right images). The object is comfortably distinguished for the 30cm case, whereas the intended target is ambiguous when the targets are 2cm apart. Second row shows the point cloud from Kinect's view. Green lines show the Elbow-Hand and Head-Hand directions whereas green circles show the objects that are within the threshold $D_{mah}<2$.}
-\vspace{-0.5cm}
 \label{fig:pointing_separation}
 \end{figure}
 
-The setup consisted of a table between the robot and the person and two coke cans on the table (Figure~\ref{fig:pointing_separation}) where the separation between objects was varied. To detect the table plane and segment out the objects on top of it, we used the segmentation approach presented in~\cite{trevor2013segmentation}. The objects centroid positions, along with their point clouds were calculated in real-time using our segmentation algorithm. The separation between objects were varied with 1 cm increments from $2-15cm$ and with $5cm$ increments between $15-30 cm$. We could not conduct the experiment below 2 cm separation because of the limitations of our perception system. We used the OpenNI skeleton tracker because rest of our system is based in Linux, and we already found that performance difference with MS-SDK for pointing angle errors is insignificant. The experiment was conducted with one user, who was not in the training dataset. For each separation, the user performed 5 pointing gestures to the object on the right and 5 to the object on the left. The person pointed to one of the objects and the Mahalanobis distance $D_{mah}$ to the intended object and the other object is calculated using the approach in Section~\ref{sec:prob_model}. We used the mean and standard deviation values of Target 2 (Figure \ref{fig:ground_truth_targets}) for this experiment because the objects were located between the robot and the person.
+The setup consisted of a table between the robot and the person and two coke cans on the table (Figure~\ref{fig:pointing_separation}) where the separation between objects was varied. To detect the table plane and segment out the objects on top of it, we used the segmentation approach presented in~\cite{trevor2013segmentation}. The objects centroid positions, along with their point clouds were calculated in real-time using our segmentation algorithm. The separation between objects were varied with 1 cm increments from $2-15cm$ and with $5cm$ increments between $15-30 cm$. We could not conduct the experiment below 2 cm separation because of the limitations of our perception system. We used the OpenNI skeleton tracker because rest of our system is based in Linux, and we already found that performance difference with MS-SDK for pointing angle errors is insignificant. The experiment was conducted with one user, who was not in the training dataset. For each separation, the user performed 5 pointing gestures to the object on the right and 5 to the object on the left. The person pointed to one of the objects and the Mahalanobis distance $D_{mah}$ to the intended object and the other object is calculated using the approach in Section \ref{sec:pointing_determining_intended_target}. We used the mean and standard deviation values of Target 2 (Figure \ref{fig:ground_truth_targets}) for this experiment because the objects were located between the robot and the person.
 
 \subsection{Results and Discussion}
 \label{sec:results_and_discussion}
@@ -489,7 +484,7 @@ The results of the object separation experiment is given for Elbow-Hand (Figure~
 
 First, the Mahalanobis distance $D_{mah}$ for the intended object was always lower than the other object. The corrected $D_{mah}$ for both Elbow-Hand and Head-Hand methods for the intended object was always below 2, therefore selecting the threshold $D_{thres}=2$ is a reasonable choice. We notice that some distances for the unintended object at $2cm$ separation is also below $D_{mah}<2$. Therefore, when the objects are $2 cm$ apart, then the pointing target becomes ambiguous for this setup. For separations of $3cm$ or more, $D_{mah}$ of the unintended object is always over the threshold, therefore there is no ambiguity.
 
-Second, correction significantly improved Head-Hand accuracy at all separations, slightly improved Elbow-Hand between $2-12cm$ but slightly worsened Elbow-Hand after $12cm$. We attribute this to the fact that the angles we receive is heavily user-dependent and can have a significant variance across methods as showed in Figure~\ref{fig:angular_boxplots}. Moreover, the user was not in the training set.
+Second, correction significantly improved Head-Hand accuracy at all separations, slightly improved Elbow-Hand between $2-12cm$ but slightly worsened Elbow-Hand after $12cm$. We attribute this to the fact that the angles we receive is heavily user-dependent and can have a significant variance across methods as showed in Figure~\ref{fig:pointing_angular_boxplots}. Moreover, the user was not in the training set.
 
 Third, the Mahalanobis distance stayed generally constant for the intended object, which was expected. It linearly increased with separation distance for the other object.
 
@@ -534,6 +529,9 @@ QR Code Based Location Initialization
 
 Assisted Remote Control
 
+\chapter{Telepresence User Study Survey Questions}
+\label{chapter:telepresence_user_study_survey_questions}
+
 \include{chapters/appendix_vibration_analysis}
 
 
@@ -542,25 +540,29 @@ Assisted Remote Control
 
 \begin{postliminary}
 \references
-\postfacesection{Index}{%
+
+%\postfacesection{Index}{%
 %%             ... generate an index here
 %%         look into gatech-thesis-index.sty
-}
-\begin{vita}
-Perry H. Disdainful was born in an insignificant town
-whose only claim to fame is that it produced such a fine
-specimen of a researcher.
-\end{vita}
+%}
+
+%Vita
+%\begin{vita}
+%Perry H. Disdainful was born in an insignificant town
+%whose only claim to fame is that it produced such a fine
+%specimen of a researcher.
+%\end{vita}
 \end{postliminary}
 
-\begin{abstract}
-  This is the abstract that must be turned in as hard copy to the
-  thesis office to meet the UMI requirements. It should \emph{not} be
-  included when submitting your ETD. Comment out the abstract
-  environment before submitting. It is recommended that you simply
-  copy and paste the text you put in the summary environment into this
-  environment. The title, your name, the page count, and your
-  advisor's name will all be generated automatically.
-\end{abstract}
+%\begin{abstract}
+%  This is the abstract that must be turned in as hard copy to the
+%  thesis office to meet the UMI requirements. It should \emph{not} be
+%  included when submitting your ETD. Comment out the abstract
+%  environment before submitting. It is recommended that you simply
+%  copy and paste the text you put in the summary environment into this
+%  environment. The title, your name, the page count, and your
+%  advisor's name will all be generated automatically.
+%\end{abstract}
+
 
 \end{document}

@@ -64,7 +64,7 @@ Trautman~\cite{trautman2010unfreezing} introduces the 'freezing problem', where 
 \section{Goal Points for Navigation}
 \label{sec:navigation_finding_goal_points_for_navigation}
 
-As presented in Section TODO, our interactive system allows a user to annotate landmarks. After completing the $Home Tour$, the robot can navigate to or towards the labeled entities.
+As presented in Section \ref{chapter:map_annotation}, our interactive system allows a user to annotate landmarks. After completing the $Home Tour$, the robot can navigate to or towards the labeled entities.
 A user can enter a navigation destination to the robot in three distinct ways: via labeled waypoints, planar landmarks or objects.
 
 \subsection{Labeled Waypoints:} If a waypoint is labeled and saved, the robot attaches that label to the explicit coordinates, namely position and orientation. Therefore, if the robot is instructed to navigate to a labeled waypoint, then the goal is readily the pose of the waypoint.
@@ -96,7 +96,7 @@ where a the goal point corresponding to the singular label $Table$.
 We assume that the requested label corresponds to a region of space such as a room or corridor. In this case, we project the points of all planes with this label to the ground plane, and compute the convex hull. For the purposes of navigating to this label, we simply navigate to the centroid of the hull. While navigating to a labeled region is a simple task, this labeled region could also be helpful in the context of more complex tasks, such as specifying a finite region of the map for an object search task. An example for calculating a goal for a two labeled planar landmarks is shown in Figure \ref{fig:double_plane}. 
 
 
-\subsection{Labeled Objects:} As discussed in Section TODO, we first perform planar surface detection before detecting tabletop objects. When the robot is asked to navigate to a labeled object, the planar surface that the object lies on is given as the goal landmark. The robot calculates the goal position as described in the single labeled landmark case in Section \ref{sec:navigation_goal_single_label}.
+\subsection{Labeled Objects:} As discussed in Section \ref{sec:map_objects}, we first perform planar surface detection before detecting tabletop objects. When the robot is asked to navigate to a labeled object, the planar surface that the object lies on is given as the goal landmark. The robot calculates the goal position as described in the single labeled landmark case in Section \ref{sec:navigation_goal_single_label}.
 
 \section{People Aware Navigation}
 \label{sec:navigation_people_aware_navigation}

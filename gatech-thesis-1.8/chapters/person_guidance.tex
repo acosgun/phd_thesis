@@ -18,9 +18,9 @@ Pacchierotti \cite{pacchierotti2006design} demonstrates an office guide robot, b
 \section{Guide Robot}
 \label{sec:guidance_guide_robot}
 
-In this section, we describe our method of person guidance. After a request to guide a person is received from a higher level process, the robot first plans a path using our navigation planner in Section TODO, or standard ROS Navigation. The robot continues on its path as long while constantly monitoring the distance between itself and the guided person. The robot adjusts its speed according to this distance. 
+In this section, we describe our method of person guidance. After a request to guide a person is received from a higher level process, the robot first plans a path using our navigation planner presented in Chapter \ref{chapter:navigation_among_people}, or standard ROS Navigation. The robot continues on its path as long while constantly monitoring the distance between itself and the guided person. The robot adjusts its speed according to this distance.
 
-We use a variable speed profile so that the robot can better keep up with the person and the motions of the robot is smoother. We define a speed function that is a function of the distance between the robot and the user. This speed profile is shown in Figure \ref{fig:guidance_speed_profile}. The robot moves at a low speed $v_{safe}$ if the human is dangerously close. The speed is peaked at distance $d_{peak}$ and the robot stops if the distance is larger than $d_{guide}$, which may indicate that the human is not interested in being guided. Note that $v_{peak}$ is capped by the speed limits in the environment, provided by the speed map approach presented in Section TODO.
+We use a variable speed profile so that the robot can better keep up with the person and the motions of the robot is smoother. We define a speed function that is a function of the distance between the robot and the user. This speed profile is shown in Figure \ref{fig:guidance_speed_profile}. The robot moves at a low speed $v_{safe}$ if the human is dangerously close. The speed is peaked at distance $d_{peak}$ and the robot stops if the distance is larger than $d_{guide}$, which may indicate that the human is not interested in being guided. Note that $v_{peak}$ is capped by the speed limits in the environment, provided by the speed map approach presented in Section \ref{sec:navigation_speed_limits}.
 
 \begin{figure}[ht!]
 \centering
@@ -76,7 +76,7 @@ The belt has 8 pancake vibration motors, linearly spaced around the waist, and t
 \item Rotational Movement: When the guided person should turn around self
 \end{enumerate}
 
-The vibration patterns that induce directional and rotational movements in the human can be specified in many ways. We evaluated four patterns in each category with a user study. The details of this user study as well as a survey about the usability of the Tactile Belt is provided in Appendix TODO. The user study showed that the directional motion pattern with the highest recognition rate and least reaction time was the \textbf{TWO TAPS} pattern, which is illustrated in Figure TODO. For the rotational motion pattern, we used the continuous rotation with a single motor, illustrated in Figure TODO. 
+The vibration patterns that induce directional and rotational movements in the human can be specified in many ways. We evaluated four patterns in each category with a user study. The details of this user study as well as a survey about the usability of the Tactile Belt is provided in Appendix \ref{chapter:vibration_pattern_analysis_for_haptic_belts}. The user study showed that the directional motion pattern with the highest recognition rate and least reaction time was the \textbf{TWO TAPS} pattern, which is illustrated in Figure \ref{fig:vibration_pattern_two_taps}. For the rotational motion pattern, we used the continuous rotation with a single motor, illustrated in Figure \ref{fig:vibration_pattern_solo_cont}. 
 
 \begin{figure}[ht!]
 \centering
@@ -100,7 +100,7 @@ ROS provides an easy-to-use navigation stack for mobile robots. The input to the
 \subsection{Velocity to Vibration Mapping}
 
 
-Given a desired velocity that the 'robot' should execute, we first determine if a directional or rotational vibration pattern should be applied by the belt. If the linear velocity is dominant, then the human should walk towards that direction. If the angular velocity is dominant, the human should rotate around self. If both the linear and angular velocity is close to zero, the human should not move. To calculate which motion is appropriate, the 'robot' is simulated using Equation TODO. If the distance the 'robot' took is larger than a threshold, then a directional vibration pattern is used. If it is less than the threshold, a rotational pattern is used. If both of the velocities are small enough, the no vibration is applied. 
+Given a desired velocity that the 'robot' should execute, we first determine if a directional or rotational vibration pattern should be applied by the belt. If the linear velocity is dominant, then the human should walk towards that direction. If the angular velocity is dominant, the human should rotate around self. If both the linear and angular velocity is close to zero, the human should not move. To calculate which motion is appropriate, the 'robot' is simulated using Equation \ref{eq:motion_model}. If the distance the 'robot' took is larger than a threshold, then a directional vibration pattern is used. If it is less than the threshold, a rotational pattern is used. If both of the velocities are small enough, the no vibration is applied. 
 
 When the human gets to the vicinity of the goal point, a special stop signal is applied to inform the person that the destination is reached. Stop signal is implemented similar to \textbf{TWO TAPS} pattern except all the motors are activated instead of one.
 

@@ -1,7 +1,7 @@
 \chapter{Vibration Pattern Analysis for Haptic Belts}
 \label{chapter:vibration_pattern_analysis_for_haptic_belts}
 
-In this Chapter, we provide the user study for vibration patterns to be used on the Tactile Belt described in Section TODO.
+In this Chapter, we provide the user study for vibration patterns to be used on the Tactile Belt described in Chapter \ref{chapter:person_guidance}.
 
 \section{Vibration Patterns}
 
@@ -75,7 +75,7 @@ The post-survey consisted of 4 usability questions on a 10-point Likert scale. P
 \section{Results}
 \subsection{Directional Patterns}
 
-\textbf{Recognition error and RT w.r.t. pattern type:} A total of 344 directional pattern samples were sampled in Experiments 1 and 2. Since the directions are discretized, RE from any single test ranges from 0 to $180^{\circ}$ with $45^{\circ}$ increments. Results with respect to pattern type is in Figure~\ref{fig:dir_result1}. 
+\textbf{Recognition error and RT w.r.t. pattern type:} A total of 344 directional pattern samples were sampled in Experiments 1 and 2. Since the directions are discretized, RE from any single test ranges from 0 to $180^{\circ}$ with $45^{\circ}$ increments. Results with respect to pattern type is in Table \ref{tab:dir_results}. 
 
 %%%%%%%%%%%%%
 \begin{table}[ht!]
@@ -100,8 +100,8 @@ The confusion matrix for RA of the applied directions is given in Table~\ref{fig
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=1.0\textwidth]{pics/vibration_pattern_conf_matrix_cropped}
-\caption{TODO}
+\includegraphics[width=0.85\textwidth]{pics/vibration_pattern_conf_matrix_cropped}
+\caption{Confusion matrix of recognition accuracy of directional vibration patterns. Our results show that the recognition accuracy is highly dependent on the applied direction. The subjects recognied the front direction (Direction 1) with the highest accuracy ($\%$97) whereas Direction 3 had the least accuracy ($\%$55)}
 \label{fig:vibration_pattern_conf_matrix}
 \end{figure}
 
@@ -123,7 +123,7 @@ We expected the directional RA to be symmetrical around the belt, meaning that t
 \label{tab:rot_results}
 \end{table}
 
-A total of 256 rotational pattern samples were tested Experiments 1 and 2. Results are in Figure~\ref{fig:rot_result1}.
+A total of 256 rotational pattern samples were tested Experiments 1 and 2. Results are in Figure \ref{tab:rot_results}.
 
 Subjects recognized \textbf{SOLO ONCE} and \textbf{SOLO CONT} patterns with $\% 100$ accuracy, whereas had \textbf{DUAL ONCE} had $\% 92$ RA. \textbf{SOLO CONT} had the least RT by $1.16$ seconds. It is interesting to note that this reaction time is almost identical to the directional pattern with the least RT ($1.13s$).
 
@@ -140,7 +140,7 @@ Subjects thought that it was fairly easy to move while wearing the belt (M=9.2).
 
 \subsection{Discussion}
 
-Among directional patterns, \textbf{TWO TAPS} had the least RT and was found the most intuitive by our usability study. When asked which directional pattern they would prefer, 10 out of 15 subjects chose \textbf{TWO TAPS}, 3 chose \textbf{CONT} and 2 selected \textbf{ONE TAP} and no one chose \textbf{WAVE}. Although \textbf{CONT} have less recognition error, most subjects preferred \textbf{TWO TAPS} probably because people didn't feel comfortable when the vibration lasted for a long time. This supports our first hypothesis that continuous patterns would not be found preferable.
+Among directional patterns, \textbf{TWO TAPS} had the least RT and was found the most intuitive by our usability study. When asked which directional pattern they would prefer, 10 out of 15 subjects chose \textbf{TWO TAPS}, 3 subjects chose \textbf{CONT} and 2 subjects selected \textbf{ONE TAP} and no one chose \textbf{WAVE}. Although \textbf{CONT} have less recognition error, most subjects preferred \textbf{TWO TAPS} probably because people didn't feel comfortable when the vibration lasted for a long time. This supports our first hypothesis that continuous patterns would not be found preferable.
 
 7 out of 15 subjects preferred \textbf{SOLO ONCE}, 7 subjects preferred \textbf{SOLO CONT} and 1 subject preferred \textbf{DUAL CONT} in the post-study survey. Our results show that subjects rarely made mistakes in recognizing rotations and using a single motor for rotation patterns is preferable over using two motors. Therefore an application may use either of the \textbf{SOLO} patterns. 
 
