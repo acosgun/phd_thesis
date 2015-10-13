@@ -1,65 +1,77 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Caption}}{6}
-\contentsline {figure}{\numberline {2}{\ignorespaces Top down point cloud view of a room. A planar landmark with label $Table$ has previously been annotated by a user. The convex hull for the planar landmark is shown in red lines. When asked to navigate to $Table$, the robot calculates a goal pose, which is shown as the yellow point.}}{10}
-\contentsline {figure}{\numberline {3}{\ignorespaces Top down point cloud view of a hallway. The user has previously annotated two planar landmarks with the same label, $Hallway$. When asked to navigate to $Hallway$, the robot calculates a goal pose, which is shown as the yellow point.}}{11}
-\contentsline {figure}{\numberline {4}{\ignorespaces Standard path planners fail to produce a solution to the 'room problem'. Our people-aware planner anticipates that the human can give way to the robot if it approaches towards its goal.}}{12}
-\contentsline {figure}{\numberline {5}{\ignorespaces Disturbance costs in different human-human configurations and distances. A path that crosses the dashed lines incurs the disturbance cost calculated on the right side. }}{15}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{15}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{15}
-\contentsline {figure}{\numberline {6}{\ignorespaces a) Social forces acting on the robot, including $F_{goal}$,$F_{social}$,$F_{obs}$, are shown at the first iteration of the dynamic planner. Note that $F_{group}=0$ as the robot does not belong to a group. The group force (not shown) exists, however, for the humans as they are in the same group region. b) Social forces with respect to the distance towards the corresponding entity. }}{17}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{17}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{17}
-\contentsline {figure}{\numberline {7}{\ignorespaces "Room Problem". The robot is outside a room and the goal is inside the room. Traditional planners can not solve the problem because two people are blocking the doorway. Our planner generates a tentative path, with the initial global plan shown in green and the dynamic refinements are shown in orange.}}{19}
-\contentsline {figure}{\numberline {8}{\ignorespaces Paths differ drastically with the poses and grouping of humans. a) The robot takes shortest route, traveling in the vicinity of a group of two and another individual. b) third individual joins the group. Robot takes a longer path that doesn't have humans on path. c) fourth person changes his position, leading the robot to take the longest route. }}{20}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{20}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{20}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{20}
-\contentsline {figure}{\numberline {9}{\ignorespaces The Hallway scenario. 2 runs are shown in first and second rows.The static plan (green line) and dynamic plan refinement (pink line) are shown. First run: a) Navigation starts. The dynamic planner anticipates that people will give way to the robot when it starts to move towards them. b) Humans notice the robot, and give way by increasing the separation between them. c) The robot continues towards its goal and humans regroup. Second run: d) both the static and dynamic plan involves going in between humans again e) human on the right gets closer to the other person. Since a human made significant movement, dynamic planner re-plans. Plan no longer involves going in between. f) static planner periodic re-plan triggers, leading to robot to stick to the wall to the right. }}{23}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{23}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{23}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{23}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{23}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{23}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{23}
-\contentsline {figure}{\numberline {10}{\ignorespaces The Kitchen scenario. In the first run, there are two people blocking the path to the left and one person at the narrow corridor. a) robot decides to take the shorter route, because it would disturb one person instead of two. There is not enough space to pass, and dynamic planner assumes the person would get out of the bottleneck to give way. b) human behaves as robot anticipated and gets out of the narrow passage. robot slows down because it enters the human region. c) person gets back to his original position, robot reaches the goal. In the second run: d) there are two people at the narrow corridor and one person on the left. The robot decides to take the longer route and pass the third person from left. The safety cost from the two others would be too high if the robot took the direct route. e) the person steps back as he recognizes the robot. since the person has moved, the dynamic planner re-plans and decides to pass from right. f) after the robot passes the person, it proceeds to its goal. }}{24}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{24}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{24}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{24}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{24}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{24}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{24}
-\contentsline {figure}{\numberline {11}{\ignorespaces Designed speed limits for. The robot has to be relatively slow in red zones, can have moderate speed in yellow zones and is allowed to move relatively faster in green zones.}}{25}
-\contentsline {figure}{\numberline {12}{\ignorespaces Comparison study of using a maximum top speed versus using location-dependent speed limits. Robot is given a fixed goal location. Right around the corner, there is a bystander human, who is not visible to the robot until the robot makes the turn. Points annotate robot position measured at fixed time intervals. a) Speed map of a corridor intersection at the second floor of College of Computing at Georgia Tech. b) Robot's top speed is fixed at $1.0m/s$. Note that the distance between robot positions are mostly constant. The robot gets very close to the bystander because it is moving relatively fast when it turned the corner. c) The robot is allowed to move with $1.5m/s$ in green, $0.5m/s$ in yellow and $0.15m/s$ in red zones. Colors of the sampled points on the path show the associated speed zone. It can be seen by looking at robot's positions that this approach was more gracious turning the corner and respecting human's personal space.}}{28}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{28}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{28}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{28}
-\contentsline {figure}{\numberline {13}{\ignorespaces Circularity criterion in a perfect circle is: $|P_0P_n|d_{mid}=0.5$}}{34}
-\contentsline {figure}{\numberline {14}{\ignorespaces Circularity criterion in a this laser segment is: $|P_0P_{10}|/d_{mid}$}}{34}
-\contentsline {figure}{\numberline {15}{\ignorespaces Inscribed angles of an arc are shown in the figure. Inscribed Angle Variance (IAV) is calculated by taking the average of all inscribed angles on a laser segment.}}{34}
-\contentsline {figure}{\numberline {16}{\ignorespaces Two person detections are seen in this figure. Our leg segment association algorithm propagates pixels vertically from candidate leg segments and connects leg pairs.}}{36}
-\contentsline {figure}{\numberline {17}{\ignorespaces Flow chart for determining if two leg segment candidates belong to a person.}}{37}
-\contentsline {figure}{\numberline {18}{\ignorespaces Our torso detector fits and ellipse to the human torso and estimate its position and orientation.}}{38}
-\contentsline {figure}{\numberline {19}{\ignorespaces Torso detection rate vs weighed Mahalanobis Distance Threshold in our dataset}}{40}
-\contentsline {figure}{\numberline {20}{\ignorespaces Experimental setup for the evaluation study of the Torso Detector. }}{40}
-\contentsline {figure}{\numberline {21}{\ignorespaces Example results of our person recognition method is shown in the image. We use $Eigenfaces$ face recognition method and optionally shirt color recognition.}}{45}
-\contentsline {figure}{\numberline {22}{\ignorespaces Overhead view of relevant ranges for person following. Robot is represented as the triangle in the middle.}}{50}
-\contentsline {figure}{\numberline {23}{\ignorespaces An illustration of how the goal position is calculated when the user is in the social space $[1.2m-3.5m]$.}}{51}
-\contentsline {figure}{\numberline {24}{\ignorespaces The telepresence robot platform we used for our experiments.}}{54}
-\contentsline {figure}{\numberline {25}{\ignorespaces User Interface of the robot for the remote user.}}{55}
-\contentsline {figure}{\numberline {26}{\ignorespaces Speed profile of a person guiding robot as a function of the distance to the user.}}{64}
-\contentsline {figure}{\numberline {27}{\ignorespaces Comparison of robot and human speeds with respect to time. a) Standard ROS Navigation b) Our approach: accelerations are less steeper than a), which employs the dynamic speed adjustment for guidance. }}{65}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{65}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{65}
-\contentsline {figure}{\numberline {28}{\ignorespaces The vibration pattern applied by the Tactile Belt to induce directional movements in the blind user. A motor is fired for a duration of $250ms$, inactivated for $250ms$ and fired again for $250ms$.}}{67}
-\contentsline {figure}{\numberline {29}{\ignorespaces The vibration pattern applied by the Tactile Belt to induce rotational movements in the blind user. The consequent vibrations motors are fired consecutively, starting from left for CW and right for CCW rotation.}}{67}
-\contentsline {figure}{\numberline {30}{\ignorespaces Autonomous guiding of a blindfolded person using the tactile belt. a) The guidance starts. The user is blindfolded and is standing at the left of the screen. The human detection system detects him and places an ellipse marker with an arrow depicting his orientation. The operator gives a goal point by clicking on the screen. The goal point is the right traffic cone, and given by the big arrow. b) The system autonomously generates a path for the user. As seen in the picture the path is collision free. At this stage the belt begin to vibrate towards the front of the user. c) An unexpected obstacle (another person) appears and stops in front of the user. The system detects the other person as an obstacle, and reevaluates the path. A new path going around the obstacle is immediately calculated and sent to the user by the belt. d) The user receives a rotation vibration modality, and begins to turn towards the new path. And follows this path from now on. e) The obstacle leaves. The path is then reevaluated and changed. The user receives forward directional belt signal, and advances towards the goal. f) The person reaches to the vicinity of the goal and stop signal is applied. }}{69}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{69}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{69}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{69}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{69}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{69}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{69}
-\contentsline {figure}{\numberline {31}{\ignorespaces Evaluated vibration patterns. a) Directional b) Rotational }}{73}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{73}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{73}
-\contentsline {figure}{\numberline {32}{\ignorespaces TODO}}{76}
-\contentsline {figure}{\numberline {33}{\ignorespaces Results of post-study survey.}}{78}
+\contentsline {figure}{\numberline {1}{\ignorespaces Robot's view of how users can add planar landmarks to the map}}{6}
+\contentsline {figure}{\numberline {2}{\ignorespaces UI for labeling a navigation waypoint}}{8}
+\contentsline {figure}{\numberline {3}{\ignorespaces (Left) Our approach allows a robot to detect when there is ambiguity on the pointing gesture targets. (Right) The point cloud view from robot's perspective is shown. Both objects are identified as potential intended targets, therefore the robot decides that there is ambiguity.}}{9}
+\contentsline {figure}{\numberline {4}{\ignorespaces Vertical $(\psi )$ and horizontal $(\theta )$ angles in spherical coordinates are illustrated. A potential intended target is shown as a star. The z-axis of the hand coordinate frame is defined by either the Elbow-Hand (this example) or Head-Hand ray.}}{13}
+\contentsline {figure}{\numberline {5}{\ignorespaces Our study involved 6 users that pointed to 7 targets while being recorded using 30 frames per target.}}{16}
+\contentsline {figure}{\numberline {6}{\ignorespaces Data capturing pipeline for error analysis.}}{16}
+\contentsline {figure}{\numberline {7}{\ignorespaces Euclidean distance error in cartesian coordinates for each method and target. The gesture ray intersection points in centimeters with the target plane, are shown here for each target (T1-T7) as the columns. Each subject's points are shown in separate colors. There are 30 points from each subject, corresponding to the 30 frames recorded for the pointing gesture at each target. Axes are shown in centimeters. The circle drawn in the center of each plot has the same diameter (13 cm) as the physical target objects used.}}{17}
+\contentsline {figure}{\numberline {8}{\ignorespaces Box plots of the errors in spherical coordinates $\theta $ and $\psi $ for each pointing method.}}{19}
+\contentsline {figure}{\numberline {9}{\ignorespaces Resulting Mahalanabis distances of pointing targets from the Object Separation Test is shown for a) Elbow-Hand and b) Head-Hand pointing methods. Intended object are shown in green and other object is in red. Solid lines show distances after correction is applied. Less Mahalanobis distance for intended object is better for reducing ambiguity. }}{21}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{21}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{21}
+\contentsline {figure}{\numberline {10}{\ignorespaces Example scenarios from the object separation test is shown. Our experiments covered separations between 2cm (left images) and 30cm (right images). The object is comfortably distinguished for the 30cm case, whereas the intended target is ambiguous when the targets are 2cm apart. Second row shows the point cloud from Kinect's view. Green lines show the Elbow-Hand and Head-Hand directions whereas green circles show the objects that are within the threshold $D_{mah}<2$.}}{22}
+\contentsline {figure}{\numberline {11}{\ignorespaces Caption}}{27}
+\contentsline {figure}{\numberline {12}{\ignorespaces Top down point cloud view of a room. A planar landmark with label $Table$ has previously been annotated by a user. The convex hull for the planar landmark is shown in red lines. When asked to navigate to $Table$, the robot calculates a goal pose, which is shown as the yellow point.}}{31}
+\contentsline {figure}{\numberline {13}{\ignorespaces Top down point cloud view of a hallway. The user has previously annotated two planar landmarks with the same label, $Hallway$. When asked to navigate to $Hallway$, the robot calculates a goal pose, which is shown as the yellow point.}}{32}
+\contentsline {figure}{\numberline {14}{\ignorespaces Standard path planners fail to produce a solution to the 'room problem'. Our people-aware planner anticipates that the human can give way to the robot if it approaches towards its goal.}}{33}
+\contentsline {figure}{\numberline {15}{\ignorespaces Disturbance costs in different human-human configurations and distances. A path that crosses the dashed lines incurs the disturbance cost calculated on the right side. }}{36}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{36}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{36}
+\contentsline {figure}{\numberline {16}{\ignorespaces a) Social forces acting on the robot, including $F_{goal}$,$F_{social}$,$F_{obs}$, are shown at the first iteration of the dynamic planner. Note that $F_{group}=0$ as the robot does not belong to a group. The group force (not shown) exists, however, for the humans as they are in the same group region. b) Social forces with respect to the distance towards the corresponding entity. }}{38}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{38}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{38}
+\contentsline {figure}{\numberline {17}{\ignorespaces "Room Problem". The robot is outside a room and the goal is inside the room. Traditional planners can not solve the problem because two people are blocking the doorway. Our planner generates a tentative path, with the initial global plan shown in green and the dynamic refinements are shown in orange.}}{40}
+\contentsline {figure}{\numberline {18}{\ignorespaces Paths differ drastically with the poses and grouping of humans. a) The robot takes shortest route, traveling in the vicinity of a group of two and another individual. b) third individual joins the group. Robot takes a longer path that doesn't have humans on path. c) fourth person changes his position, leading the robot to take the longest route. }}{41}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{41}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{41}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{41}
+\contentsline {figure}{\numberline {19}{\ignorespaces The Hallway scenario. 2 runs are shown in first and second rows.The static plan (green line) and dynamic plan refinement (pink line) are shown. First run: a) Navigation starts. The dynamic planner anticipates that people will give way to the robot when it starts to move towards them. b) Humans notice the robot, and give way by increasing the separation between them. c) The robot continues towards its goal and humans regroup. Second run: d) both the static and dynamic plan involves going in between humans again e) human on the right gets closer to the other person. Since a human made significant movement, dynamic planner re-plans. Plan no longer involves going in between. f) static planner periodic re-plan triggers, leading to robot to stick to the wall to the right. }}{44}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{44}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{44}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{44}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{44}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{44}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{44}
+\contentsline {figure}{\numberline {20}{\ignorespaces The Kitchen scenario. In the first run, there are two people blocking the path to the left and one person at the narrow corridor. a) robot decides to take the shorter route, because it would disturb one person instead of two. There is not enough space to pass, and dynamic planner assumes the person would get out of the bottleneck to give way. b) human behaves as robot anticipated and gets out of the narrow passage. robot slows down because it enters the human region. c) person gets back to his original position, robot reaches the goal. In the second run: d) there are two people at the narrow corridor and one person on the left. The robot decides to take the longer route and pass the third person from left. The safety cost from the two others would be too high if the robot took the direct route. e) the person steps back as he recognizes the robot. since the person has moved, the dynamic planner re-plans and decides to pass from right. f) after the robot passes the person, it proceeds to its goal. }}{45}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{45}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{45}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{45}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{45}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{45}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{45}
+\contentsline {figure}{\numberline {21}{\ignorespaces Designed speed limits for. The robot has to be relatively slow in red zones, can have moderate speed in yellow zones and is allowed to move relatively faster in green zones.}}{46}
+\contentsline {figure}{\numberline {22}{\ignorespaces Comparison study of using a maximum top speed versus using location-dependent speed limits. Robot is given a fixed goal location. Right around the corner, there is a bystander human, who is not visible to the robot until the robot makes the turn. Points annotate robot position measured at fixed time intervals. a) Speed map of a corridor intersection at the second floor of College of Computing at Georgia Tech. b) Robot's top speed is fixed at $1.0m/s$. Note that the distance between robot positions are mostly constant. The robot gets very close to the bystander because it is moving relatively fast when it turned the corner. c) The robot is allowed to move with $1.5m/s$ in green, $0.5m/s$ in yellow and $0.15m/s$ in red zones. Colors of the sampled points on the path show the associated speed zone. It can be seen by looking at robot's positions that this approach was more gracious turning the corner and respecting human's personal space.}}{49}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{49}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{49}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{49}
+\contentsline {figure}{\numberline {23}{\ignorespaces Circularity criterion in a perfect circle is: $|P_0P_n|d_{mid}=0.5$}}{55}
+\contentsline {figure}{\numberline {24}{\ignorespaces Circularity criterion in a this laser segment is: $|P_0P_{10}|/d_{mid}$}}{55}
+\contentsline {figure}{\numberline {25}{\ignorespaces Inscribed angles of an arc are shown in the figure. Inscribed Angle Variance (IAV) is calculated by taking the average of all inscribed angles on a laser segment.}}{55}
+\contentsline {figure}{\numberline {26}{\ignorespaces Two person detections are seen in this figure. Our leg segment association algorithm propagates pixels vertically from candidate leg segments and connects leg pairs.}}{57}
+\contentsline {figure}{\numberline {27}{\ignorespaces Flow chart for determining if two leg segment candidates belong to a person.}}{58}
+\contentsline {figure}{\numberline {28}{\ignorespaces Our torso detector fits and ellipse to the human torso and estimate its position and orientation.}}{59}
+\contentsline {figure}{\numberline {29}{\ignorespaces Torso detection rate vs weighed Mahalanobis Distance Threshold in our dataset}}{61}
+\contentsline {figure}{\numberline {30}{\ignorespaces Experimental setup for the evaluation study of the Torso Detector. }}{61}
+\contentsline {figure}{\numberline {31}{\ignorespaces Example results of our person recognition method is shown in the image. We use $Eigenfaces$ face recognition method and optionally shirt color recognition.}}{66}
+\contentsline {figure}{\numberline {32}{\ignorespaces Overhead view of relevant ranges for person following. Robot is represented as the triangle in the middle.}}{71}
+\contentsline {figure}{\numberline {33}{\ignorespaces An illustration of how the goal position is calculated when the user is in the social space $[1.2m-3.5m]$.}}{72}
+\contentsline {figure}{\numberline {34}{\ignorespaces The telepresence robot platform we used for our experiments.}}{75}
+\contentsline {figure}{\numberline {35}{\ignorespaces User Interface of the robot for the remote user.}}{76}
+\contentsline {figure}{\numberline {36}{\ignorespaces Speed profile of a person guiding robot as a function of the distance to the user.}}{85}
+\contentsline {figure}{\numberline {37}{\ignorespaces Comparison of robot and human speeds with respect to time. a) Standard ROS Navigation b) Our approach: accelerations are less steeper than a), which employs the dynamic speed adjustment for guidance. }}{86}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{86}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{86}
+\contentsline {figure}{\numberline {38}{\ignorespaces The vibration pattern applied by the Tactile Belt to induce directional movements in the blind user. A motor is fired for a duration of $250ms$, inactivated for $250ms$ and fired again for $250ms$.}}{88}
+\contentsline {figure}{\numberline {39}{\ignorespaces The vibration pattern applied by the Tactile Belt to induce rotational movements in the blind user. The consequent vibrations motors are fired consecutively, starting from left for CW and right for CCW rotation.}}{88}
+\contentsline {figure}{\numberline {40}{\ignorespaces Autonomous guiding of a blindfolded person using the tactile belt. a) The guidance starts. The user is blindfolded and is standing at the left of the screen. The human detection system detects him and places an ellipse marker with an arrow depicting his orientation. The operator gives a goal point by clicking on the screen. The goal point is the right traffic cone, and given by the big arrow. b) The system autonomously generates a path for the user. As seen in the picture the path is collision free. At this stage the belt begin to vibrate towards the front of the user. c) An unexpected obstacle (another person) appears and stops in front of the user. The system detects the other person as an obstacle, and reevaluates the path. A new path going around the obstacle is immediately calculated and sent to the user by the belt. d) The user receives a rotation vibration modality, and begins to turn towards the new path. And follows this path from now on. e) The obstacle leaves. The path is then reevaluated and changed. The user receives forward directional belt signal, and advances towards the goal. f) The person reaches to the vicinity of the goal and stop signal is applied. }}{90}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{90}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{90}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{90}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{90}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{90}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{90}
+\contentsline {figure}{\numberline {41}{\ignorespaces Evaluated vibration patterns. a) Directional b) Rotational }}{94}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{94}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{94}
+\contentsline {figure}{\numberline {42}{\ignorespaces TODO}}{97}
+\contentsline {figure}{\numberline {43}{\ignorespaces Results of post-study survey.}}{99}
