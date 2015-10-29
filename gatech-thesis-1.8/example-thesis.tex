@@ -114,21 +114,94 @@ Why should I provide a summary?  Just read the thesis.
 
 \chapter{Introduction}
 \label{chapter:introduction}
-Introduction
+
+
+\section{Robots in Human Environments}
+
+The vision that was promised by Karel \v{C}apek in his 1921 science fiction play R.U.R, in which the word \textit{``robot"} was used the first time, featured intelligent autonomous systems that co-existed and worked for humans. The reality almost a century later today is that robots do exist, however almost all of them operate in factories, physically separated from human workers. With this separation, the safety of humans is ensured. However, it is now becoming clear that robots can provide much more value if they operate in human environments, assisting people in daily tasks. With the recent improvements in hardware and software systems and in robotics research, development of such robots are not science fiction anymore. This disruptive technology will make fascinating new applications possible, in contexts such as homes, hospitals, offices and factories, including but not limited to: delivery, elderly care, collaborating on an assembly line and household tasks such as cleaning. The feasibility and reliability of such applications will determine their business value, while potentially generating a new industry. Therefore, any development in this field is a step toward realization of \textit{intelligent} and \textit{social} robots.
+
+\section{Robots that Navigate in Human Environments}
+
+The most important difference of a robot from a computer is actuation: the ability to move around in the physical world. Perhaps the most fundamental task for a mobile robot is to be able to \textit{navigate} from a location to another. Advances in mapping, localization and path planning research in the past decades made indoor navigation a common capability for mobile robots. 
+
+Robots occupy the same physical space with us, therefore should be aware of the fact that their movements would be observed and reacted by humans. Investigating the context of robots in human environments gave rise to the sub-field of robotics: Human-Robot Interaction (HRI). This relatively new research field extends in many directions with a common goal: robots that will perceive its environment, reason and act in a safe way to facilitate people's lives. Thus, a robot that will serve to people should not only be a machine, but should respect social rules and protocols.
 
 \section{The Science of Personal Spaces}
 \label{sec:personal_spaces}
 
-Personal Spaces
+How should mobile agents adjust their spatial relationships with respect to humans? In fact, humans already have a framework for this problem. It is called the \textit{proxemics}, coined by Hall \cite{hall1966hidden}, which studies of our use of space and the degree and effect of the spatial separation individuals naturally maintain. One of Hall's main findings is that humans adjust their distance in four distance levels: intimate, personal, social and public distances, depending on the intimacy level between individuals.
 
-\section{Home Tour Scenario}
-\label{sec:home_tour_scenario}
+Personal spaces are influenced by other factors such as cultures, the range of their sensory systems, and postures of the two actors. Although it is not known whether it is best to model robot navigation behaviors after humans, using human-human studies to determine the spatial relationships to humans is a good start. This is especially true given that non-expert humans today had never interacted with a mobile robot and therefore likely expect the robot to behave within human social norms.
 
-Home Tour Scenario
+\section{Semantic Maps}
+\label{sec:semantic_maps}
 
-\section{Background}
+Robots keep a representation of its environment, and it is usually in the form of a metric \textit{map}. It may not be the most intuitive way for human users to provide metric coordinates as goals points to robots. Robots that navigate in human environments will need to accept human-friendly navigation goals. A map for such robots should act a \textit{common ground} between the robot and its user, by enabling referencing to the same spatial elements. For example, the robot should be able to understand commands such as ``go to the kitchen table" or ``wait outside Joe's room". This is only possible with a richer map representation that includes \textit{semantic} information. In particular, if the humans and robots need to communicate over navigational goals that involve objects, landmarks or rooms, a map should include information about these.
 
-\subsection{Social Spaces}
+\section{Tour Scenario}
+\label{sec:tour_scenario}
+
+One method for a robot to collect semantic information in an environment is the \textit{Tour Scenario}, or \textit{Human Augmented Mapping (HAM)} \cite{topp2008human}, in which the task is to familiarize the robot to a new environment interactively. Here is how the Tour Scenario is defined: After the robot product is shipped and unpacked to a home or similar environment, a human takes the robot on a tour so the robot create a representation of the environment. In this interactive scenario, the robot is able to learn basic information about the surroundings, while following the user. During the tour, the user could point out and identify relevant places and objects that the robot will need to learn for future tasks. It is likely that the a commercial robot product that has the capability of the familiarizing task will include both human-interactive and automatic components (i.e. automatic object recognition). In this thesis we focus on the interactive components.
+
+\section{Challenges}
+
+There are four primary challenges in developing practical systems that allow a real robotic system to navigate using semantic information. From the robot's perspective, the interesting research questions are:
+
+\begin{itemize}
+\item Where are the people?
+\item How should I move around humans?
+\item How can I acquire semantic information about this environment?
+\item How can I utilize the semantic information to improve navigation?
+\end{itemize}
+
+The answers to these questions are provided in the rest of this section.
+
+\subsection{Robust People Tracking}
+
+In order to be engaged in any kind of meaningful spatial interaction with people, the robot has to be able to track them. Robust tracking of people is necessary to ensure high task rates.
+
+We use a person tracking system that fuses detections from three sources. These three detectors are: leg detector, torso detector and upper body detector. Usage of multiple modalities is aimed to increase the robustness of tracking and provide more coverage around the robot. The detections are consolidated into position estimations using a Kalman Filter.
+
+\subsection{Social Navigation}
+
+Robot path planing for navigation has been traditionally considered as a shortest-path problem. While this leads to correct and collision-free paths, the behavior of the robot may be perceived as unsafe or unnatural by human observers. When a robot is navigating in an human environment, the most important consideration is the safety of people. Moreover, even if a robot's motions are safe, they can still cause discomfort. For example, sudden appearance of a robot can cause fear in humans or cutting in between two people while they are in a conversation may be considered a rude behavior. Therefore, the robot motions should not only be effective but also be socially acceptable.
+%\label{sec:home_tour_scenario}
+Borrowing the idea from Sisbot \cite{sisbot2007human}, we embed personal spaces and social constraints as costs while planning a path. We further develop the planner by considering simulating people's reaction to robot's motion during planning. Humans routinely use anticipation during navigation. For example, in a hallway encounter, one may lean towards the left of the corridor, expecting the other person to take right. We aim to give this anticipation ability to robots. Furthermore, we develop applications where the goal of the robot is to follow a person or a guide a person.
+
+\subsection{Interactive Map Annotation}
+
+The question of how semantic maps could be useful for various tasks is addressed in Section \ref{sec:tour_scenario}. Users may want to provide custom labels to landmarks, objects and waypoints instead of generic ones. By using unique labels, ambiguities can be resolved. For example, if an automatic object recognizer is utilized, the robot may be confused if it is given the command ``bring my laptop" and there are multiple laptops in the environment.
+
+Moreover, the ability to label objects and then refer to them relieves the robot the burden to have a strong recognizer. Without any object recognition capability, a user can point at and label an object and later refer to it while tasking. For example, an object that was previously labeled as ``Joe's mug" can be retrieved with a command such as ``Fetch Joe's mug from the kitchen table".
+
+A solution to enable a common ground between the user and the robot is via the Tour Scenario, as described in Section \ref{sec:tour_scenario}. For this scenario, the robot follows the user throughout the tour.
+
+\subsection{Situational Awareness for Navigation}
+
+Metric maps provide a single type of information: whether a cell is occupied with an obstacle or not. While this kind of a simplistic map representation may be sufficient for some tasks, if the robot needs to communicate with human users about its goals, it should have a richer map representation of the environment. The robot can leverage the semantic information embedded to the map and increase its usefulness for navigation tasks. %There are not many works in the field that tapped into this opportunity.
+
+%None of the works in this field leverage the semantic maps to increase situational awareness.
+
+Situational awareness of the robot can be achieved in different ways. Person following is a widely studies behavior, however in the literature it is not usually considered \textit{why} the robot is following the person and how the task context can be used to increase effectiveness. For example, during the Tour Scenario, the robot may employ a better following strategy if it knows the user will be pointing at landmarks and places. Furthermore, consider handling of the doors while following. If the robot does not know that it is standing on a doorway, it can block the path for others. If the door is added to the semantic map, the robot can have the opportunity to handle the door passing graciously. Moreover, the robot can utilize the map to adjust its speed. For example, if the robot is in a region where the chance to encounter a person is high, slowing down may be a sensible action to take.
+
+
+%For example, when the robot is navigating, if the robot knows that it is in a region of high human density, slowing down may be a sensible action to take.
+
+
+
+%Goal Points
+%Door, landmarks, objects as special cases.
+%Safety: Use map layout for speed adjustments, speed up
+
+\section{Scope and Context}
+
+In this section, we provide an overview of the assumptions of our research.  At a high level, autonomous robots perceive its environment, reason the situation, act in the world. In the HRI context, the research in perception is focused on improving the robot's ability to ``see" its environment, identify objects and humans. The reasoning part is focused on deciding on ``what to do" and ``how to do" in a given situation. Acting part is focused on the execution and control of motions from the reasoning part as well as the design of mechanisms. This thesis focuses on the reasoning part while also contributing to the perception part.
+
+We assume that we have wheeled mobile robot platform. Even though some of our algorithms are derived for non-holonomic robots (differential drive), it is a technical limitation than a conceptual one, as they can be applied to holonomic robots with minor changes. We further assume that the robot is self-contained: equipped with on-board sensors, is capable of creating a map of the environment with an existing Simultaneous Localization and Mapping (SLAM) package, and then able to localize itself in this created map as it moves in the environment.
+
+Furthermore, we focus on scenarios where people in the environment are standing or walking, because our person tracking system is optimized for such cases. 
+
+The interaction between the robot and user is achieved via tablet or smartphone apps. Similar functionality could be achieved via a speech dialog system, however we chose touch-based interfaces due to their ubiquity and high reliability.
 
 
 
