@@ -63,3 +63,6 @@ Temporary Items
 # BibTeX
 *.bbl
 *.blg
+*.lof
+gatech-thesis-1.8/example-thesis.lot
+*.lof
