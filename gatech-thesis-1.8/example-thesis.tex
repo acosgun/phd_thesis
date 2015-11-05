@@ -12,7 +12,10 @@
 %% This example is adapted from ucthesis.tex, a part of the
 %% UCTHESIS class package...
 %%
-\title{Behavior Design and Representations For a People Aware Mobile Robot System} %% If you want to specify a linebreak
+%\title{Behavior Design and Representations For a People Aware Mobile Robot System} %% If you want to specify a linebreak
+
+\title{Design of Navigation Behaviors and Representations For a People Aware Mobile Robot System}
+
                                %% in the thesis title, you MUST use
                                %% \protect\\ instead of \\, as \\ is a
                                %% fragile command that \MakeUpperCase
@@ -46,16 +49,15 @@
 
 %% \major{Algorithms, Combinatorics, and Optimization} 
 
-\copyrightyear{2015} 
-\submitdate{November 2015} % Must be the month and year of graduation,
+\copyrightyear{2016} 
+\submitdate{May 2016} % Must be the month and year of graduation,
                          % not thesis approval! As of 2010, this means
                          % this text must be May, August, or December
                          % followed by the year.
 
 %% The date the last committee member signs the thesis form. Printed
 %% on the approval page.
-\approveddate{X November 2015}
-
+\approveddate{X/Y/2015}
 
 \bibfiles{example-thesis}
 
@@ -82,24 +84,28 @@
 \begin{preliminary}
 
 % Dedication
-%\begin{dedication}
-%\null\vfil
-%{\large
-%\begin{center}
-%To myself,\\\vspace{12pt}
-%Perry H. Disdainful,\\\vspace{12pt}
-%the only person worthy of my company.
-%\end{center}}
-%\vfil\null
-%\end{dedication}
+\begin{dedication}
+\null\vfil
+{\large
+\begin{center}
+To my parents,\\\vspace{12pt}
+Zeynep and Huseyin Cosgun,\\\vspace{12pt}
+who are my pillars of strength;\\\vspace{12pt}
+and to my wife,\\\vspace{12pt}
+Gamze Koseoglu Cosgun,\\\vspace{12pt}
+who continues to supports me, rain or shine.\\\vspace{12pt}
+\end{center}}
+\vfil\null
+\end{dedication}
 
 
-\begin{preface}
-Preface
-\end{preface}
-\begin{acknowledgements}
-Acknowledgements
-\end{acknowledgements}
+%\begin{preface}
+%Preface
+%\end{preface}
+
+
+\include{chapters/acknowledgements}
+
 % print table of contents, figures and tables here.
 \contents
 % if you need a "List of Symbols or Abbreviations" look into
@@ -136,12 +142,12 @@ Personal spaces are influenced by other factors such as cultures, the range of t
 \section{Tour Scenario}
 \label{sec:tour_scenario}
 
-A mobile robot must first acquire the model of its environment before being tasked with navigation. In human environments, one method to familiarize the robot to a new environment is via \textit{Tour Scenario}, or \textit{Human Augmented Mapping (HAM)} \cite{topp2008human}. With the Tour Scenario, the robot interactively collects semantic information in an environment. Here is how the Tour Scenario is defined: After the robot product is shipped and unpacked to a home or similar environment, a human takes the robot on a tour so the robot can create a representation of the environment. In this interactive scenario, the robot learns basic information about the surroundings, while following the user. During the tour, the user could point out and identify relevant places and objects that the robot can utilize for future tasks. It is likely that the a commercial robot product that has the capability of the familiarizing task will include both human-interactive and automatic components (i.e. automatic object recognition). In this thesis we focus on the interactive components.
+A mobile robot must first acquire the model of its environment before being tasked with navigation. In human environments, one method to familiarize the robot to a new environment is via \textit{Tour Scenario}, or \textit{Human Augmented Mapping (HAM)} \cite{topp2008human}. With the Tour Scenario, the robot interactively collects semantic information in an environment. Here is how the Tour Scenario is defined: After the robot product is shipped and unpacked to a home or similar environment, a human user takes the robot on a tour so the robot can create a representation of the environment. In this interactive scenario, the robot learns basic information about the surroundings, while following the user. During the tour, the user can point out and identify relevant places and objects which the robot can utilize for future tasks. It is likely that the a commercial robot product that has the capability of the familiarizing task will include both human-interactive and automatic components (i.e. automatic object recognition). In this thesis we focus on the interactive components.
 
 \section{Semantic Maps}
 \label{sec:semantic_maps}
 
-Robots keep a representation of its environment to enable navigation behaviors, and it is usually in the form of a metric \textit{map}, where cel. It may not be the most intuitive way for human users to provide metric coordinates as goals points to robots. Robots that navigate in human environments will need to accept human-friendly navigation goals. A map for such robots should act a \textit{common ground} between the robot and its user, by enabling referencing to the same spatial elements. For example, the robot should be able to understand commands such as ``go to the kitchen table" or ``wait outside Joe's room". This is only possible with a richer map representation that includes \textit{semantic} information. In particular, if the humans and robots need to communicate over navigational goals that involve objects, landmarks or rooms, a map should include information about these.
+Robots keep a representation of its environment to enable navigation behaviors, and it is usually in the form of a discrete metric \textit{map}, where each grid cells represent whether that position is occupied with an obstacle or not. Mobile robots that use such a map can accept navigation goals in metric coordinates (i.e. go to coordinate (5.2, -1.3)), however it may not be the most intuitive way to communicate goals for human users. Robots that navigate in human environments will need to accept human-friendly navigation goals. A map for such robots should act as a \textit{common ground} between the robot and its user, by enabling referencing to the same spatial elements. For example, the robot should be able to understand commands such as ``go to the kitchen table" or ``wait outside Joe's room". This is only possible with a richer map representation that includes \textit{semantic} information. In particular, if the humans and robots need to communicate over navigation goals that involve objects, landmarks or rooms, a map should include information about these.
 
 \section{Challenges}
 
@@ -151,16 +157,16 @@ There are four primary challenges in developing practical systems that allow a r
 \item Where are the people?
 \item How should I move around humans?
 \item How can I acquire semantic information about this environment?
-\item How can I utilize the semantic information to improve navigation?
+\item How can I utilize this semantic information to improve navigation?
 \end{itemize}
 
-The answers to these questions are provided in the rest of this section.
+The challenges laid by these questions will be addressed for the remainder of this section. The answers to the research questions are discussed throughout this thesis.
 
 \subsection{Robust People Tracking}
 
 In order to be engaged in any kind of meaningful spatial interaction with people, the robot has to be able to track them. Robust tracking of people is necessary to ensure high task rates.
 
-We use a person tracking system that fuses detections from three sources. These three detectors are: leg detector, torso detector and upper body detector. Usage of multiple modalities is aimed to increase the robustness of tracking and provide more coverage around the robot. The detections are consolidated into position estimations using a Kalman Filter.
+We use a person tracking system that fuses detections from three sources. These three detectors are: leg detector, torso detector and upper body detector. Use of multiple modalities is leveraged to increase the robustness of tracking and provide more coverage around the robot. The detections are consolidated into position estimations using a Kalman Filter.
 
 \subsection{Social Navigation}
 
@@ -178,11 +184,11 @@ A solution to enable a common ground between the user and the robot is via the T
 
 \subsection{Situational Awareness for Navigation}
 
-Metric maps provide a single type of information: whether a cell is occupied with an obstacle or not. While this kind of a simplistic map representation may be sufficient for some tasks, if the robot needs to communicate with human users about its goals, it should have a richer map representation of the environment. The robot can leverage the semantic information embedded to the map and increase its usefulness for navigation tasks. %There are not many works in the field that tapped into this opportunity.
+Metric maps provide a single type of information: whether a grid cell is occupied with an obstacle or not. While this kind of a simplistic map representation may be sufficient for some tasks, if the robot needs to communicate with human users about its goals, it should have a richer map representation of the environment. The robot can leverage the semantic information embedded to the map and increase its usefulness for navigation tasks. %There are not many works in the field that tapped into this opportunity.
 
 %None of the works in this field leverage the semantic maps to increase situational awareness.
 
-Situational awareness of the robot can be achieved in different ways. Person following is a widely studies behavior, however in the literature it is not usually considered \textit{why} the robot is following the person and how the task context can be used to increase effectiveness. For example, during the Tour Scenario, the robot may employ a better following strategy if it knows the user will be pointing at landmarks and places. Furthermore, consider handling of the doors while following. If the robot does not know that it is standing on a doorway, it can block the path for others. If the door is added to the semantic map, the robot can have the opportunity to handle the door passing graciously. Moreover, the robot can utilize the map to adjust its speed. For example, if the robot is in a region where the chance to encounter a person is high, slowing down may be a sensible action to take.
+Situational awareness of the robot can be achieved in different ways. Person following is a widely studied behavior, however in the literature it is not usually considered \textit{why} the robot is following the person and how the task context can be used to increase effectiveness. For example, during the Tour Scenario, the robot may employ a better following strategy if it knows the user will be pointing at landmarks and places. Furthermore, consider handling of the doors while following. If the robot does not know that it is standing on a doorway, it can block the path for others. If the door is added to the semantic map, the robot can have the opportunity to handle the door passing graciously. Moreover, the robot can utilize the map to adjust its speed. For example, if the robot is in a region where the chance to encounter a person is high, slowing down may be a sensible action to take.
 
 
 %For example, when the robot is navigating, if the robot knows that it is in a region of high human density, slowing down may be a sensible action to take.
@@ -199,27 +205,26 @@ In this section, we provide an overview of the assumptions of our research.  At 
 
 We assume that we have wheeled mobile robot platform. Even though some of our algorithms are derived for non-holonomic robots (differential drive), it is a technical limitation than a conceptual one, as they can be applied to holonomic robots with minor changes. We further assume that the robot is self-contained: equipped with on-board sensors, is capable of creating a map of the environment with an existing Simultaneous Localization and Mapping (SLAM) package, and then able to localize itself in this created map as it moves in the environment.
 
-Furthermore, we focus on scenarios where people in the environment are standing or walking, because our person tracking system is optimized for such cases. 
+Furthermore, we focus on scenarios where people in the environment are standing or walking, because that's the most common body pose to encounter when the mobile robot is in motion.
 
 The interaction between the robot and user is achieved via tablet or smartphone apps. Similar functionality could be achieved via a speech dialog system, however we chose touch-based interfaces due to their ubiquity and high reliability.
-
-
 
 \section{Thesis Overview}
 \subsection{Thesis Statement}
 
-Non-expert users can label objects, landmarks and locations while giving a tour to a mobile robot, where the labeled entities enable situational awareness and serve as end goals, which robots can navigate to, by taking into account the personal spaces of nearby humans and social factors.
+%Non-expert users can label objects, landmarks and locations while giving a tour to a mobile robot, where the labeled entities enable situational awareness and serve as end goals, which robots can navigate to, by taking into account the personal spaces of nearby humans and social factors.
 
+Non-expert users can effortlessly interact with and control a mobile robot in human environments through the use of semantic maps and spatial rules of engagement.
 
 \subsection{Contributions}
 
 \begin{itemize}
-\item Development of a multimodal person detection and tracking system.
-\item A method for a human to take a mobile robot on a tour and interactively add labeled objects, landmarks and locations to the robot's map using natural deictic gestures and later use the labeled entities as end goals for navigation.
-\item Development of a navigation planner that takes into account social factors, and reactions of people to robot's motions.
-\item Development of a person guidance behavior and further investigation on the usage for blind users.
-\item Development of a person following behavior and further investigation on the usage for telepresence robots.
-\item Demonstration of situational awareness for person following behavior, targeted at the tour scenario.
+%\item Development of a multimodal person detection and tracking system using on-board sensing, with a particular focus on 360$^{\circ}$ coverage
+\item A method for a human to take a mobile robot on a tour and interactively add labeled objects, landmarks and locations to the robot's map using natural deictic gestures and later use these labeled entities as end goals for navigation
+\item Development of a navigation planner that takes into account social factors, and reactions of people to robot's motions
+\item Development of a person guidance behavior and its application to indoor wayfinding for blind users
+\item Development of a person following behavior and its usage for telepresence robots
+\item Demonstration of situational awareness for person following behavior, targeted at the Tour scenario
 \end{itemize}
 
 
