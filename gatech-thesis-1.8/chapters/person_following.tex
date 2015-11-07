@@ -56,14 +56,166 @@ In the basic person following mode, the robot has three different strategies dep
 Sometimes it is inevitable that the person tracking system loses the target, particularly when the person is consistently faster than the robot or the person goes outside the range of the sensors (further than $\sim3.5m$ in our case). When this happens, the robot will attempt to go to its last calculated goal position and look for the person. By this means, the robot attempts to keep up with the lost person as far as possible with the hope that the person will re-appear in the vicinity of the last seen position. After the robot reaches this goal, it stops and waits for an amount of time. If the user is saved to the database, or the robot already knows that he/she is in the database, then the face recognition system described in Section \ref{sec:multimodal_face_recognition} is activated. Otherwise, the robot continues following the closest person that appears in this position. If no person is detected within a fixed amount of time, $5$ seconds in our implementation, then the robot declares that the person is lost.
 
 
-\section{Situation Aware Person Following}
+\section{Situation Awareness For Person Following}
 \label{sec:following_situation_aware}
 
+Most simply put, \textit{Situation Awareness (SA)} is knowing what is going on around you. Endsley \cite{endsley2000situation} defines three steps for SA: Perception is detecting the situation by perceiving cues, comprehension is combining and interpreting information and projection is forecasting future events.
+
+In this section, we discuss SA for person following behavior for mobile robots. In the previous section, we presented the basic following behavior, where the robot follows the person from behind, while maintaining a fixed distance. The related works on person following discussed in Section \ref{sec:following_related_work} uses the same principle: the robot uses the person to calculate the target position and blindly follows the human irrespective of the situation. Although this method is sufficient for some scenarios, it can easily lead to socially awkward situations. For example, consider for a person following robot that its users stops just outside a door. In this case, the robot would occupy the doorway, blocking other people's passage, however thinks it is doing its task well because it maintains its distance to the user. If the robot knows what the person intends to do, it can anticipate those actions and suitably adjust its behavior.
+
+Person following can be used in different contexts, such as for carrying luggage in airports or groceries in a supermarket. We showed in Chapter \ref{chapter:map_annotation} that semantic maps that include landmarks and waypoints could be to communicate goals between the robot and the user.  The stored semantic information can also be used to facilitate robot navigation. We focus on demonstration of SA for the Tour Scenario and specifically for the person following behavior.
+
+Our method for utilizing SA for person following is via triggered events. Handling of an event during following is implemented as a sequence of four phases:
+
+\begin{enumerate}
+\item Signal: Robot detects an event using perceptual cues
+\item Approach: Robot moves to a position better suited to the task
+\item Execution: Robot and Human interacts for the task
+\item Release: Robot detects the end of event
+\end{enumerate}
+
+When the event ends, robot continues with Basic Following behavior described in Section \ref{sec:following_basic_person_following}. With this methodology, robot uses the three steps of SA: Perception for detecting the start and ending of an event, Comprehension for interpreting where it should move to and what the task is, and Projection to estimate the future goals of the person. We will study the following events: how should the robot move when the user is showing landmarks in Section \ref{sec:following_landmark_labeling} and how it should handle passage of doors in Section \ref{sec:following_door_passing}.
+
+%As another example, if the guiding person stops and chats with another person, it may be an awkward situation for the robot to wait while facing the back of its user. It may be socially more appropriate for the robot to join the group.
+
+
+\subsection{Landmark Labeling}
+\label{sec:following_landmark_labeling}
+
+One of the problems during the Tour Scenario is that as the robot is following the user, it does not have any information about the task. This leads to awkward situations when the user wants to label a landmark or object, because the robot can not perceive the pointing gesture or the object/landmark of interest when it is following from behind all the time. The robot behavior can be more intelligent in those cases if the robot can predict ahead of time when the user is going to annotate map features. That way, the robot can demonstrate SA.
+
+\begin{table}[ht!]
+	\centering
+  \begin{tabular}{l |  m{10cm}}    
+    \toprule    
+    Signal & {$dist(user, convex hull(landmark))<threshold$}\\       
+	                           & {$speed(user)\sim 0$} \\
+	                           & {person roughly facing landmark}\\ \midrule		                           		                                
+    Approach & {Optimal Goal: Close to both the landmark and person, facing in between}\\       \midrule
+    Execution & {User points and labels landmark}\\  \midrule
+    Release & {$dist(user, convex hull(landmark))>threshold$}\\ 
+    \bottomrule
+  \end{tabular}
+      \caption{Conditions to trigger phases when the user is involved with the Landmark Labeling Event during following.}
+    \label{table:situation_aware_list_landmark}
+\end{table}
+
+
+\begin{figure}[ht!]
+\centering
+%
+        \subfigure[]{%           
+           \label{fig:situtation_aware_landmark_labeling0}
+           \includegraphics[width=0.475\textwidth]{pics/sit_table_00}
+        } 
+         \subfigure[]{%           
+           \label{fig:situtation_aware_landmark_labeling2}
+           \includegraphics[width=0.48\textwidth]{pics/sit_table_02}
+        } \\
+        \subfigure[]{%
+        	\label{fig:situtation_aware_landmark_labeling3}
+            \includegraphics[width=0.48\textwidth]{pics/sit_table_03}
+        }%\\        
+        \subfigure[]{%           
+           \label{fig:situtation_aware_landmark_labeling4}
+           \includegraphics[width=0.49\textwidth]{pics/sit_table_04}
+        }
+    \caption{Demonstration of situation awareness for the Tour scenario. The robot is following the user throughout the environment and keeping a fixed distance of 1m to the user. a) Signal phase: The user has stopped and is in the cloxe proximity to the convex hull of the table. b) Approach phase: The robot calculates and navigates to a goal position, so it can perceive the pointing gesture and target. Execution phase: The user points out to the object on the table. c) Release phase: user moves away from the table d) Basic following behavior continues.}
+   \label{fig:situtation_aware_landmark_labeling}
+\end{figure}
+
+Our approach relies on detecting whenever labeling is going to happen, and position the robot base so it has a better chance to perceive both the pointing gesture and the object/landmark of interest. We follow the Signal/Approach/Task/Release procedure for the design of this behavior. The Signaling phase is triggered whenever the user is nearby a detected landmark or object and facing it. The user must be at full stop to enable signaling for this behavior, because the user may also walk past the landmark. After the robot detects the signal, we sample positions around the human to locate a ``suitable" goal pose. We use a utility function that scores candidate goal points. Intuitively, a pose that is close both to the landmark and person and could see both entities is considered a suitable goal pose. We sample points $360^{\circ}$ around the position of the user, for a fixed sampling resolution. Every sampled position $p$ has a score of:
+\[
+Score(p) = 1.0 - Cost_{visibility}(p) - Cost_{obstacle}(p)
+\]
+Where we define the costs as:
+\begin{align} 
+\begin{split} 
+Cost_{visibility}(p)&=dist(user,landmark)/(dist(p,landmark)-dist(p,user)) \\
+Cost_{obstacle}(p)&=max( local\_cost(p),global\_cost(p))
+\end{split} 
+\end{align}
+
+
+
+The local and global costs are fetched from the ROS costmaps, normalized to [0.0-1.0] interval. The sample with the highest nonnegative score is chosen as the goal position. The orientation of the robot is chosen as looking at the center between the user's position and the landmark's position. After the goal pose is determined, the robot is commanded to navigate there. Then the user can execute the labeling task via pointing gestures. After the task is completed, the robot looks for the user to leave the landmark area. When the robot detects that the user intends to leave by checking the distance to the landmark, it continues the Tour scenario by continuing to follow the user. If, at any time during the phases, the person tracking fails, it informs the user so following can be restarted. The phases and conditions for this behavior are summarized in Table \ref{table:situation_aware_list_landmark}. The situation awareness for labeling landmarks is implemented on the Segway robot for the Tour Scenario. The phases can be seen in Figure \ref{fig:situtation_aware_landmark_labeling}.
+
+%\subsection{Joining the Group}
+%\label{sec:following_joining_group}
+%
+%Join Group
+%
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=0.5\textwidth]{pics/f_formation}
+%\caption{Kendon's F-Formation studies how people arrange themselves within a group}
+%\label{fig:f_formation}
+%\end{figure}
+%
+%Phases
+%
+%\begin{table}[H]
+%	\centering
+%  \begin{tabular}{l |  m{10cm}}    
+%    \toprule    
+%    Signal & {$dist(user, otherperson)<threshold$}\\       
+%	                           & {$velocity(user)\sim 0$} \\
+%	                           & {$velocity(otherperson)\sim 0$} \\ \midrule		                           		                                
+%	    Approach & {Optimal Goal: inside $p \textendash space$ of the group, looking to center of the group}\\       \midrule
+%    Execution & {Robot communicates with people, receives commands}\\  \midrule
+%    Release & {$dist(user,otherperson)>threshold$}\\ 
+%    \bottomrule
+%  \end{tabular}
+%      \caption{Conditions to trigger phases when the guiding user stops and interacts with another person during following.}
+%    \label{table:situation_aware_list_group}
+%\end{table}
+%with a process similar to the one described in Section \ref{sec:following_landmark_labeling}. The candidate points, however 
+
 \subsection{Door Passing}
+\label{sec:following_door_passing}
 
-\subsection{User Activity Awareness}
+When the user approaches a door during following, the situation can easily become problematic if the robot continues with the basic person following behavior. For example, if the user intends to close an open door or open a closed door, the robot might end up blocking the movement of the door. Moreover, a deadlock situation occurs when the user wants to go through a door with spring-loaded hinges. In that case, the user would need to hold to door to keep it open, and because the distance between the robot and the user is less than the threshold, the robot would stay still and won't pass the door. A robot SA should be aware of this possibility and take appropriate action. 
 
-\subsection{Corners}
+\begin{table}[H]
+	\centering
+  \begin{tabular}{l |  m{10cm}}    
+    \toprule    
+    Signal & {$dist(user, convexhull(door))<threshold$}\\         
+    	      & {$speed(user)\sim 0$} \\
+	      & {User performs pointing gesture towards the passage}\\ \midrule	                           
+    Approach & {Optimal Goal: A position on the other side of the door that doesn't block the doorway}\\       \midrule
+    Execution & {User also passes the door}\\  \midrule
+    Release & {$dist(user, convexhull(door))>threshold$ }\\ 
+    \bottomrule
+  \end{tabular}
+      \caption{Conditions to trigger phases when the user is passing through a door during following.}
+    \label{table:situation_aware_list_group}
+\end{table}
+
+\begin{figure}[ht!]
+\centering
+%
+        \subfigure[]{%           
+           \label{fig:situtation_aware_door_passing0}
+           \includegraphics[width=0.475\textwidth]{pics/sit_door_00}
+        } 
+        \subfigure[]{%           
+           \label{fig:situtation_aware_door_passing1}
+           \includegraphics[width=0.48\textwidth]{pics/sit_door_01}
+        } \\
+        \subfigure[]{%
+        	\label{fig:situtation_aware_door_passing2}
+            \includegraphics[width=0.48\textwidth]{pics/sit_door_03}
+        }%\\        
+        \subfigure[]{%           
+           \label{fig:situtation_aware_door_passing3}
+           \includegraphics[width=0.49\textwidth]{pics/sit_door_04}
+        }
+    \caption{Demonstration of situation awareness for door passing during person following. It is assumed that the user previously added the door as a labeled landmark to the semantic map via the Tour Scenario. This is a swing door with spring loaded hinges, so it would close if not kept open actively. a) The robot is following the user by keeping a fixed distance in between. b) Signal phase: The user has stopped, is in close proximity to the door and performed a pointing gesture toward the other room. c) Approach Phase: The robot passes the door while the user is holding the door}
+   \label{fig:situtation_aware_door_passing}
+\end{figure}
+
+A user may open, close or pass through a door, and detecting these actions beforehand requires a sophisticated recognition system. However the robot can assume that any of those actions are possible when the user is approacing the door. In our approach, the robot takes action when the user is nearby a door and performs a pointing gesture towards it, to signal that the robot should pass from the door (Signal Phase). If the action is not signaled, the robot continues with basic following during the door passage. The robot can continiously monitor the user's proximity to the doors using the semantic map, if the user labeled door landmarks beforehand. After the detection of a pointing gesture, a goal position is calculated (Approach Phase). The goal positions are sampled on the other side of the door, that is guaranteed not the block the opening/closing of the door. A collision-free position with the least obstacle cost sample is chosen as the goal point. Note that while the robot is moving, it does not necessarily keep a fixed distance to the user anymore. After the robot reaches the goal, it waits for the person to pass the door (Execution Phase). After the user moved away from the door, the basic following behavior takes over.  The phases and conditions for door passing situation are summarized in Table \ref{table:situation_aware_door_passing}. The situation awareness for this scenario is implemented on the Segway robot. The snapshots from the behavior can be seen in Figure \ref{fig:situtation_aware_door_passing}. Note that although our approach can handle doors with spring-loaded hinges, it does not have a model of the door except the convex hull of its plane.
 
 
 \section{Application To Telepresence Robots}
