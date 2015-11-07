@@ -14,8 +14,9 @@ To label landmarks and objects in the semantic map, we use an interactive system
 
 One of the key concepts in semantic mapping is establishing \textit{common ground} \cite{clark1991grounding}. For humans and robots to refer to the same structures and objects, the references must be grounded. Many spatial tasks may require various terms to be grounded in the map.
 
-TODO
+Perhaps the most closely related approach to our own is that of Human Augmented Mapping (HAM), introduced by Topp and Christensen in \cite{topp2006topological} and \ref{topp2010detecting}. HAM approach involves labeling two types of entities: regions and locations. Regions are meant to represent areas such as rooms and hallways, and serve as containers for locations. Locations are meant to represent specific important places in the environment, such as a position at which a robot should perform a task. This approach was applied to the Cosy Explorer system, described in \cite{zender2007integrated}, which includes a metric map, a topological map, as well as detected objects. While the goal of our is similar, we use a different map representation, method of labeling and interaction design.
 
+Semantic mapping aims to create maps that include various types of semantic information to allow the robot to have a richer representation of the environment. Several approaches have been reported, including the Spatial Semantic Hierarchy (SSH) by Kuipers \cite{kuipers2000spatial}. One application using semantic maps is direction following, studied by Kollar. This work describes a system capable of following directions in natural language, i.e. ``go past the computers". People also routinely use semantic relationship of objects when they refer to objects. For example, the robot can receive a command such as ``get the mug on the table". The meaning of `on" in this type of inquiries is studied by Aydemir \cite{aydemir2011search}. Although we do not delve that much into the semantic information, our representation allows handling such inquiries.
 
 \section{Semantic Maps}
 \label{sec:map_semantic_maps}

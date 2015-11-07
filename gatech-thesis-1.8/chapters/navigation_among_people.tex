@@ -30,13 +30,13 @@ Robot navigation involves finding a collision-free path from a start pose $(x_{0
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=0.5\textwidth]{pics/navigation_overview}
-\caption{Caption}
+\caption{High-level system overview of mobile robot navigation}
 \label{fig:navigation_overview}
 \end{figure}
 
 A common approach to path planning is to divide the path planning into two parts: $global$ and $local$. Global planning aims to find a path from the start position to the goal position. The global path is a set of consecutive positions that connect the start to goal position. A global path is usually found with a search algorithm executed on a graph of points. The search heuristics is dependent on specific global planners, and in most cases collision-free shorter paths are favored. The local planner is responsible to execute the global path by calculating a trajectory and sending velocity commands to motor controllers. As the robot acts in the environment, its sensors sense the new state of the robot and people, and the new iteration begins. This cycle is shown in Figure \ref{fig:navigation_overview}. 
 
-A popular method to to implement the global and local planners is by using a $costmap$ . A $costmap$ not only has the same representation as the map, however collision-free positions can have non-zero costs. A lower cost cell is more favored to be in to a higher cost cell. After the calculation of all cells, the least-cost path is found that connects the start position to the goal position.
+A popular method to to implement the global and local planners is by using a $costmap$. A $costmap$ not only has the same representation as the map, however collision-free positions can have non-zero costs. A lower cost cell is more favored to be in to a higher cost cell. After the calculation of all cells, the least-cost path is found that connects the start position to the goal position.
 
 Note that this approach assumes the robot is able to execute any path provided to it. Holonomic robots can move in any direction, however non-holonomic robots has limitations in their movements. For example, two wheel robots can not move sideways. Two common approaches to solve this problem are: to implement trajectory planners that can handle imperfect control or to embed the robot's dynamics into sampling for global and local planning.
 

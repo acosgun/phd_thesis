@@ -66,3 +66,6 @@ Temporary Items
 *.lof
 gatech-thesis-1.8/example-thesis.lot
 *.lof
+*.lof
+gatech-thesis-1.8/example-thesis.lot
+*.pdf
