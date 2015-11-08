@@ -61,13 +61,13 @@ Moreover, the ability to label objects and then refer to them relieves the robot
 
 A solution to enable a common ground between the user and the robot is via the Tour Scenario, as described in Section \ref{sec:tour_scenario}. For this scenario, the robot follows the user throughout the tour.
 
-\subsection{Situational Awareness for Navigation}
+\subsection{Situation Awareness for Navigation}
 
 Metric maps provide a single type of information: whether a grid cell is occupied with an obstacle or not. While this kind of a simplistic map representation may be sufficient for some tasks, if the robot needs to communicate with human users about its goals, it should have a richer map representation of the environment. The robot can leverage the semantic information embedded to the map and increase its usefulness for navigation tasks. %There are not many works in the field that tapped into this opportunity.
 
 %None of the works in this field leverage the semantic maps to increase situational awareness.
 
-Situational awareness of the robot can be achieved in different ways. Person following is a widely studied behavior, however in the literature it is not usually considered \textit{why} the robot is following the person and how the task context can be used to increase effectiveness. For example, during the Tour Scenario, the robot may employ a better following strategy if it knows the user will be pointing at landmarks and places. Furthermore, consider handling of the doors while following. If the robot does not know that it is standing on a doorway, it can block the path for others. If the door is added to the semantic map, the robot can have the opportunity to handle the door passing graciously. Moreover, the robot can utilize the map to adjust its speed. For example, if the robot is in a region where the chance to encounter a person is high, slowing down may be a sensible action to take.
+Situation awareness of the robot can be achieved in different ways. Person following is a widely studied behavior, however in the literature it is not usually considered \textit{why} the robot is following the person and how the task context can be used to increase effectiveness. For example, during the Tour Scenario, the robot may employ a better following strategy if it knows the user will be pointing at landmarks and places. Furthermore, consider handling of the doors while following. If the robot does not know that it is standing on a doorway, it can block the path for others. If the door is added to the semantic map, the robot can have the opportunity to handle the door passing graciously. Moreover, the robot can utilize the map to adjust its speed. For example, if the robot is in a region where the chance to encounter a person is high, slowing down may be a sensible action to take.
 
 
 %For example, when the robot is navigating, if the robot knows that it is in a region of high human density, slowing down may be a sensible action to take.
@@ -103,7 +103,7 @@ Non-expert users can effortlessly interact with and control a mobile robot throu
 \item Development of a navigation planner that takes into account social factors, and reactions of people to robot's motions
 \item Development of a person guidance behavior and its application to indoor wayfinding for blind users
 \item Development of a person following behavior and its usage for telepresence robots
-\item Demonstration of situational awareness for person following behavior, targeted at the Tour scenario
+\item Demonstration of situation awareness for person following behavior, targeted at the Tour scenario
 \end{itemize}
 
 
