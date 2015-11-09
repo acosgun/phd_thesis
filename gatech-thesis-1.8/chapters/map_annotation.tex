@@ -1,4 +1,4 @@
-\chapter{Map Annotation}
+\chapter{Interactive Semantic Labeling}
 \label{chapter:map_annotation}
 
 Robots that operate in human environments will need to be able to accept commands from human users. As mentioned in Chapter \ref{chapter:introduction}, the robot keeps a metric map in its own coordinate frame. Requiring users to understand the robot's representation of the world and provide metric commands may not be an interaction with the robot. For example, it is not easy to understand look at the map of the robot and provide an explicit  goal with coordinates $(1.2,4.5,0.0)$. The world representation of robots should enable communication between users and robots. Maps should also include spatial information to support the tasks. If the task is more complex than obstacle avoidance, the map should include more than just obstacle occupancy information. For example, if the tasks involve landmarks, objects, or people, a robot's map should be able to represent these information. For these reasons, adding semantic information to robot maps is essential.
@@ -14,7 +14,7 @@ To label landmarks and objects in the semantic map, we use an interactive system
 
 One of the key concepts in semantic mapping is establishing \textit{common ground} \cite{clark1991grounding}. For humans and robots to refer to the same structures and objects, the references must be grounded. Many spatial tasks may require various terms to be grounded in the map.
 
-Perhaps the most closely related approach to our own is that of Human Augmented Mapping (HAM), introduced by Topp and Christensen in \cite{topp2006topological} and \ref{topp2010detecting}. HAM approach involves labeling two types of entities: regions and locations. Regions are meant to represent areas such as rooms and hallways, and serve as containers for locations. Locations are meant to represent specific important places in the environment, such as a position at which a robot should perform a task. This approach was applied to the Cosy Explorer system, described in \cite{zender2007integrated}, which includes a metric map, a topological map, as well as detected objects. While the goal of our is similar, we use a different map representation, method of labeling and interaction design.
+Perhaps the most closely related approach to our own is that of Human Augmented Mapping (HAM), introduced by Topp and Christensen in \cite{topp2006topological} and \cite{topp2010detecting}. HAM approach involves labeling two types of entities: regions and locations. Regions are meant to represent areas such as rooms and hallways, and serve as containers for locations. Locations are meant to represent specific important places in the environment, such as a position at which a robot should perform a task. This approach was applied to the Cosy Explorer system, described in \cite{zender2007integrated}, which includes a metric map, a topological map, as well as detected objects. While the goal of our is similar, we use a different map representation, method of labeling and interaction design.
 
 Semantic mapping aims to create maps that include various types of semantic information to allow the robot to have a richer representation of the environment. Several approaches have been reported, including the Spatial Semantic Hierarchy (SSH) by Kuipers \cite{kuipers2000spatial}. One application using semantic maps is direction following, studied by Kollar. This work describes a system capable of following directions in natural language, i.e. ``go past the computers". People also routinely use semantic relationship of objects when they refer to objects. For example, the robot can receive a command such as ``get the mug on the table". The meaning of `on" in this type of inquiries is studied by Aydemir \cite{aydemir2011search}. Although we do not delve that much into the semantic information, our representation allows handling such inquiries.
 
@@ -58,7 +58,7 @@ The act of labeling a table from the view of the RGB-D camera planted on the rob
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.75\textwidth]{pics/pointing_table_desk}
+\includegraphics[width=0.55\textwidth]{pics/pointing_table_desk}
 \caption{Robot's view of how users can add planar landmarks to the map}
 \label{fig:pointing_table_desk}
 \end{figure}
@@ -99,7 +99,7 @@ A screenshot of our tablet user interface is shown in Figure \ref{fig:ui}.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=1.0\textwidth]{pics/ui}
+\includegraphics[width=0.8\textwidth]{pics/ui}
 \caption{UI for labeling a navigation waypoint}
 \label{fig:ui}
 \end{figure}
@@ -161,7 +161,7 @@ We represent a pointing ray in two angles: a ``horizontal'' / ``azimuth'' sense 
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.8\textwidth]{pics/person_angles_combined_2.png}
+\includegraphics[width=0.8\textwidth]{pics/person_angles_combined_2}
 \caption{Vertical $(\psi)$ and horizontal $(\theta)$ angles in spherical coordinates are illustrated. A potential intended target is shown as a star. The z-axis of the hand coordinate frame is defined by either the Elbow-Hand (this example) or Head-Hand ray.}
 \label{fig:pointing_angle_errors}
 \end{figure}
@@ -203,7 +203,7 @@ To evaluate the accuracy of pointing gestures, we created a test environment wit
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.75\textwidth]{pics/data_collection_crop}
+\includegraphics[width=0.65\textwidth]{pics/data_collection_crop}
 \caption{Our study involved 6 users that pointed to 7 targets while being recorded using 30 frames per target.}
 \label{fig:ground_truth_targets}
 \end{figure}
@@ -218,12 +218,7 @@ We make use of plane extraction technique in a point cloud to have an accurate g
 \subsection{Skeleton Data Capture}
 \label{sec:pointing_skeleton_data_capture}
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=0.75\textwidth]{pics/xedoni_2_cropped}
-\caption{Data capturing pipeline for error analysis.}
-\label{fig:xedoni}
-\end{figure}
+
 
 \begin{landscape}
 
@@ -237,6 +232,14 @@ We make use of plane extraction technique in a point cloud to have an accurate g
 \end{figure*}
 
 \end{landscape}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{pics/xedoni_2_cropped}
+\caption{Data capturing pipeline for error analysis.}
+\label{fig:xedoni}
+\end{figure}
 
 In order to be able to do a fair comparison between MS-SDK and OpenNI skeleton trackers, we used the same dataset for both. MS-SDK and OpenNI use different device drivers, therefore can not be directly used on the live depth stream at the same time. Because of this, we extract the skeleton data offline in multiple stages. The pipeline for the data capture procedure is illustrated in Figure \ref{fig:xedoni}. We first save the depth streams as .xed files using Microsoft Kinect Studio program. The acquired .xed file is converted to .oni in a OpenNI recorder application by streaming the depth stream to through Kinect Studio. The .oni is then played back in skeleton tracking application in OpenNI, which writes the OpenNI skeleton data to a .txt file. MS-SDK skeleton data is obtained by playing back the original .xed in the skeleton tracking application.
 

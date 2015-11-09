@@ -18,7 +18,18 @@ Pacchierotti \cite{pacchierotti2006design} demonstrates an office guide robot, b
 \section{Guide Robot}
 \label{sec:guidance_guide_robot}
 
-In this section, we describe our method of person guidance. After a request to guide a person is received from a higher level process, the robot first plans a path using our navigation planner presented in Chapter \ref{chapter:navigation_among_people}, or standard ROS Navigation. The robot continues on its path as long while constantly monitoring the distance between itself and the guided person. The robot adjusts its speed according to this distance.
+In this section, we describe how the behaviors of the guide robot and how the guiding is achieved. The robot's higher level actions are governed by a finite state machine (Figure~\ref{fig:fsm}). 
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=1.0\textwidth]{pics/fsm}
+\caption{Finite State Machine for the Guide Robot}
+\label{fig:fsm}
+\end{figure}
+
+When the robot is first initialized, it is in the \textit{NON-LOCALIZED} state. When the initial pose is given, either manually or by detection of the QR code, robot switches to \textit{WAITING} state. This is the state where the robot actively looks input from users. When a person is closeby, robot approaches towards the person so its user interface is facing the person. If the person inputs a guide request, the robot displays destination and asks for confirmation. If confirmed, the robot is in \textit{GUIDING PERSON} state. When guiding is completed, robot waits for a while and goes back to the base. At any time, a user can cancel the operation and enter new commands.
+
+ After a request to guide a person is received from a higher level process, the robot first plans a path using our navigation planner presented in Chapter \ref{chapter:navigation_among_people}, or standard ROS Navigation. The robot continues on its path as long while constantly monitoring the distance between itself and the guided person. The robot adjusts its speed according to this distance.
 
 We use a variable speed profile so that the robot can better keep up with the person and the motions of the robot is smoother. We define a speed function that is a function of the distance between the robot and the user. This speed profile is shown in Figure \ref{fig:guidance_speed_profile}. The robot moves at a low speed $v_{safe}$ if the human is dangerously close. The speed is peaked at distance $d_{peak}$ and the robot stops if the distance is larger than $d_{guide}$, which may indicate that the human is not interested in being guided. Note that $v_{peak}$ is capped by the speed limits in the environment, provided by the speed map approach presented in Section \ref{sec:navigation_speed_limits}.
 
@@ -113,27 +124,27 @@ We demonstrated that our system can successfully guide a blindfolded person to a
 %
         \subfigure[]{%
             \label{fig:blindguide1}
-            \includegraphics[width=0.45\columnwidth]{pics/blindguide1}
+            \includegraphics[width=0.46\columnwidth]{pics/blindguide1}
         }%
         \subfigure[]{%
            \label{fig:blindguide2}
-           \includegraphics[width=0.45\columnwidth]{pics/blindguide2}
+           \includegraphics[width=0.46\columnwidth]{pics/blindguide2}
         }
         \subfigure[]{%
            \label{fig:blindguide3}
-           \includegraphics[width=0.45\columnwidth]{pics/blindguide3}
+           \includegraphics[width=0.46\columnwidth]{pics/blindguide3}
         }
 \subfigure[]{%
            \label{fig:blindguide4}
-           \includegraphics[width=0.45\columnwidth]{pics/blindguide4}
+           \includegraphics[width=0.46\columnwidth]{pics/blindguide4}
         }
 \subfigure[]{%
            \label{fig:blindguide5}
-           \includegraphics[width=0.45\columnwidth]{pics/blindguide5}
+           \includegraphics[width=0.46\columnwidth]{pics/blindguide5}
         }
 \subfigure[]{%
            \label{fig:blindguide6}
-           \includegraphics[width=0.45\columnwidth]{pics/blindguide6}
+           \includegraphics[width=0.46\columnwidth]{pics/blindguide6}
         }
     \caption{%
 	Autonomous guiding of a blindfolded person using the tactile belt. a) The guidance starts. The user is blindfolded and is standing at the left of the screen. The human detection system detects him and places an ellipse marker with an arrow depicting his orientation. The operator gives a goal point by clicking on the screen. The goal point is the right traffic cone, and given by the big arrow. b) The system autonomously generates a path for the user. As seen in the picture the path is collision free. At this stage the belt begin to vibrate towards the front of the user. c) An unexpected obstacle (another person) appears and stops in front of the user. The system detects the other person as an obstacle, and reevaluates the path. A new path going around the obstacle is immediately calculated and sent to the user by the belt. d) The user receives a rotation vibration modality, and begins to turn towards the new path. And follows this path from now on. e) The obstacle leaves. The path is then reevaluated and changed. The user receives forward directional belt signal, and advances towards the goal. f) The person reaches to the vicinity of the goal and stop signal is applied.
