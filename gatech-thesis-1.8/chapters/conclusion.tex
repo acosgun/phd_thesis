@@ -1,0 +1,66 @@
+\chapter{Conclusions and Discussion}
+\label{chapter:conclusion}
+
+Most of the robots that are in operation today are on factory floors in separation from people for safety. However, robots that work for and work with humans have a great potential. Navigation is one of the most fundamental capabilities for a mobile robot. Mobile robots occupy the same space with us, therefore should respect spatial rules of engagement. Humans are good at adjusting their spatial relationships with each other in social situations, therefore it is reasonable to use human-human interaction studies to design robot behavior. State-of-the art robots use only a metric map for navigation, however utilizing semantic maps that includes objects and landmarks can enable new navigation interactions. This thesis addressed several challenges: interactive semantic labeling, social navigation behavior design and situation awareness for navigation. 
+
+To conclude, we re-state the thesis statement: Non-expert users can effortlessly interact with and control a mobile robot through the use of semantic maps and spatial rules of engagement. Having an app interface (Section \ref{sec:map_ui}) and use of QR codes for automatic initialization (Section \ref{sec:mapping_localization}), use of natural gestures and autonomous behavior for telepresence robots (Section \ref{sec:following_application_to_telepresence}) shows the focus on effortless non-expert interactions. The benefits of semantic maps were demonstrated in accepting goals from users (Section \ref{sec:navigation_finding_goal_points_for_navigation}), adjusting the speed of the robot (Section \ref{sec:navigation_speed_limits}) and for situations such as door passing (Section \ref{sec:following_door_passing}) and landmark labeling (Section \ref{sec:following_landmark_labeling}). Spatial rules of engagement we used include personal spaces and group interactions (Section \ref{sec:navigation_people_aware_navigation}).
+
+The rest of this chapter elaborates on the key contributions of this thesis, discusses the results and observations, outlines future work for the next steps for each topic, and concludes with final remarks.
+
+\section{Interactive Semantic Labeling}
+
+Chapter \ref{chapter:map_annotation} presented our work on our semantic map representation as well as the steps of the Tour Scenario. The main contribution of the chapter is the use of an interactive labeling process to add a multitude of features to the map: objects, waypoints and planar surfaces. Use of the labeled semantic features as navigation goal enables communicating goals in natural language. Another contribution is the use of natural pointing gestures for interactive labeling and a model of determining the likelihood of which object the user intends to point at.
+
+We think that in the future, commercial will have the ``familiarization task" in some form or another, because it is important for the robot to learn the objects and locations its user cares about. We believe that the Tour Scenario presented in this thesis presents a feasible solution to this task. Semantic maps creates a common ground between users and robots, and will enable new set of service robotic tasks. Use of annotated semantic maps can also be studied in other contexts, such as to improve SLAM \cite{trevor2015semantic}, visual object search \cite{rogers2013life},  and direction giving \cite{kollar2010toward}.
+
+%Semantic maps increases the set of feasible navigation tasks, there
+
+
+%- Multitude of features is beneficial, improve SLAM (cite alex thesis), can be used as goals and to enable improved navigation behaviors.
+%- Use of semantic info: generalization of tasks, increase versatility
+
+%-Future Work: Similar to Alex's. Pointing gestures to show points,
+
+
+\section{Social Navigation Behavior Design}
+
+
+\subsection{Point-to-point Navigation}
+
+Chapter \ref{chapter:navigation_among_people} presented our people aware point-to-point planner. We demonstrated that usage of anticipation in robot navigation provides solutions to problems that are insolvable by standard planners. It also can the robot to
+reach to its destination in less time and exhibit human-like navigation behavior. We believe that our method will increase the predictability of robot’s motions. We also presented a multimodal person tracker to enable social navigation.
+	
+%QR Code - no robot expert:In this work, we presented a complete guide robot that
+%requires only a one-time setup by an expert. By detecting a
+%QR code, robot can acquire knowledge about the environment
+%and where itself is in the environment.
+	
+Currently, social navigation techniques is not viewed as an essential capability for mobile robots. In the future, robots will be a part of our daily lives and social navigation planning will be a necessity. Human-human spatial interaction studies are shown to be helpful to design navigation behaviors. As future work, we would like to evaluate and compare our planner with other approaches. Currently, it is not very straightforward to measure how socially aware the navigation planners are, mainly because a planner can exhibit many different behaviors in different contexts. We think a set of standard evaluation methods will need to be developed for this area of robotics research.
+
+%conduct user studies to
+%compare our approach with a standard path planner. We will
+%evaluate the efficiency of the paths and how natural and safe
+%human observers will find the robot behavior.
+
+\subsection{Person Following and Guidance}
+
+Our work on person following and person guidance were presented in Chapters \ref{chapter:person_following} and \ref{chapter:person_guidance}, respectively. We presented a basic method for person guidance, and presented a complete tour-guide robot system. We also showed that our guidance approach results in more gracious motions compared to standard ROS Navigation. A specific application, targeted on wayfining for blind users is studied in depth. We showed that it is technically feasible to guide a blindfolded person in indoors using vibrations applied by a haptic belt.
+
+We also presented a basic following behavior that keeps a certain distance from the user and studied use of autonomous person following for telepresence robots. Current telepresence robots do no have autonomous features and our user study showed that people favor the use of autonomous navigation features.
+
+Interactive navigation behaviors such as following and guidance is useful for several tasks. In the literature, such behaviors are limited to specific scenarios, such as hallway encounters \cite{pacchierotti2005human} and joining a group \cite{althaus2004navigation}. We presented basic behaviors that is aimed to be used in general human environments. We further delved into specialized applications for particular user communities. Our approach relies on developing different planners for each behavior, however in the future it may be interesting to develop a planning framework that can handle different types of interactive navigation scenarios.
+
+\subsection{Situation Awareness for Navigation}
+
+In this thesis, one of the the is to enable situation awareness for navigation. We first introduced $speed maps$, that specifies maximum robot speeds in an environment. The speed limits were determined by partitioning the map into corridors, rooms, and corners. Depending on the environment, speed limits can vary. For example, in hospitals, the robot should move slower in a patient room than a school corridor. We showed that speed maps not only can reduce the impact of a potential collision, but it can also reduce task execution time. Robots yielding to speed maps also can potentially be can perceived as more safe as the speed limits serves as traffic rules.
+
+We also demonstrated situation awareness for person following. Our approach relies on designing specialized navigation behaviors upon detection of an event (i.e. user is about to pass the door or label a landmark). We introduced phases in an attempt to standardize the steps of completing such behaviors. Not many works in this area addressed door passing for navigation \cite{zender2007integrated}. As our approach allows the robot to take initiative and sometimes switch to the front of the person.
+
+Situation awareness demonstrated in this work only scratches the surface of the possibilities. A navigation planning framework can potentially consider many other different factors, such as the identity of users, time of the day, cultures and instructions provided to the robot. Another interesting possibility is to use machine learning to learn the preference of its users.
+
+%- Handling special cases, door passing, landmark labeling
+%- Only Zender addressed doors, our solution is more complicated
+
+\section{Final Remarks}
+
+The reasoning methods described in this thesis are vital for robots to navigate autonomously among people. If, in the future, robots robots start co-exist with us, assist people in daily tasks, help the elderly and carry our bags for us, they will need to navigate safely without making nearby people uncomfortable. The feasibility and reliability of those applications will determine the business value of mobile domestic service robots. In this thesis, we showed proof of concept for enabling behaviors and that there is potential for commercialization for both general navigation behaviors and specialized applications, in domains such as telepresence robotics and aiding the blind. We expect that future work inspired by the concepts presented in this thesis will allow robots to exhibit intelligent navigation around people.

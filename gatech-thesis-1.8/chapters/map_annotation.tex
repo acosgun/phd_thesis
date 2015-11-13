@@ -1,143 +1,109 @@
 \chapter{Interactive Semantic Labeling}
 \label{chapter:map_annotation}
 
-Robots that operate in human environments will need to be able to accept commands from human users. As mentioned in Chapter \ref{chapter:introduction}, the robot keeps a metric map in its own coordinate frame. Requiring users to understand the robot's representation of the world and provide metric commands may not be an interaction with the robot. For example, it is not easy to understand look at the map of the robot and provide an explicit  goal with coordinates $(1.2,4.5,0.0)$. The world representation of robots should enable communication between users and robots. Maps should also include spatial information to support the tasks. If the task is more complex than obstacle avoidance, the map should include more than just obstacle occupancy information. For example, if the tasks involve landmarks, objects, or people, a robot's map should be able to represent these information. For these reasons, adding semantic information to robot maps is essential.
+World representation of robots should enable effortless communication between users and robots. Robots that co-exist with humans will need to accept commands from human users. As mentioned in Chapter \ref{chapter:introduction}, the robot keeps a metric map for autonomous navigation. Requiring users to understand the robot's internal representation of the world and to provide goals in terms of metric coordinates may not be a convenient way of interaction. For example, it is not easy for someone to quickly interpret the floor plan and provide a goal with explicit coordinates $(1.2,4.5,0.0)$. Maps should include spatial information to support tasks that requires more than simple obstacle avoidance. For example, if the task involves interaction with planar surfaces, landmarks, objects, or people; a robot's map should be able to represent these information. For these reasons, adding semantic information to robot maps is essential. There are several methods to support the annotation of entities in a robot map. For example, while the robot is building its representation of the environment, it can recognize objects or landmarks such as doors, tables, rooms and automatically add these features to its map. Even though such a system would be useful, it may wrongly label some objects. In that case, the correct label can be provided by a human with an interactive system. Custom labels would also allow unique annotations such as \textit{"John's Room"}.
 
-If the map representation includes more than explicit coordinates, such as landmarks and objects, there is a need to establish a common ground between the robot and the users to the all can refer to the same entity. There are several methods to support the annotation. For example, while the robot is building its representation of the environment, it can recognize objects or landmarks such as doors, tables, rooms and automatically add these features to its map. However, such a system may result in ambiguities. For example, recognition errors may result in undesirable outcomes. Moreover, automatic recognition does not allow unique labels, such as \textit{"John's Room"}. Attaching custom labels to landmarks not only serves a common ground between the robot and users, but also frees the robot from having to be equipped with object and landmark recognition capability.
-
-We use a map representation that includes 2D waypoints, 3D polygons that represents the boundary of surfaces and objects along with a corresponding label that is provided by the user. We give more detail about waypoints in Section \ref{sec:map_waypoints}, planar surfaces in Section \ref{sec:map_landmarks} and objects in Section \ref{sec:map_objects}.
-
-To label landmarks and objects in the semantic map, we use an interactive system that uses a combination of a graphical user interface (GUI) and pointing gestures. Using the GUI, users can command the robot to follow them, add waypoints along the robot's path and add landmarks or objects to the map by pointing at them and entering a label. Our GUI is shown in Section \ref{sec:map_ui} and our work in pointing gestures is given in Section \ref{sec:pointing_gestures}.
+We use a map representation that includes 2D waypoints, 3D polygons that defines the boundary of planar surfaces and objects along with user-appointed labels. We give more details about waypoint representations in Section \ref{sec:map_waypoints}, planar surfaces in Section \ref{sec:map_landmarks} and objects in Section \ref{sec:map_objects}. To add labeled landmarks and objects to the semantic map, we use an interactive system that uses a combination of a graphical user interface (GUI) and natural pointing gestures. Using the GUI, users can command the robot to follow them, add waypoints along the robot's path and add landmarks or objects to the map by pointing at them and entering a label. Our GUI is shown in Section \ref{sec:map_ui} and our approach to determine the pointing gesture targets is presented in Section \ref{sec:pointing_gestures}.
 
 \section{Related Work}
 \label{sec:map_relevant_work}
 
-One of the key concepts in semantic mapping is establishing \textit{common ground} \cite{clark1991grounding}. For humans and robots to refer to the same structures and objects, the references must be grounded. Many spatial tasks may require various terms to be grounded in the map.
+One of the key concepts in semantic mapping is establishing a \textit{common ground} \cite{clark1991grounding}. By referring to same structures and objects with the same reference, the communication about labeled entities is grounded.
 
-Perhaps the most closely related approach to our own is that of Human Augmented Mapping (HAM), introduced by Topp and Christensen in \cite{topp2006topological} and \cite{topp2010detecting}. HAM approach involves labeling two types of entities: regions and locations. Regions are meant to represent areas such as rooms and hallways, and serve as containers for locations. Locations are meant to represent specific important places in the environment, such as a position at which a robot should perform a task. This approach was applied to the Cosy Explorer system, described in \cite{zender2007integrated}, which includes a metric map, a topological map, as well as detected objects. While the goal of our is similar, we use a different map representation, method of labeling and interaction design.
-
-Semantic mapping aims to create maps that include various types of semantic information to allow the robot to have a richer representation of the environment. Several approaches have been reported, including the Spatial Semantic Hierarchy (SSH) by Kuipers \cite{kuipers2000spatial}. One application using semantic maps is direction following, studied by Kollar. This work describes a system capable of following directions in natural language, i.e. ``go past the computers". People also routinely use semantic relationship of objects when they refer to objects. For example, the robot can receive a command such as ``get the mug on the table". The meaning of `on" in this type of inquiries is studied by Aydemir \cite{aydemir2011search}. Although we do not delve that much into the semantic information, our representation allows handling such inquiries.
+One of the closely related works to our interactive labeling approach Human Augmented Mapping, introduced by Topp and Christensen in \cite{topp2006topological} and \cite{topp2010detecting}. This approach involves labeling two types of entities: regions and locations. Regions are meant to represent areas such as rooms and hallways, and serve as containers for locations. Locations are meant to represent specific important places in the environment, such as a position at which a robot should perform a task. This approach was applied to the Cosy Explorer system, described in \cite{zender2007integrated}, which includes a metric map, a topological map, as well as detected objects. While our goal is similar, we use a different map representation, method of labeling and interaction design. Kuipers \cite{kuipers2000spatial} introduced Spatial Semantic Hierarchy, which is a method of organizing semantic information for spatial regions. Another application using semantic maps is direction following, studied by Kollar \cite{kollar2010toward}. This work describes a system capable of following directions in natural language, i.e. ``go past the computers". People also routinely use semantic relationship of objects when they refer to objects. For example, the robot can handle a command such as ``get the mug on the table".
 
 \section{Semantic Maps}
 \label{sec:map_semantic_maps}
 
-Semantic mapping aims to create maps that include various types of semantic information to allow the robot to have a richer representation of the environment. In this section, we briefly present the semantic information we use to enrich the occupancy grid maps: waypoints, planar landmarks and objects. Although we describe three types of storing semantic information, one can come up with richer features and landmarks.
+Semantic mapping aims to create maps that include various types of semantic information to allow the robot to have a richer representation of the environment. In this section, we briefly present the semantic information we use to enrich the occupancy grid maps: waypoints, planar landmarks and objects. Although we describe three types of entities for storing semantic information, it is possible to include more features.
 
 \subsection{Navigation Waypoints}
 \label{sec:map_waypoints}
 
-We define navigation waypoint as a navigable point represented in the map frame. We will refer navigation waypoint simply as a waypoint for the remainder of this text. After the robot is initialized, the user can save the current pose of the robot along with a label. This is done using the on-board Graphical User Interface (GUI) of the robot. This method is the most straightforward way to save a waypoint and use it later for a task. When the robot is asked to navigate to a labeled waypoint, the goal of the robot is simply the saved pose.
+We define navigation waypoint as a navigable pose represented in the map frame. A pose $(x,y,\theta)$ represents the position and orientation of with respect to a coordinate frame. We will refer a navigation waypoint simply as a waypoint for the remainder of this text. Using the GUI, a user can save the robot's current pose along with a label, assuming that the robot is properly localized in the map. This method is the most straightforward way to save a pose and use it later for a task. When the robot is asked to navigate to a labeled waypoint, the goal of the robot is simply the saved pose.
 
+Even though the waypoint method is easy to use and practical, it has shortcomings. It fails to capture the shape and extent of the structure designated by the label, which might be important for some tasks, such as object search. Moreover, point based references may be ambiguous to represent a region or volume in a map, such as a hallway or a room. For example, if the user wants to save hallway as a landmark, it is useful to have a representation of the location and the extent of the hallway. Another example is that the user can label a coffee table, which is a movable object. Instead of saving a fixed coordinate location for the landmark, robot can save the planar surface and can potentially have a model to handle moving landmarks. This gives the robot robustness in its operations and a method to potentially use the planar surfaces as features in localization \cite{trevor2012planar}.
 
-
-\subsection{Planar Landmarks}
+\subsection{Planar Surfaces}
 \label{sec:map_landmarks}
 
-Even though the waypoint method is easy to use and practical, it has shortcomings. It fails to capture the shape and extent of the structure designated by the label, which might be important for some tasks, such as object search. Moreover, point based references may be ambiguous to represent a region or volume in a map, such as a hallway or a room. For example, if the user wants to save hallway as a
-landmark, it is useful to have a representation of the location
-and the extent of the hallway. Another example is that the
-user can label a coffee table, which is a movable object.
-Instead of saving a fixed coordinate location for the landmark,
-robot can save the planar surface and can potentially
-detect that it moved. This gives the robot robustness in its operations and a method to potentially use the planar surfaces as features in localization \cite{trevor2012planar}. For this reason, using semantic information is preferred whenever possible.
+In this type of semantic information, we keep track of a set of observed planar surfaces as part of the map representation. We use a front-facing RGB-D camera to acquire suitable data. Planes are extracted from the point cloud by an iterative RANdom SAmple Consensus (RANSAC) method, which allows us to find all planes meeting constraints for size and number of inliers. A clustering step is performed on extracted planes to separate multiple coplanar surfaces, such as two tables with the same height, but at different locations. We make use of the Point Cloud Library (PCL) \cite{rusu20113d} for much of our point cloud processing. Planes are represented in the hessian normal form. Since the observed planes do not have infinite extent, we bound the observed area with a polygon - in this case, the convex hull of all the observed points on the plane. The convex hull is accompanied with a user-provided label. 
 
-In this type of semantic information, we keep track of a set of observed planar surfaces as part of the map representation. Planes represented in the hessian normal form. Since the observed planes do not have infinite extent, we bound the observed area with a polygon - in this case, the convex hull of all the observed points on the plane. The convex hull is accompanied with a user-provided label. 
-
-We use a front-facing RGB-D camera to acquire suitable data. Planes are extracted from the point cloud by an iterative RANdom SAmple Consensus (RANSAC) method, which allows us to find all planes meeting constraints for size and number of inliers. A clustering step is performed on extracted planes to separate multiple coplanar surfaces, such as two tables with
-the same height, but at different locations. We make use of the Point Cloud Library (PCL) \cite{rusu20113d} for much of our point cloud processing.
-
-In order to label a planar landmark, the user goes through the sequence:
+In order to label a planar landmark, the user goes through the following sequence:
 
 \begin{enumerate}
-\item User activates person following, goes nearby the planar landmark of interest (table)
-\item Robot enters the label using UI, activates pointing gesture recognition
+\item User activates basic person following behavior (Section \ref{sec:following_basic_person_following}) and comes near a planar surface of interest.
+\item Robot adjusts its pose so it can perceive both the surface and the user.
+\item User enters the label using the GUI and activates pointing gesture recognition
 \item User performs a pointing gesture towards the landmarks of interest
 \end{enumerate}
 
-The act of labeling a table from the view of the RGB-D camera planted on the robot is shown in Figure \ref{fig:pointing_table_desk}. After the labeling process, the planar landmark is added to the map representation.
+The act of labeling a planar surface with a label "Table" from the view of the RGB-D camera planted on the robot is shown in Figure \ref{fig:pointing_table_desk}. After the labeling process, the planar landmark is added to the map representation.
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=0.55\textwidth]{pics/pointing_table_desk}
-\caption{Robot's view of how users can add planar landmarks to the map}
+\caption{A user is pointing at a table to add it to the semantic map}
 \label{fig:pointing_table_desk}
 \end{figure}
 
 \subsection{Objects}
 \label{sec:map_objects}
 
-Our approach allows to interactively build object models for selected objects, and then annotate these models with a label. This enables the user to easily command the robot to build a small object database of the specific objects it needs to interact with. Note that the alternative, automatic recognition of objects, require robust detection and a a capability to reliable recognize a large number of objects.
+Our approach allows interactively building object models for selected objects, and then annotate these models with a label. This enables the robot to quickly build a small object database of the specific objects it needs to interact with. The interactive system works as described in the previous section. Different from labeling planar landmarks, however, we keep a bag of features for each object in the database. Once a user has performed a pointing gesture to label objects, the robot moves to a favorable position and activates its its pan-tilt unit to aim the sensors at this location. Object segmentation is performed using point cloud data from an RGB-D sensor. First, the large planar surface corresponding to the table is detected. This is removed from the point cloud, and point clusters above this are detected. The robot calculates the likelihood of each object being the target, as will be explained in Section \ref{sec:pointing_gestures} and confirms with user if ambiguity is detected. After the target is confirmed, the cluster points are projected into the camera image, and are used to generate a region of interest. SURF features are found in the region of interest, and are stored as an object model along with the provided label.
 
-The interactive system works as described in the previous section. Apart from labeling planar landmarks, however, we need to do a little bit more work. Once a user has given a referenced point at which to detect
-objects, the robot moves its pan-tilt unit to aim the sensors
-at this location. Object segmentation is performed using
-point cloud data from an RGB-D sensor. First, the large
-planar surface corresponding to the table is detected. This
-is removed from the point cloud, and point clusters above
-this are detected. The cluster with a centroid nearest to the
-reference point is selected as the object to be modeled. The
-cluster’s points are projected into our camera image, and
-are used to generate a region of interest. SURF features are
-detected for the region of interest, and are stored as an object
-model along with the provided label.
-
-\section{User Interface}
+\section{Graphical User Interface}
 \label{sec:map_ui}
 
-We developed an on-board tablet interface to enable interaction between the user and the robot. Similar functionality could be achieved with a speech recognition system, however we think a touch interface is a more robust type of communication. The interface has been implemented on a Nexus 7 Tablet running on Android Operating System. The tablet is equipped with WiFi and talks with the robot using a TCP-based server-client communication model. The client must have the the IP address of the server machine to establish the connection. The messages are sent back-and forth as via XML files. The XML files are serialized and de-serialized using \textit{limXML++} for \textit{C++} and \textit{XMLPullParser} for Android OS. With the tablet interface, a user can do the following:
+We developed an on-board tablet interface to enable interaction between the user and the robot. Similar functionality could be achieved with a speech recognition system, however we think a touch interface is a more robust type of communication. The interface has been implemented on a Nexus 7 Tablet running on Android Operating System. The tablet is equipped with WiFi and talks with the robot using a TCP-based server-client communication model. The client must have the the IP address of the server machine to establish the connection. The messages are sent back-and forth as via XML files. The XML files are serialized and de-serialized using \textit{libXML++} for \textit{C++} (server) and \textit{XMLPullParser} (client) for Android OS. With the tablet interface, a user can do the following:
 
 \begin{itemize}
-\item Add/Delete Waypoint
-\item Label a Landmark or Object
-\item Start Person Following
-\item Start Person Guidance to a Labeled Landmark/Object/Waypoint
+\item Add/Delete a Labeled or Generic waypoint
+\item Label a Planar Surface or Object
+\item Initiate Person Following
+\item Initiate Person Guidance to a Labeled Planar Surface/Object/Waypoint
 \item Stop Robot
-\item Modify IP Address and Port of the TCP connection
+\item Change IP Address and Port of the TCP connection
 \end{itemize}
 
 A screenshot of our tablet user interface is shown in Figure \ref{fig:ui}.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.8\textwidth]{pics/ui}
-\caption{UI for labeling a navigation waypoint}
+\includegraphics[width=0.75\textwidth]{pics/ui}
+\caption{A snapshot from the GUI that runs on robot's touch screen}
 \label{fig:ui}
 \end{figure}
 
 \section{Pointing Gestures for Human-Robot Interaction}
 \label{sec:pointing_gestures}
 
-A natural way to refer to objects and landmarks to label them is to use deictic gestures. In this work, we analyze the performance of our deictic gesture recognition, and present an uncertainty model that enables us to reason about ambiguity in pointing gestures, when objects are too close to one another to determine the referent.We model the uncertainty of pointing gestures in a spherical coordinate system, use this model to determine the correct pointing target, and detect when there is ambiguity. Two pointing methods are evaluated using two skeleton tracking algorithms: elbow-hand and head-hand rays, using both OpenNI NITE and Microsoft Kinect SDK~\cite{shotton2011real}.  A data collection with 6 users and 7 pointing targets was performed, and the data was used to model users pointing behavior.  The resulting model was evaluated for its ability to distinguish between potential pointing targets, and to detect when the target is ambiguous.  An example scenario is shown in Figure \ref{fig:cover_pointing_gestures}.
+A natural way to refer to objects and landmarks is to point at them. In this work, we analyze the performance of our pointing gesture recognition, and present an uncertainty model that enables us to reason about ambiguity in pointing gestures, when gesture targets are too close to one another. We model the uncertainty of pointing gestures in a spherical coordinate system, use this model to determine the correct pointing target, and detect when there is ambiguity. Two pointing methods are evaluated using two skeleton tracking algorithms: elbow-hand and head-hand rays, using both OpenNI NITE and Microsoft Kinect SDK~\cite{shotton2011real}.  A data collection with 6 users and 7 pointing targets was performed, and the data was used to model users pointing behavior.  The resulting model was evaluated for its ability to distinguish between potential pointing targets, and to detect when the target is ambiguous.  An example scenario is shown in Figure \ref{fig:cover_pointing_gestures}.
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=0.8\textwidth]{pics/cover_pointing_gestures}
-\caption{(Left) Our approach allows a robot to detect when there is ambiguity on the pointing gesture targets. (Right) The point cloud view from robot's perspective is shown. Both objects are identified as potential intended targets, therefore the robot decides that there is ambiguity.}
+\caption{(Left) Our approach allows a robot to detect when there is ambiguity on the pointing gesture targets. (Right) The point cloud view from robot's perspective is shown. In this demonstration, both objects are identified as potential intended targets, therefore the robot decides that there is ambiguity.}
 \label{fig:cover_pointing_gestures}
 \end{figure}
-
-
 
 \subsection{Related Works}
 \label{sec:pointing_related_works}
 
-Pointing gestures are widely used in Human-Robot Interaction applications. Examples include interpretation of spoken requests~\cite{zukerman2010interpreting}, pick and place tasks~\cite{blodow2011inferring}, joint attention~\cite{droeschel2011towards}, referring to places~\cite{hato2010pointing} and objects~\cite{schmidt2008interacting}, instructing~\cite{martin2010estimation} and providing navigation goals~\cite{raza2013human} to a robot. 
+Pointing gestures are widely used in Human-Robot Interaction applications. Examples include interpretation of spoken requests~\cite{zukerman2010interpreting}, pick and place tasks~\cite{blodow2011inferring}, joint attention~\cite{droeschel2011towards}, referring to places~\cite{hato2010pointing} or objects~\cite{schmidt2008interacting}, instructing~\cite{martin2010estimation} and providing navigation goals to a robot~\cite{raza2013human}. 
 
-Early works on recognizing pointing gestures in stereo vision utilized background subtraction~\cite{cipolla1996human,jojic2000detection,kahn1995understanding}. Other popular methods include body silhouettes~\cite{kehl2004real}, hand poses~\cite{hu2010hand}, motion analysis~\cite{matikainen2011prop} and Hidden Markov Models~\cite{wilson1999parametric, bennewitz2008robust, li2005hierarchical, nickel2003pointing, droeschel2011learning, aly2012integrated}. Matuszek \emph{et. al} presented a method for detecting deictic gestures given a set of detected tabletop objects, by first segmenting the users hands and computing the most distal point form the user, then applying a Hierarchical Matching Pursuit (HMP) approach on these points over time~\cite{matuszek2014learning}. 
+Early works on recognizing pointing gestures using stereo vision utilized background subtraction~\cite{cipolla1996human,jojic2000detection,kahn1995understanding}. Other popular methods include body silhouettes~\cite{kehl2004real}, hand poses~\cite{hu2010hand}, motion analysis~\cite{matikainen2011prop} and Hidden Markov Models~\cite{wilson1999parametric, bennewitz2008robust, li2005hierarchical, nickel2003pointing, droeschel2011learning, aly2012integrated}. Matuszek~\cite{matuszek2014learning} presented a method for detecting deictic gestures given a set of detected tabletop objects, by first segmenting the users hands and computing the most distal point form the user, then applying a Hierarchical Matching Pursuit on these points over time. 
 
-After deciding if a pointing gesture occurred or not, an algorithm must estimate the direction of pointing. This is typically done by extending a ray from one body part to another. Several body part pairs are used in the literature, such as eye-fingertip~\cite{kehl2004real} and shoulder-hand~\cite{hosoya2004arm}; with the two of most commonly used methods being elbow-hand~\cite{raza2013human, brooks2006working, blodow2011inferring} and head-hand~\cite{bennewitz2008robust, schmidt2008interacting} rays. Some studies found that head-hand approach is a more accurate way for estimating pointing direction than elbow-hand~\cite{quintero2013sepo, droeschel2011towards}. Recent works made use of skeleton tracking data from in depth images~\cite{quintero2013sepo, blodow2011inferring, raza2013human}. Other approaches, such as measuring head orientation with a magnetic sensor~\cite{nickel2003pointing} and pointing with a laser pointer~\cite{cheng2009hand, kemp2008point} is reported to have a better estimation accuracy than the body parts method, but require additional hardware. We prefer not to use additional devices in order to the interaction as natural as possible.
+After deciding if a pointing gesture occurred or not, an algorithm must estimate the direction of pointing. This is typically done by extending a ray from one body part to another. Several body part pairs are used in the literature, such as eye-fingertip~\cite{kehl2004real} and shoulder-hand~\cite{hosoya2004arm}; with the two of most commonly used methods being elbow-hand~\cite{raza2013human, brooks2006working, blodow2011inferring} and head-hand~\cite{bennewitz2008robust, schmidt2008interacting} rays. Some studies found that head-hand approach is a more accurate way for estimating pointing direction than elbow-hand~\cite{quintero2013sepo, droeschel2011towards}. Recent works made use of skeleton tracking data  in depth images~\cite{quintero2013sepo, blodow2011inferring, raza2013human}. Other approaches, such as measuring head orientation with a magnetic sensor~\cite{nickel2003pointing} and pointing with a laser pointer~\cite{cheng2009hand, kemp2008point} is reported to have a better estimation accuracy than the body parts method, but require additional hardware. We prefer not to use additional devices in order for the interaction to be as effortless as possible.
 
 Given a pointing direction, several methods have been proposed to determine which target or object is referred by the gesture, including euclidean distance on a planar surface~\cite{cheng2009hand}, ray-to-cluster intersection in point clouds~\cite{blodow2011inferring, quintero2013sepo} and searching a region in interest around the intersection point~\cite{schmidt2008interacting}. Droeschel~\cite{droeschel2011learning} trains a function using head-hand, elbow-hand and shoulder-hand features with Gaussian Process Regression and reports a significant improvement on pointing accuracy. Some efforts fuse speech with pointing gestures for multi-modal Human-Robot Interaction~\cite{aly2012integrated,kowadlo2010influence}. Aly~\cite{aly2012integrated} focuses on relation between non-verbal arm gestures and para-verbal communication based on a HMM approach.
 
-To our knowledge, only Zukerman~\cite{zukerman2011speaking} and Kowadlo~\cite{kowadlo2010influence} considered a probabilistic model for determining the referred object for a pointing gesture. The probability that the user intended an object is calculated using the 2D distance to the object and the occlusion factor. Objects that reside in a Gaussian cone emanating from the user's hand are considered as candidates in the model. The approach is implemented in~\cite{zukerman2011speaking}, where it is reported that due to high variance of the gesture recognition system, the Gaussian cone typically encompassed about five objects in cluttered settings. Our work addresses the confusion in such settings. In contrast to their work, we use a 3D elliptical Gaussian cone where its shape is extracted using a prior error analysis, and use point cloud data to account for the size of the objects.
+To our knowledge, only Zukerman~\cite{zukerman2011speaking} and Kowadlo~\cite{kowadlo2010influence} considered a probabilistic model for determining the referred object for a pointing gesture. In their approach, the probability that the user intended an object is calculated using the 2D distance to the object and the occlusion factor. Objects that reside in a Gaussian cone emanating from the user's hand are considered as candidates in the model. The approach is implemented in~\cite{zukerman2011speaking}, where it is reported that due to high variance of the gesture recognition system, the Gaussian cone typically encompassed about five objects in cluttered settings. Our work addresses the confusion in such settings. In contrast to their work, we measure Mahalanobis distances to potential target objects using a prior error analysis.
 
 \subsection{Pointing Gesture Recognition}
 \label{sec:pointing_pointing_gesture_recognition}
 
-Our approach to pointing gesture recognition is to use a skeleton tracking algorithm as implemented by OpenNI NITE 1.5 (OpenNI) or Microsoft Kinect SDK 1.5 (MS-SDK). Skeleton tracking software produces 3D positions for several important points on the user's body, including hands, elbows, shoulders and head. Our points of interests are user's hands, elbows, and head for the recognition of pointing gestures.
-
-
-We are primarily interested in deictic gestures generated by pointing with one's arm. We consider two rays for determining the pointing direction: elbow-hand and head-hand. Both of these methods were evaluated with the two skeleton tracking implementations. For each depth frame, this yields two rays for each of the OpenNI and MS-SDK trackers:
+Our approach to pointing gesture recognition is to use a third party skeleton tracking package as implemented by OpenNI NITE 1.5 (OpenNI) or Microsoft Kinect SDK 1.5 (MS-SDK). Skeleton tracking software produces 3D positions for several important points and joint positions on the user's body, including hands, elbows, shoulders and head. We use the user's hands, elbows, and head for the recognition of pointing gestures. We are primarily interested in deictic gestures generated by pointing with one's arm. We consider two rays for determining the pointing direction: elbow-hand and head-hand. Both of these methods were evaluated with the two skeleton tracking implementations. For each depth frame, this yields two rays for each of the OpenNI and MS-SDK trackers:
 
 \begin{itemize}
 \item{$\vec{v}_{eh} := \vec{p_{elbow}p_{hand}}$}
@@ -148,16 +114,16 @@ We are primarily interested in deictic gestures generated by pointing with one's
 When a pointing gesture recognition request is received from a higher level process, the gesture is searched in a time window of \emph{T} seconds. Two conditions must be met to trigger a pointing gesture:
 
 \begin{itemize}
-  \item Forearm makes an angle more than $\phi_{g}$ with the vertical axis
-  \item Elbow and hand points stays near-constant for duration $\Delta t_{g}$
+  \item $\vec{v}_{eh}$ makes an angle more than $\phi_{g}$ with the vertical axis
+  \item $p_{elbow}$ and $p_{hand}$ stays near-constant for duration $\Delta t_{g}$
 \end{itemize}
 
-The first condition requires the arm of the person to be extended, while the second ensures that the gesture is consistent for some time period. The parameters are empirically determined as: $\emph{T}=30s$, $\phi_{g}=45^{\circ}$ and $\Delta t_{g}=0.5s$.
+The first condition requires the arm of the person to be extended away from his/her body, while the second ensures that the gesture is consistent for some time period. The parameters are empirically determined as: $\emph{T}=30s$, $\phi_{g}=45^{\circ}$ and $\Delta t_{g}=0.5s$.
 
 \subsection{Representing Pointing Directions}
 \label{sec:pointing_representing_pointing_directions}
 
-We represent a pointing ray in two angles: a ``horizontal'' / ``azimuth'' sense we denote as $\theta$ and a ``vertical'' / ``altitude'' sense we denote as $\psi$. We first attach a coordinate frame to the hand point, with its z-axis oriented in either Elbow-hand $\vec{v}_{eh}$ or Head-Hand $\vec{v}_{hh}$ directions. The hand was chosen as the origin for this coordinate system because both of head-hand and elbow-hand pointing methods include the user's hand. The transformation between the sensor frame and the hand frame $^{sensor}T_{hand}$ is calculated by using an angle-axis rotation. An illustration of the hand coordinate frame for Elbow-Hand method and corresponding angles are shown graphically in Figure \ref{fig:pointing_angle_errors}.
+We represent a pointing ray in two angles: a ``horizontal'' / ``azimuth'' sense we denote as $\theta$ and a ``vertical'' / ``altitude'' sense we denote as $\psi$. We first attach a coordinate frame to the hand point, with its z-axis oriented in either Elbow-hand $\vec{v}_{eh}$ or Head-Hand $\vec{v}_{hh}$ directions, depending on which method is used. The hand point was chosen as the origin for this coordinate system because both of head-hand and elbow-hand pointing methods include the user's hand. The transformation between the sensor frame and the hand frame $^{sensor}T_{hand}$ is calculated by using an angle-axis rotation. An illustration of the hand coordinate frame for Elbow-Hand method and corresponding angles are shown graphically in Figure \ref{fig:pointing_angle_errors}.
 
 \begin{figure}[ht!]
 \centering
@@ -178,7 +144,7 @@ Where $atan2(y,x)$ is a function returns the value of the angle $\arctan(\frac{y
 \subsection{Determining Intended Target}
 \label{sec:pointing_determining_intended_target}
 
-We propose a probabilistic approach to determine the referred target by using statistical data from previous pointing gesture observations. We observed that head-hand and elbow-hand methods, implemented using two skeleton trackers, returned different angle errors in spherical coordinates. Our approach relies on learning statistics of each of these approaches, and compensating the error when the target object is searched for. First, given a set of prior pointing observations, we calculate the mean and variance of the vertical and horizontal angle errors for each pointing method. This analysis will be presented in Section \ref{sec:pointing_error_analysis}. Given an input gesture, we apply correction to the pointing direction and find the Mahalanobis distance to each object in the scene.
+We propose a probabilistic approach to determine the referred target by using statistical data from previous pointing gesture observations. We observed that head-hand and elbow-hand methods, implemented using two skeleton trackers, returned different angular errors in spherical coordinates. Our approach relies on learning statistics of each of these approaches, and compensating for the error when the target object is searched for. First, given a set of prior pointing observations, we calculate the mean and variance of the vertical and horizontal angle errors for each pointing method. This analysis will be presented in Section \ref{sec:pointing_error_analysis}. Given an input gesture, we apply correction to the pointing direction and find the Mahalanobis distance to each object in the scene.
 
 When a pointing gesture is recognized, and the angle pair $$[\theta_{target}\;\psi_{target}]$$ is found as described in the previous section, we first apply a correction by subtracting the mean terms from measured angles:
 $$[\theta_{cor}\;\;\psi_{cor}]=[\theta_{target}-\mu_{\theta}\;\;\;\psi_{target}-\mu_{\psi}]$$
@@ -191,9 +157,9 @@ $$S_{type} = \begin{bmatrix}
 We get the values for $\mu_{\theta}, \mu_{\psi}, \sigma_{\theta} ,\sigma_{\psi}$ from Tables \ref{table:pointing_horizontal} and \ref{table:pointing_vertical} for the corresponding gesture type and target. We then compute the mahalanobis distance to the target by:
 $$D_{mah}(target,method)=\sqrt{ [\theta_{cor}\;\psi_{cor}]^T S_{method}^{-1} [\theta_{cor}\;\psi_{cor}]}$$
  
-We use $D_{mah}$ to estimate which target or object is intended. We consider two use cases: the objects are represented as a 3D point or a point cloud. For point targets, we first filter out targets that have a Mahalanobis distance larger than a threshold $D_{mah} > D_{thresh}$. If none of the targets has a $D_{mah}$ lower than the threshold, then we say the user did not point to any targets. If there are multiple targets that has $D_{mah} <= D_{thresh}$ , then we determine ambiguity by employing a ratio test. The ratio of the least $D_{mah}$ and the second-least $D_{mah}$ among all targets is compared with a threshold to determine if there is ambiguity. If the ratio is higher than a threshold, then the robot can ask the person to solve the ambiguity.
+We use $D_{mah}$ to estimate which target or object is intended. We consider two use cases: the objects are represented as a 3D point or a point cloud. For point targets, we first filter out targets that have a Mahalanobis distance larger than a threshold $D_{mah} > D_{thresh}$. If none of the targets has a $D_{mah}$ lower than the threshold, then we say the user did not point to any targets. If there are multiple targets that has $D_{mah} <= D_{thresh}$ , then we determine ambiguity by employing a ratio test. The ratio of the least $D_{mah}$ and the second-least $D_{mah}$ among all targets is compared with a threshold to determine if there is ambiguity. If the ratio is higher than a threshold, then the robot can ask the person to resolve the ambiguity.
 
-If the target objects are represented as point clouds, we then compute the horizontal and vertical angles for every point in the point cloud and find the minimum mahalanobis distance among all. The distance to an object is then represented by this minimum value. Usage of the point cloud instead of the centroid for determining the intended object has several advantages. First, it yields better estimations due to the coverage of the full point cloud. Second, it takes into account the size of the object. For example, if a person is pointing to a chair or door, it is very unlikely that he/she will target the centroid of it. If the point cloud is used, then we can easily tell that the object is targeted.
+If the target objects are represented as a point cloud, we then compute the horizontal and vertical angles for every point in the point cloud and find the minimum mahalanobis distance among all. The distance to an object is then represented by this minimum value. Usage of the point cloud instead of the centroid for determining the intended object has several advantages. First, it yields better estimations due to the coverage of the full point cloud. Second, it takes into account the size of the object. For example, if a person is pointing to a chair or door, it is very unlikely that he/she will target the exact center. If the point cloud is used, then we can easily tell that the object is targeted.
 
  
 \subsection{Data Collection}
@@ -211,28 +177,12 @@ To evaluate the accuracy of pointing gestures, we created a test environment wit
 \subsection{Ground Truth Target Positions}
 \label{sec:ground_truth_points}
 
-We make use of plane extraction technique in a point cloud to have an accurate ground truth measurement. First, the two table and wall planes are extracted from the point cloud data using the planar segmentation technique described in \cite{trevor2013segmentation}. We then find the pixel coordinates of corners on targets in RGB images, using Harris corner detection \cite{harris1988combined}, which produces calculated corners in image coordinates with sub-pixel accuracy. The pixel coordinate corresponding to each target defines a ray in 3D space relative to the Kinect's RGB camera. These rays are then intersected with the planes detected from the depth data, yielding the 3D coordinates of the targets.
+We make use of a plane extraction technique from a point cloud to have an accurate ground truth measurement. First, the two table and wall planes are extracted from the point cloud data using the planar segmentation technique described in \cite{trevor2013segmentation}. We then find the pixel coordinates of corners on targets in RGB images, using Harris corner detection \cite{harris1988combined}, which produces calculated corners in image coordinates with sub-pixel accuracy. The pixel coordinate corresponding to each target defines a ray in 3D space relative to the Kinect's RGB camera frame. These rays are then intersected with the planes detected from the depth data, yielding the 3D coordinates of the targets.
 
 
 
 \subsection{Skeleton Data Capture}
 \label{sec:pointing_skeleton_data_capture}
-
-
-
-\begin{landscape}
-
-
-
-\begin{figure*}[ht!]
-\centering
-\includegraphics[width=1.5\textwidth]{pics/projections.pdf}
-\caption{Euclidean distance error in cartesian coordinates for each method and target. The gesture ray intersection points in centimeters with the target plane, are shown here for each target (T1-T7) as the columns.  Each subject's points are shown in separate colors.  There are 30 points from each subject, corresponding to the 30 frames recorded for the pointing gesture at each target.  Axes are shown in centimeters.  The circle drawn in the center of each plot has the same diameter (13 cm) as the physical target objects used.}
-\label{fig:euclidean_projections}
-\end{figure*}
-
-\end{landscape}
-
 
 \begin{figure}[h]
 \centering
@@ -246,7 +196,7 @@ In order to be able to do a fair comparison between MS-SDK and OpenNI skeleton t
 \subsection{Pointing Gesture Annotation}
 \label{sec:pointing_gesture_annotation}
 
-To factor out the effectiveness of our pointing gesture recognition method described in Section \ref{sec:pointing_pointing_gesture_recognition}, we manually labeled when each pointing gesture began for data collection. Starting from the onset of the pointing gesture as annotated by the experimenter, the following $30$ sensor frames were used as the pointing gesture. This corresponds to a recording of $1$ second in the Kinect sensor stream. For each frame, we extracted skeleton data using both the MS-SDK and the OpenNI.
+To factor out the effectiveness of our pointing gesture recognition method described in Section \ref{sec:pointing_pointing_gesture_recognition}, we manually started the time when each pointing gesture began for data collection. Starting from the onset of the pointing gesture as annotated by the experimenter, the following $30$ sensor frames were used as the pointing gesture. This corresponds to a recording of $1$ second in the Kinect sensor stream. For each frame, we extracted skeleton data using both the MS-SDK and the OpenNI.
 
 \subsection{Error Analysis}
 \label{sec:pointing_error_analysis}
@@ -255,13 +205,19 @@ The four rays corresponding to the four different pointing approaches described 
 
 \begin{itemize}
 \item Euclidean error of ray intersections with target planes (Figure \ref{fig:euclidean_projections})
-\item Angular error in spherical coordinates (Tables \ref{table:pointing_horizontal},\ref{table:pointing_vertical} and Figure \ref{fig:pointing_angular_boxplots})
+\item Angular error in spherical coordinates (Tables \ref{table:pointing_horizontal}, \ref{table:pointing_vertical} and Figure \ref{fig:pointing_angular_boxplots})
 \end{itemize}
 
-We elaborate our error analysis subsequent sections:
+We elaborate our error analysis subsequent sections.
 
-
-
+\begin{landscape}
+\begin{figure*}[ht!]
+\centering
+\includegraphics[width=1.5\textwidth]{pics/projections.pdf}
+\caption{(Best viewed in color). Euclidean distance error in cartesian coordinates for each gesture method and target. The pointing ray intersection points with the target plane are shown here for each target (T1-T7) as the columns.  Each subject's points are shown in separate colors.  There are 30 points from each subject, corresponding to the 30 frames recorded for the pointing gesture at each target.  Axes are shown in centimeters.  The circle drawn in the center of each plot has the same diameter (13 cm) as the physical target objects used.}
+\label{fig:euclidean_projections}
+\end{figure*}
+\end{landscape}
 
 \begin{landscape}% Landscape page
 \begin{center}
@@ -307,13 +263,6 @@ We elaborate our error analysis subsequent sections:
 \subsubsection{Euclidean error}
 \label{sec:pointing_euclidean_error}
 
-\begin{figure*}[ht!]%[thpb]
-\centering
-\includegraphics[width=1.0\textwidth]{pics/boxplots_largerfont}
-\caption{Box plots of the errors in spherical coordinates $\theta$ and $\psi$ for each pointing method.}
-\label{fig:pointing_angular_boxplots}
-\end{figure*}
-
 Given a ray $\vec{v}$ in the sensors frame from one of the pointing gesture approaches, and a ground truth target point $p_{target}$ lying on a target planar surface, the ray-plane intersection between $\vec{v}$ and plane was computed for each ray, resulting in a 3D point lying on the plane. Figure \ref{fig:euclidean_projections} shows the 2D projections for all 30 measurements from each subject (shown in different colors) and each target. For ease of display, the 3D intersection coordinates with the target planes are displayed in a 2D coordinate system attached to the target plane, with the ground truth target point as the origin.  
 
 As can be seen in Figure \ref{fig:euclidean_projections},  the pointing gesture intersection points were fairly consistent across all users, but varied per target location.  The elbow-hand method produced similar results for MS-SDK and OpenNI. The same is true for the head-hand method.  It is also noteworthy that the data for each target tends to be quite clustered for all methods, and typically not centered on the target location.
@@ -325,15 +274,34 @@ We computed the mean and standard deviations of the angular errors in the spheri
 
 Several observations can be made from these results. The data from the elbow-hand pointing method reports that users typically point about 11 degrees to the left of the intended target direction, and about 9 above the target direction. Similarly, the data from the head-hand pointing method reports that users typically point about 2 degrees to the left of the intended pointing direction, but with a higher standard deviation than the elbow-hand method.  On average, the vertical angle $\psi$ was about 5 degrees below the intended direction for the OpenNI tracker and 10 degrees below for the MS-SDK tracker, with a higher standard deviation than the elbow-hand methods.  The disparity between the two skeleton trackers for this pointing method is because they report different points for the head position, with the MS-SDK head position typically being reported higher than the OpenNI head position. The overall performance of the OpenNI and MS-SDK skeleton trackers, however, is fairly similar, with the MS-SDK having slightly less variation for our dataset.
 
+\begin{figure*}[ht!]%[thpb]
+\centering
+\includegraphics[width=1.0\textwidth]{pics/boxplots_largerfont}
+\caption{Box plots of the errors in spherical coordinates $\theta$ and $\psi$ for each pointing method.}
+\label{fig:pointing_angular_boxplots}
+\end{figure*}
+
 As can be seen in the aggregate box plot in Figure \ref{fig:pointing_angular_boxplots}, the horizontal angle $\theta$ has a higher variation than the vertical angle $\psi$.  Examining the errors for individual target locations shows that this error changes significantly with the target location.  As future work, it would be interesting to collect data for a higher density of target locations to attempt to parameterize any angular correction that might be applied.
 
-\subsection{Evaluation}
-\label{sec:pointing_evaluation}
+
+
+\subsection{Object Separation Analysis}
+
+%\subsection{Evaluation}
+%\label{sec:pointing_evaluation}
 
 Using the error analysis and pointing gesture model we presented in previous sections, we conducted an experiment to  determine how our approach distinguished two potentially ambiguous pointing target objects. We use the results of the angular error analysis results and not the euclidean error analysis for the remainder of the paper because of our angular representation of pointing gestures.
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.75\textwidth]{pics/separation_2_cropped}
+\caption{Example scenarios from the object separation test is shown. Our experiments covered separations between 2cm (left images) and 30cm (right images). The object is comfortably distinguished for the 30cm case, whereas the intended target is ambiguous when the targets are 2cm apart. Second row shows the point cloud from Kinect's view. Green lines show the Elbow-Hand and Head-Hand directions whereas green circles show the objects that are within the threshold $D_{mah}<2$.}
+\label{fig:pointing_separation}
+\end{figure}
 
-\subsection{Object Separation Test}
+
+The setup consisted of a table between the robot and the person and two coke cans on the table (Figure~\ref{fig:pointing_separation}) where the separation between objects was varied. To detect the table plane and segment out the objects on top of it, we used the segmentation approach presented in~\cite{trevor2013segmentation}. The objects centroid positions, along with their point clouds were calculated in real-time using our segmentation algorithm. The separation between objects were varied with 1 cm increments from $2-15cm$ and with $5cm$ increments between $15-30 cm$. We could not conduct the experiment below 2 cm separation because of the limitations of our perception system. We used the OpenNI skeleton tracker because rest of our system is based in Linux, and we already found that performance difference with MS-SDK for pointing angle errors is insignificant. The experiment was conducted with one user, who was not in the training dataset. For each separation, the user performed 5 pointing gestures to the object on the right and 5 to the object on the left. The person pointed to one of the objects and the Mahalanobis distance $D_{mah}$ to the intended object and the other object is calculated using the approach in Section \ref{sec:pointing_determining_intended_target}. We used the mean and standard deviation values of Target 2 (Figure \ref{fig:ground_truth_targets}) for this experiment because the objects were located between the robot and the person.
+
 
 \begin{figure*}[ht!]
 \centering
@@ -351,17 +319,6 @@ Using the error analysis and pointing gesture model we presented in previous sec
      }%
    \label{fig:pointing_graphs}
 \end{figure*}
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=0.75\textwidth]{pics/separation_2_cropped}
-
-
-\caption{Example scenarios from the object separation test is shown. Our experiments covered separations between 2cm (left images) and 30cm (right images). The object is comfortably distinguished for the 30cm case, whereas the intended target is ambiguous when the targets are 2cm apart. Second row shows the point cloud from Kinect's view. Green lines show the Elbow-Hand and Head-Hand directions whereas green circles show the objects that are within the threshold $D_{mah}<2$.}
-\label{fig:pointing_separation}
-\end{figure}
-
-The setup consisted of a table between the robot and the person and two coke cans on the table (Figure~\ref{fig:pointing_separation}) where the separation between objects was varied. To detect the table plane and segment out the objects on top of it, we used the segmentation approach presented in~\cite{trevor2013segmentation}. The objects centroid positions, along with their point clouds were calculated in real-time using our segmentation algorithm. The separation between objects were varied with 1 cm increments from $2-15cm$ and with $5cm$ increments between $15-30 cm$. We could not conduct the experiment below 2 cm separation because of the limitations of our perception system. We used the OpenNI skeleton tracker because rest of our system is based in Linux, and we already found that performance difference with MS-SDK for pointing angle errors is insignificant. The experiment was conducted with one user, who was not in the training dataset. For each separation, the user performed 5 pointing gestures to the object on the right and 5 to the object on the left. The person pointed to one of the objects and the Mahalanobis distance $D_{mah}$ to the intended object and the other object is calculated using the approach in Section \ref{sec:pointing_determining_intended_target}. We used the mean and standard deviation values of Target 2 (Figure \ref{fig:ground_truth_targets}) for this experiment because the objects were located between the robot and the person.
 
 \subsection{Results and Discussion}
 \label{sec:results_and_discussion}
