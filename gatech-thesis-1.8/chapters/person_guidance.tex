@@ -2,23 +2,23 @@
 \chapter{Person Guidance}
 \label{chapter:person_guidance}
 
-The application of guiding a person to a location with a robot has many uses, such as giving tours in museums, showing a visitor locations or individuals of interest and helping the elderly or the visually impaired go to places. We think the guidance behavior is one of the most fundamental capabilities a socially interactive robot should have.
+The application of guiding a person to a location with a robot has many uses, such as giving tours in museums, showing a location to visitor and helping the visually impaired navigate. We think the guidance behavior is one of the most fundamental capabilities a socially interactive robot should have.
 
-A straightforward approach to guide a person would be the the stop-and-wait method: robot plans a path and executes it normally as long as the guided person is nearby, and stops then the person is outside the radius. However, this method of guidance may lead to sudden stops and would not be socially accepted. A guide robot should consider the distance to the human and incorporate this information in its control strategy.
+A straightforward approach to guide a person would be the the stop-and-wait method: robot plans a path and executes it normally as long as the guided person is nearby, and stops then the person is outside a defined radius. However, this method of guidance may lead to sudden stops and would not be socially accepted. A guide robot should consider the distance to the human and incorporate this information in its control strategy.
 
-In this chapter, after reviewing the literature on guide robots in Section \ref{sec:guidance_related_work}, in Section \ref{sec:guidance_guide_robot} we present our guidance method, which adjusts the speed of the robot as a function of the distance to the person. Then we present a special scenario for guidance in Section \ref{sec:guidance_blind_users}, specifically tailored to be used by blind people.
+In this chapter, after reviewing the literature on guide robots in Section \ref{sec:guidance_related_work}, in Section \ref{sec:guidance_guide_robot} we present our guidance method, which adjusts the speed of the robot as a function of the distance to the person. Then we present a guidance in Section \ref{sec:guidance_blind_users}, specifically tailored for blind users.
 
 \section{Related Work}
 \label{sec:guidance_related_work}
 
-The earliest works in guide robots focused on the implementation and long-term deployment of tour guide robots in public places such as museums. Burgard \cite{burgard1998interactive} presents the robot Rhino, that was deployed to a museum for $47$ hours. The Minerva robot was an improved model over Rhino \cite{thrun1999minerva}, and was deployed to a museum with an order of magnitude larger floor space. This robot was in operation for two weeks, and it was able to have short-term interaction with people , i.e. head motion, facial expressions. Siegwart \cite{siegwart2003robox} presents a robot that was deployed to an exhibition for 6 months. Nourbakhsh \cite{nourbakhsh2003mobot} presents a project where four guide robots were deployed to museums for a period of five years. The authors remark that it is indeed possible to deploy guide robots public places, unsupervised. All these tour-guide robots had various degrees of autonomy and was received with enthusiasm. However, in all of these works it was apparent that there is a need for research in the area of Human-Robot Interaction.
+The earliest works in guide robots focused on the implementation and long-term deployment of tour guide robots in public places such as museums. Burgard \cite{burgard1998interactive} presents the robot Rhino, that was deployed to a museum for $47$ hours. The Minerva robot was an improved model over Rhino \cite{thrun1999minerva}, and was deployed to a museum with an order of magnitude larger floor space. This robot was in operation for two weeks, and it was able to have short-term interaction with people via head motion and facial expressions. Siegwart \cite{siegwart2003robox} presents a robot that was deployed in an exhibition for 6 months. Nourbakhsh \cite{nourbakhsh2003mobot} presents a project where four guide robots were deployed to museums for a period of five years. The authors remark that it is indeed possible to deploy guide robots public places without supervision. All these tour-guide robots had various degrees of autonomy and was received with enthusiasm. However, in all of these works it was apparent that there is a need for research in the area of Human-Robot Interaction.
 
 Pacchierotti \cite{pacchierotti2006design} demonstrates an office guide robot, but the main focus is on passing people in corridors. Clodic \cite{clodic2006rackham} presents another robot deployed in a museum. It was reported that a continuous interaction all along the guiding mission is fundamental to keep visitor's interest. Martin \cite{martin2004conception} studies the scenario of guiding a visitor in an office environment and focuses on robust person tracking. Pandey \cite{pandey2009step} focuses on the leave-taking of the guided person. The robot predicts the intent of the discontinuation of the task and either breaks the mission or searches for the user depending on the waiting time. Martinez-Garcia \cite{martinez2005crowding} focuses on the scenario of guiding a group of people with multiple robots at the same time. Garrell \cite{garrell2010local} works on a similar problem, where the task of the two robots is to control group of people and guide them. Another relevant scenario is the evacuation scenario, in which there is a danger and robots guide people to the safe a location \cite{kim2009portable,robinette2011incorporating}.
 
 \section{Guide Robot}
 \label{sec:guidance_guide_robot}
 
-In this section, we describe how the behaviors of the guide robot and how the guiding is achieved. The robot's higher level actions are governed by a finite state machine (Figure~\ref{fig:fsm}). 
+In this section, we describe how the guiding behavior is achieved. The robot's higher level actions are governed by a finite state machine, as shown in Figure~\ref{fig:fsm}. 
 
 \begin{figure}[ht!]
 \centering
@@ -27,11 +27,10 @@ In this section, we describe how the behaviors of the guide robot and how the gu
 \label{fig:fsm}
 \end{figure}
 
-When the robot is first initialized, it is in the \textit{NON-LOCALIZED} state. When the initial pose is given, either manually or by detection of the QR code, robot switches to \textit{WAITING} state. This is the state where the robot actively looks input from users. When a person is closeby, robot approaches towards the person so its user interface is facing the person. If the person inputs a guide request, the robot displays destination and asks for confirmation. If confirmed, the robot is in \textit{GUIDING PERSON} state. When guiding is completed, robot waits for a while and goes back to the base. At any time, a user can cancel the operation and enter new commands.
+When the robot is started, it is in the \textit{NON-LOCALIZED} state. When the initial pose is given, either manually or by detection of the QR code (Section \ref{sec:mapping_localization}, robot switches to \textit{WAITING} state. This is the state where the robot actively looks input from users. When a person is closeby, robot approaches towards the person so the on-board tablet GUI is facing the potential user. If the person inputs a guide request, the robot displays destination and asks for confirmation. If the user confirms the goal, the robot is in \textit{GUIDING PERSON} state. When guiding is completed, robot waits for a while and goes back to the base. At any time, a user can cancel the operation or enter new commands.
 
- After a request to guide a person is received from a higher level process, the robot first plans a path using our navigation planner presented in Chapter \ref{chapter:navigation_among_people}, or standard ROS Navigation. The robot continues on its path as long while constantly monitoring the distance between itself and the guided person. The robot adjusts its speed according to this distance.
+After a request to guide a person is received from a higher level process, the robot first plans a path using a point-to-point navigation planner such as ROS Navigation or our navigation planner presented in Chapter \ref{chapter:navigation_among_people}. The robot continues on its path while constantly monitoring the distance between itself and the guided person, and adjusts its speed accordingly.
 
-We use a variable speed profile so that the robot can better keep up with the person and the motions of the robot is smoother. We define a speed function that is a function of the distance between the robot and the user. This speed profile is shown in Figure \ref{fig:guidance_speed_profile}. The robot moves at a low speed $v_{safe}$ if the human is dangerously close. The speed is peaked at distance $d_{peak}$ and the robot stops if the distance is larger than $d_{guide}$, which may indicate that the human is not interested in being guided. Note that $v_{peak}$ is capped by the speed limits in the environment, provided by the speed map approach presented in Section \ref{sec:navigation_speed_limits}.
 
 \begin{figure}[ht!]
 \centering
@@ -40,13 +39,24 @@ We use a variable speed profile so that the robot can better keep up with the pe
 \label{fig:guidance_speed_profile}
 \end{figure}
 
-In the second scenario, the robot has the same goal point and guiding a person. In the first condition, we use ROS Navigation but robot stops if the distance to the human is over a threshold. In second condition, we use our method of dynamic speed adjustment for guidance. In this scenario, there is no person standing around the corner. We measured the instantaneous speeds of the robot and the human.
 
+We use a variable speed profile so that the robot can better keep up with the person and the motions of the robot is smoother. We define a speed function that is a function of the distance between the robot and the user. This speed profile is shown in Figure \ref{fig:guidance_speed_profile}. The robot moves at a low speed $v_{safe}$ if the human is dangerously close. The speed is peaked at distance $d_{peak}$ and the robot stops if the distance is larger than $d_{guide}$, which may indicate that the human is not interested in being guided. Note that $v_{peak}$ is capped by the speed limits in the environment, provided by the speed map approach presented in Section \ref{sec:navigation_speed_limits}.
+
+\subsection{Pilot Study}
+
+We evaluate the proposed guidance method in a comparison study. The task of the robot is to guide a person in an office environment. Figure \ref{fig:nav_speed_map_corridor} shows the part of the map and the goal of the robot. There are not any other people in the environment other than the guided person and ROS Navigation is used for point-to-point navigation planning. The robot actively guides a user to this goal position, in the following two conditions:
+
+\begin{enumerate}
+\item Stop-and-wait: The robot stops as long as the distance to the user is higher than a threshold
+\item Proposed method: The maximum speed of the robot is altered as a function of the distance to the user. The velocity profile shown in Figure~\ref{fig:guidance_performance_graph} is used with $d_{guide}=1.7$m, $d_{peak}=0.9$m, $d_{safe}=0.1$m, $v_{safe}=0.1$m/s, $v_{peak}=1.0$m/s.
+\end{enumerate}
+
+In the experiment, when guiding was enabled, the human first waited until the robot stopped at $d_{guide}$. Then he took a step and waited for a second time, and then started following the robot. We track the position of the human with our torso tracking approach. As evaluation metrics, we measure the instantaneous speeds of the robot and the human.
 
 \subsection{Results}
 \label{sec:guidance_results}
 
-The robot is given a fixed goal to guide a person, who is tracked with a torso-level laser scanner, by fitting an ellipse to the torso. We compared the velocity profile in Figure~\ref{fig:guidance_performance_graph} with $d_{guide}=1.7$m, $d_{peak}=0.9$m, $d_{safe}=0.1$m, $v_{safe}=0.1$m/s, $v_{peak}=1.0$m/s. We compared our approach with the simple strategy: If the human is closer than $d_{guide}$, then the navigation continues with a fixed max speed. Otherwise robot stops and waits.
+The comparison of robot speeds is given in Figure \ref{fig:guidance_graph_noadj} for Condition 1 and Figure \ref{fig:guidance_graph_adj} for Condition 2. Between $t=0$ and $t=9s$, the accelerations were higher for the stop-and-wait condition. Robots that exhibit high accelerations will likely be perceived as unsafe, therefore the proposed method exhibits more socially acceptable behavior. Moreover, after the person started closely following the robot ($t >9s$), our approach is better at mimicking the speed of the human.
 
 \begin{figure}[ht!]
 \centering
@@ -61,12 +71,12 @@ The robot is given a fixed goal to guide a person, who is tracked with a torso-l
            \includegraphics[width=0.75\textwidth]{pics/graph_adj}
         }        
     \caption{%
-	Comparison of robot and human speeds with respect to time. a) Standard ROS Navigation b) Our approach: accelerations are less steeper than a), which employs the dynamic speed adjustment for guidance.
+	Comparison of robot and human speeds are shown for two person guidance methods. a) Stop-and-wait guidance with ROS Navigation b) Proposed guidance method. Accelerations were less steeper in b).
      }%
    \label{fig:guidance_performance_graph}
 \end{figure}
 
-In the experiment, when guiding was enabled, the human first waited until the robot stopped at $d_{guide}$. Then he took a step and waited for a second time, and then started following the robot. The comparison of robot speeds is given in Figure \ref{fig:guidance_graph_noadj} for fixed max speed and Figure \ref{fig:guidance_graph_adj} with the speed profile. Between $t=0$ and $t=9s$, the accelerations are much more rapid for the fixed max speed case. Robots that exhibit high accelerations will likely be perceived as unsafe, therefore our approach exhibits a more socially acceptable behavior. Moreover, after the person started following ($t >9s$), our approach is better at mimicking the speed of the human.
+
 
 
 \section{Application To Blind Users}
@@ -78,7 +88,7 @@ In this section, we present our person guidance system specifically tailored for
 
 \subsection{Tactile Belt}
 
-In the previous section, we assumed that the guided person can detect where the robot is and follow him/her. With a blind user, this assumption does not hold. Therefore we need a mechanism to give directions to the user. Readily available options for assistive interfaces are limited to Braille or devices that presents content with speech synthesis. These ways of presenting information have difficulty dealing with representing spatial information. We also think visually impaired individuals would prefer a non-speech interface because they mostly rely on their sense of hearing in daily life. We therefore use a tactile belt for navigation guidance, because it can represent directions and rotations, be worn discreetly and does not occupy the hearing sense.
+In the previous section, we assumed that the guided person can detect where the robot is. With a blind user, this assumption does not hold. Therefore we need a mechanism to give directions to the user. Readily available options for assistive interfaces are limited to Braille or devices that presents content with speech synthesis. These ways of presenting information have difficulty dealing with representing spatial information. We also think visually impaired individuals would prefer a non-speech interface because they mostly rely on their sense of hearing in daily life. We therefore use a tactile belt for navigation guidance, because it can represent directions and rotations, be worn discreetly and does not occupy the hearing sense.
 
 The belt has 8 pancake vibration motors, linearly spaced around the waist, and the motors can be controlled asynchronously via an Arduino board. We used two distinct vibration patterns to control the person's movements:
 
@@ -102,6 +112,8 @@ The vibration patterns that induce directional and rotational movements in the h
 \caption{The vibration pattern applied by the Tactile Belt to induce rotational movements in the blind user. The consequent vibrations motors are fired consecutively, starting from left for CW and right for CCW rotation.}
 \label{fig:vibration_pattern_solo_cont}
 \end{figure}
+
+A special stop signal is applied to the belt when the user reaches the destination. Stop signal is implemented similar to \textbf{TWO TAPS} pattern except all the motors are activated instead of one
 
 
 \subsection{Planning the Path of the User}
