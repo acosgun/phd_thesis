@@ -70,6 +70,26 @@ When the event ends, robot continues with Basic Following behavior described in 
 %As another example, if the guiding person stops and chats with another person, it may be an awkward situation for the robot to wait while facing the back of its user. It may be socially more appropriate for the robot to join the group.
 
 
+\subsection{Joining a Group}
+\label{sec:following_joining_group}
+
+\begin{table}[ht!]
+	\centering
+  \begin{tabular}{l |  m{10cm}}    
+    \toprule    
+    Signal & {$dist(user, groupcenter)<threshold$}\\       
+	                           & {$speed(user)\sim 0$} \\
+	                           & {person roughly facing group}\\ \midrule		                           		                                
+    Approach & {Optimal Goal: in the \textit{p-space} in the circle formation}\\       \midrule
+    Execution & {The group interacts with each other, including the robot}\\  \midrule
+    Release & {$dist(user, groupcenter)>threshold$}\\ 
+    \bottomrule
+  \end{tabular}
+      \caption{Conditions to trigger phases when the user is involved with the Landmark Labeling Event during following.}
+    \label{table:situation_aware_list_group}
+\end{table}
+
+
 \subsection{Landmark Labeling}
 \label{sec:following_landmark_labeling}
 
@@ -175,7 +195,7 @@ When the user approaches a door during following, the situation can easily becom
     	      & {$speed(user)\sim 0$} \\
 	      & {User performs pointing gesture towards the passage}\\ \midrule	                           
     Approach & {Optimal Goal: A position on the other side of the door that doesn't block the doorway}\\       \midrule
-    Execution & {User also passes the door}\\  \midrule
+    Execution & {Robot and user meet at the same side of the door}\\  \midrule
     Release & {$dist(user, convexhull(door))>threshold$ }\\ 
     \bottomrule
   \end{tabular}
@@ -184,7 +204,7 @@ When the user approaches a door during following, the situation can easily becom
 \end{table}
 
 
-A user may open, close or pass through a door, and detecting these actions require a sophisticated recognition system. However the robot can assume that any of those actions are possible when the user is approacing the door. In our approach, the robot can continiously monitor the user's proximity to the doors using the semantic map, if the user labeled door landmarks beforehand. Our approach can handle doors with spring-loaded hinges, even though it does not have a model of the door except the convex hull of its plane.
+Ipen, close or pass through a door, and detecting these actions require a sophisticated recognition system. However the robot can assume that any of those actions are possible when the user is approacing the door. In our approach, the robot can continiously monitor the user's proximity to the doors using the semantic map, if the user labeled door landmarks beforehand. Our approach can handle doors with spring-loaded hinges, even though it does not have a model of the door except the convex hull of its plane.
 
 \begin{figure}[ht!]
 \centering
