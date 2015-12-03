@@ -3,6 +3,31 @@
 
 In this Chapter, we provide the user study for vibration patterns to be used on the Tactile Belt described in Chapter \ref{chapter:person_guidance}.
 
+
+\section{Tactile Belt}
+\label{sec:belt}
+
+The belt is made of elastic material so that the vibration motors make contact with the human body and the angle between motors is fixed. This property allows us to represent the 8 cardinal directions consistently for every user.
+
+Upon receiving a vibration pattern, the controller on the belt applies corresponding sequences of voltages to the vibration motors. A vibration pattern incorporate the activation frequency, duration and rhythm of vibrations for all motors.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.35\textwidth]{pics/belt}
+\caption{The haptic belt prototype used for guidance}
+\label{fig:belt}
+\end{figure}
+
+\subsection{Hardware}
+
+8 coin type vibration motors are placed uniformly placed around the belt. Although coin motors provide less strength than cylindrical motors, their size and shape make them ideal for the belt application. The motors have 3V rated voltage, 9000 rpm rotation, 90 mA rated current and a maximum 50db mechanical noise and they are driven by a single ULN2803A chip with Pulse Width Modulation (PWM) at 20 kHz.
+
+For controlling the belt, we chose an Arduino, which is a relatively cheap open source electronics prototyping platform. The communication between the Controller PC and the belt is achieved by a RS-232 serial port. Arduino Uno has a built-in USB-to-serial converter and the electronics are powered by this USB port.
+
+\subsection{Software}
+
+Our system makes use of the Robot Operating System (ROS) software infrastructure for interprocess communication and message passing. Controller PC sends messages to Arduino on belt, which consists of a bit array for each of the 8 motors. A bit in the array indicates if the motor is going to vibrate or not, during the corresponding time slot of 1/16 seconds. Upon receiving the bit arrays command, Arduino starts executing the bits one by one. Since all the motors are actuated in the main controller loop, the vibrations are synchronous.
+
 \section{Vibration Patterns}
 
 We define two main classes of vibration patterns depending on the type of intended human motion: directional and rotational. Directional patterns induce a motion towards a direction. Rotational patterns induce a rotation around self, which is intended to control the orientation of the human. 
