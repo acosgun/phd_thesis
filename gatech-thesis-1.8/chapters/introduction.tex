@@ -107,20 +107,29 @@ Non-expert users can effortlessly interact with and control a mobile robot throu
 
 \subsection{Document Outline}
 
-The rest of this document is organized as follows.
+The structure of this thesis is shown in Figure \ref{fig:thesis_outline}.
 
-\textbf{Chapter \ref{chapter:map_annotation} - Map Annotation} describes our semantic map representation, the process of interactively labeling landmarks, the user interface and how we detect pointing gesture targets.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=1.0\textwidth]{pics/thesis_outline}
+\caption{Thesis Outline}
+\label{fig:thesis_outline}
+\end{figure}
 
-\textbf{Chapter \ref{chapter:multimodal_person_detection_and_tracking}- Multimodal Person Detection and Tracking} presents our method of leg detection, torso detection and face recognition and how the robot estimates the positions of nearby people using these detections.
+The first prerequisite for a socially aware robot is detecting and tracking people. \textbf{Chapter \ref{chapter:multimodal_person_detection_and_tracking}- Person Detection, Tracking and Recognition} presents our method of leg detection, torso detection and face recognition and how the robot estimates the positions of nearby people using these detections.
 
-\textbf{Chapter \ref{chapter:navigation_among_people} - Navigation Among People} discusses how we extract goal points from semantic maps, and a people-aware planner for navigating from a position to another.
+When a robot is able to keep track of the positions of nearby people, it can follow a user. \textbf{Chapter \ref{chapter:person_following} - Person Following} describes how the robot follows a person. Additionally, an application of person following for telepresence robots is presented in Section \ref{sec:following_application_to_telepresence}.
 
-\textbf{Chapter \ref{chapter:person_following} - Person Following} describes how the robot follows a person and handles special cases by using semantic landmarks, and discusses an application for telepresence robots.
+If a robot has the capability to follow a person, a user can take the robot on a tour around the house and teach landmarks to the robot. \textbf{Chapter \ref{chapter:map_annotation} - Interactive Map Labeling} describes our semantic map representation, the process of interactively labeling landmarks, the user interface and how to detect pointing gesture targets.
 
-\textbf{Chapter \ref{chapter:person_guidance} - Person Guidance} presents a tour-guide robot and a particular application for visually impaired users.
+The ability to track nearby people also gives the robot the capability to conduct socially aware navigation toward labeled landmarks. \textbf{Chapter \ref{chapter:navigation_among_people} - People-Aware Navigation} discusses how we extract goal points from semantic maps, and a people-aware planner for navigating from a start position to a goal position.
 
-\textbf{Chapter \ref{chapter:conclusion} - Conclusion and Discussion} discusses the contributions of this thesis and discusses future work in this area of research.
+If a robot is able to navigate toward a goal position or a landmark, it can also guide people toward the same goals. \textbf{Chapter \ref{chapter:person_guidance} - Person Guidance} presents how the robot can guide the person and the behavior design of a tour-guide. Furthermore, we present an application of person guidance for visually impaired users in Section \ref{sec:guidance_blind_users}.
 
-\textbf{Appendix \ref{chapter:telepresence_user_study_survey_questions}} lists telepresence study survey questions
+The person following capability, combined with the existence of labeled landmarks and tracking of people, enables the robot to react to social situations during following. \textbf{Chapter \ref{chapter:following_situation_aware} - Situation Aware Person Following} discusses some problematic scenarios that could be encountered during following and presents our design of robot behaviors for these situations.
 
-\textbf{Appendix \ref{chapter:vibration_pattern_analysis_for_haptic_belts}} presents the user study on haptic belts for blind aid.
+\textbf{Chapter \ref{chapter:conclusion} - Conclusion and Discussion} discusses the contributions of this thesis, lessons learned during the research program and future work in this area of research.
+
+\textbf{Appendix \ref{chapter:telepresence_user_study_survey_questions}} lists telepresence user study survey questions.
+
+\textbf{Appendix \ref{chapter:vibration_pattern_analysis_for_haptic_belts}} gives details of the user study on haptic belts for guiding blind people.

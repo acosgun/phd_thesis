@@ -79,10 +79,11 @@ where $IAV_S=90^{\circ}$ for a perfect circle.
 
 For the training set, two people's legs were recorded with different clothing (shorts, baggy pants and trousers) to account for variance in the leg parameters. About $17\times 10^3$ Single Leg and $0.6\times 10^3$ person-wide blob patterns were manually labeled in the data. In addition, $120\times 10^3$ segments were labeled as 'other'. We first pre-computed the mean and standard deviation of these features, and then use these values for detection. We captured a set of laser scans data while the robot followed a person through an office environment. The following method used for this experiment will be discussed in detail in Section \ref{sec:following_basic_person_following}. The mean and standard deviations of geometric features for single leg, personwide blob, as well as other segments are given in Table \ref{table:leg_features}. 
 
-\begin{table}
+\begin{table}	
+	\caption{Table shows the mean and standard deviation of geometric leg features training set.}
 	\centering
   \begin{tabular}{lSSSSSS}    
-    \toprule
+  \toprule
     \multirow{2}{*}{Segment type} &
       \multicolumn{2}{c}{Width($m$)} &
       \multicolumn{2}{c}{Circularity} &
@@ -94,7 +95,6 @@ For the training set, two people's legs were recorded with different clothing (s
     Other & 0.22 & 0.12 & 0.1 & 0.11 & 2.71 & 0.38 \\
     \bottomrule
   \end{tabular}
-      \caption{Table shows the mean and standard deviation of geometric leg features training set.}
     \label{table:leg_features}
 \end{table}
 
@@ -142,9 +142,10 @@ The first step to detect torsos in a laser scan is to segment the laser scan int
 To detect a torso in a laser segment, we use the minor and major axis lengths, in addition to the three geometric features introduced in Section \ref{sec:multimodal_leg_detection} for detection of legs. We collected 450 laser scans while a person stood $2m$ away from the sensor and made a one full turn around. We calculated the mean and standard deviation of the all five features, which is given in Table \ref{table:torso_tracking_results}. For a given laser segment, we find the weighted Mahalanobis distance in Equation \ref{eq:mahalanobis} to the averaged parameters. If $Dmah_{torso}^{i}< Threshold_{torso}$, the segment is considered a detection. The feature weight constants we used was $\textbf{W}_{torso} =(0.19, 0.09, 0.35, 0.24, 0.13)$, in respective order given in Table \ref{table:torso_feature_averages}. These values were empirically determined, although it is possible that optimizing the feature weights would yield better results.
 
 \begin{table}
-	\centering
-  \begin{tabular}{lSSSSSS}    
-    \toprule
+\caption{Table shows average and standard deviations of geometric features for a human torso in laser scans.}
+\centering
+  \begin{tabular}{lSSSSSS}
+  \toprule    
     {Torso Features}
       & {$\mu$} & {$\sigma$} \\
       \midrule
@@ -155,7 +156,6 @@ To detect a torso in a laser segment, we use the minor and major axis lengths, i
     Minor axis length($m$) & 0.17 & 0.06\\
     \bottomrule
   \end{tabular}
-      \caption{Table shows average and standard deviations of geometric features for a human torso in laser scans.}
     \label{table:torso_feature_averages}
 \end{table}
 
@@ -198,9 +198,10 @@ In order to evaluate the accuracy of the position and orientation estimations of
 Table~\ref{table:torso_tracking_results} shows the angular error at every target distance and human orientation with respect to the laser scanner. 
 
 \begin{table}[ht!]
+\caption{Mean orientation error of the torso detector with respect to distance from sensor and body pose is shown. Data from 23 individuals are used.}
 \centering
 \begin{tabular}{cSSSSSSSSS}    
- \toprule 
+\toprule
 Distance To Laser & {N} & {NE} & {E} & {SE} & {S} & {SW} & {W} & {NW} & {ALL}\\
 \midrule
 {$1.0m$} & {$4^{\circ}$} & {$12^{\circ}$} & {$22^{\circ}$} & {$13^{\circ}$} & {$5^{\circ}$} & {$7^{\circ}$} & {$26^{\circ}$} & {$17^{\circ}$} & {$13^{\circ}$} \\
@@ -212,7 +213,6 @@ Distance To Laser & {N} & {NE} & {E} & {SE} & {S} & {SW} & {W} & {NW} & {ALL}\\
 {ALL} & {$4^{\circ}$} & {$12^{\circ}$} & {$27^{\circ}$} & {$14^{\circ}$} & {$6^{\circ}$} & {$7^{\circ}$} & {$24^{\circ}$} & {$18^{\circ}$} & {$14.5^{\circ}$} \\
 \bottomrule
 \end{tabular}
-\caption{Mean orientation error of the torso detector with respect to distance from sensor and body pose is shown. Data from 23 individuals are used.}
 \label{table:torso_tracking_results}
 \end{table}
 

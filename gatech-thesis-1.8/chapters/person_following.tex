@@ -7,7 +7,7 @@ There are many scenarios in which a person following robot can be useful. For ex
 
 For intelligent following, the robot not only has to keep appropriate distance to the user, but also has to recognize $what$ the user is trying to accomplish. For example, during the tour scenario, when the user stops, the robot should predict that the user is going to annotate a landmark, and it should come beside the user instead of standing behind. Moreover, the robot should be smarter when passing doors or following a person who is cutting a corner. In order to be able to handle these scenarios, the robot should act beyond purely reactive following behavior. It is desirable for the robot to anticipate what the user is likely going to do and take action accordingly.
 
-In this chapter, after referring previous works on person following robots in Section \ref{sec:following_related_work}, we present a basic person following method in \ref{sec:following_basic_person_following}. In Section \ref{sec:following_situation_aware}, we demonstrate situation awareness of a person following robot in three commonly encountered scenarios: door passing and landmark labeling. In Section \ref{sec:following_application_to_telepresence}, we present an application of person following for telepresence robots.
+In this chapter, after referring previous works on person following robots in Section \ref{sec:following_related_work}, we present a basic person following method in \ref{sec:following_basic_person_following}. In Section \ref{sec:following_application_to_telepresence}, we present an application of person following for telepresence robots.
 
 \section{Related Work}
 \label{sec:following_related_work}
@@ -116,9 +116,11 @@ We had three measurement criteria to compare manual vs autonomous following: 1) 
 Out of 4 quiz questions, the correct answers for autonomous group ($\mu=2.9$, $\sigma=0.9$) were more than the manual group ($\mu=2.2$, $\sigma=1.2$) but the statistical difference was not statistically significant ($t(9)=1.48$, $p=0.17$ on $t-test$).
 
 \begin{table}
-	\centering
+
+	      \caption{Survey results of the user study for person following for telepresence robots. Table displays survey question average and standard deviations for the two conditions: Autonomous Person Following and Manual Person Following.}
+	      	\centering
   \begin{tabular}{lSSSSSS}    
-    \toprule
+  \toprule
     \multirow{2}{*}{Question} &
       \multicolumn{2}{c}{Autonomous} &
       \multicolumn{2}{c}{Manual Drive} &
@@ -134,7 +136,6 @@ Out of 4 quiz questions, the correct answers for autonomous group ($\mu=2.9$, $\
     7. Fun & 5.3 & 1.5 & 5.1 & 1.7 & 0.66 & 0.45 \\
     \bottomrule
   \end{tabular}
-      \caption{Survey results of the user study for person following for telepresence robots. Table displays survey question average and standard deviations for the two conditions: Autonomous Person Following and Manual Person Following.}
     \label{table:telepresence_table}
 \end{table}
 

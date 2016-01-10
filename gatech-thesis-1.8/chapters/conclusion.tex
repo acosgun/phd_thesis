@@ -1,4 +1,4 @@
-\chapter{Conclusions and Discussion}
+\chapter{Conclusion}
 \label{chapter:conclusion}
 
 Most of the robots that are in operation today are on factory floors in separation from people for safety. However, robots that work for and work with humans have a great potential. Navigation is one of the most fundamental capabilities for a mobile robot. Mobile robots occupy the same space with us, therefore should respect spatial rules of engagement. Humans are good at adjusting their spatial relationships with each other in social situations, therefore it is reasonable to use human-human interaction studies to design navigation behaviors. State-of-the art robots use only a metric map for navigation, however utilizing semantic maps that includes objects and landmarks can enable new navigation behaviors. This thesis addressed several challenges: interactive semantic labeling, social navigation behavior design and situation awareness for navigation. 
@@ -7,9 +7,11 @@ To conclude, we re-state the thesis statement: Non-expert users can effortlessly
 
 The rest of this chapter elaborates on the key contributions of this thesis, discusses the results and observations, outlines future work for the next steps for each topic, and concludes with final remarks.
 
-\section{Interactive Semantic Labeling}
+\section{Interactive Map Labeling}
 
-Chapter \ref{chapter:map_annotation} presented our semantic map representation as well as the steps of the Tour Scenario. The main contribution of the chapter is the use of an interactive labeling process to add a multitude of features to the map: objects, waypoints and planar surfaces. Use of the labeled semantic features as navigation goal enables communicating goals in natural language. Another contribution is the use of natural pointing gestures for interactive labeling and a model of determining the likelihood of which object the user intends to point at.
+At the core of this thesis lies the idea of the Tour Scenario, where the user takes the robot on a tour and teaches objects and places. Tour Scenario provides the opportunity for a mobile robot to acquire spatial representations from human users and later utilize them for better usability and effective navigation. This scenario could be used the first time a robot is brought home, for example if it is purchased brand new. That would also give an opportunity to users to interact with the robot and get familiar with their new companion. Tour Scenario could also be used after the first use, for example whenever the layout of the house changes, or when a new object or furniture is purchased. Therefore one can think that the Tour Scenario could be used for long-term interactions.
+
+In our work, Chapter \ref{chapter:map_annotation} presented our semantic map representation as well as the steps of the Tour Scenario. The main contribution of the chapter is the use of an interactive labeling process to add a multitude of features to the map: objects, waypoints and planar surfaces. Use of the labeled semantic features as navigation goal enables communicating goals in natural language. Another contribution is the use of natural pointing gestures for interactive labeling and a model of determining the likelihood of which object the user intends to point at.
 
 We think that future commercial domestic robots will have the ``familiarization task" in some form or another, because it is important for the robot to learn the objects and locations its user cares about. We believe that the Tour Scenario presented in this thesis presents a feasible solution for this task. Semantic maps creates a common ground between users and robots, and will enable new set of service robotic tasks. Use of annotated semantic maps can also be studied in other contexts, such as to improve SLAM \cite{trevor2015semantic}, visual object search \cite{rogers2013life},  and direction giving \cite{kollar2010toward}.
 
@@ -24,10 +26,13 @@ We think that future commercial domestic robots will have the ``familiarization 
 
 \section{Social Navigation Behavior Design}
 
+This thesis touches upon several considerations and use cases for navigation behavior design for social robots. These include socially aware point-to-point navigation, person following and guidance, and situation-aware navigation.
 
-\subsection{Point-to-point Navigation}
+\subsection{People-Aware Navigation}
 
-Chapter \ref{chapter:navigation_among_people} presented our people aware point-to-point navigation planner. We demonstrated that by using anticipation, the robot exhibits human-like navigation behavior, can reach its destination in less time and can find solutions to problems that are insolvable by standard planners. We believe that our method will increase the predictability of robot’s motions.
+Mobile robots will be entwined in our daily lives in the future. These robots will operate in environments designed for humans, therefore people would expect them to move in a socially acceptable manner. Possibly the most common navigation task would be point-to-point navigation: there robot navigates to a goal position from its current position, without explicit communication with bystanders. The social part makes the social navigation algorithms interesting and different than classical motion planning methods. Research in this field suggested using safety and comfort as criteria for safe and comfortable navigation among people. This requires multi-disciplinary effort in both robotics and psychology research. The research in this area is concentrated in two camps: 1) Social costmap design on geometric path planning. 2) Reactive and short-term behavior design to move in the vicinity of people. This thesis focuses on both: with costmap design for people-aware navigation and reactive behaviors for person following and guidance.
+
+Our work on point-to-point people aware navigation was presented Chapter \ref{chapter:navigation_among_people}. We demonstrated that by using anticipation, the robot exhibits human-like navigation behavior, can reach its destination in less time and can find solutions to problems that are insolvable by standard planners. We believe that our method will increase the predictability of robot’s motions.
 	
 %QR Code - no robot expert:In this work, we presented a complete guide robot that
 %requires only a one-time setup by an expert. By detecting a
@@ -43,6 +48,8 @@ Currently, social navigation techniques is not viewed as an essential capability
 
 \subsection{Person Following and Guidance}
 
+An effective person following behavior is an essential to the Tour Scenario. It enables the robot to keep up with the guide-person during the guided exploration of the space and move around the environment. Person guidance is one of the applications that could be used after the environment representation is acquired. It can be used in scenarios where the robot conveys information to the user, (i.e. museum tours), or to take a person to a location in an unfamiliar environment (i.e. guiding people in airports).
+
 Our work on person following and person guidance were presented in Chapters \ref{chapter:person_following} and \ref{chapter:person_guidance}, respectively. We presented a basic method for person guidance, and presented a complete tour-guide robot system. We also showed that our guidance approach results in more gracious motions compared to standard ROS Navigation. A specific application, targeted on wayfining for blind users is studied in depth. We showed that it is technically feasible to guide a blindfolded person in indoors using vibrations applied by a haptic belt.
 
 We also presented a basic following behavior that keeps a certain distance from the user and studied use of autonomous person following for telepresence robots. Current commercial telepresence robots do no have autonomous features and our user study showed that people favor the use of autonomous navigation features.
@@ -51,7 +58,7 @@ Interactive navigation behaviors such as following and guidance is useful for se
 
 \subsection{Situation Awareness for Navigation}
 
-In this thesis, one of contributions is enabling of situation awareness for navigation. We first introduced $speed maps$, that specifies maximum robot speeds in an environment. The speed limits were determined by partitioning the map into corridors, rooms, and corners. Depending on the environment, speed limits can vary. For example, in hospitals, the robot should move slower in a patient room than a school corridor. We showed that speed maps not only can reduce the impact of a potential collision, but it can also reduce travel time. Robots yielding to speed maps also can potentially be can perceived safer. In the future, we envision a comprehensive set of rules for robot navigation, essentially acting as traffic rules for mobile robotics.
+In this thesis, one of contributions is enabling of situation awareness for navigation. We first introduced \textit{speed maps}, that specifies maximum robot speeds in an environment. The speed limits were determined by partitioning the map into corridors, rooms, and corners. Depending on the environment, speed limits can vary. For example, in hospitals, the robot should move slower in a patient room than a school corridor. We showed that speed maps not only can reduce the impact of a potential collision, but it can also reduce travel time. Robots yielding to speed maps also can potentially be can perceived safer. In the future, we envision a comprehensive set of rules for robot navigation, essentially acting as traffic rules for mobile robotics.
 
 We also demonstrated situation awareness for person following. Our approach relies on designing specialized navigation behaviors upon detection of an event (i.e. user passes a the door or labels a landmark). We split an event into phases in an attempt to standardize the detection of events and execution of actions. Not many works in this area addressed door passing for navigation \cite{zender2007integrated}. Our approach allows handling spring-loaded doors graciously and facilitates the Tour Scenario.
 
@@ -59,6 +66,22 @@ Situation awareness demonstrated in this work only scratches the surface of the 
 
 %- Handling special cases, door passing, landmark labeling
 %- Only Zender addressed doors, our solution is more complicated
+
+\section{Discussion}
+
+Despite the encouraging demonstrations and results achieved throughout this thesis, there are several limitations of the presented research. These limitations include short-term challenges in perception and planning as well as long-term challenges such as evaluation and integrated system design. 
+
+Among the short-term challenges is the perception of people. Even though our body of work on people detection and tracking was sufficient to carry on experiments, it is not of production quality. Our current system can detect only standing people and has a usable range of about 3-4 meters, which can be significant limitations for some applications. A flexible yet general-purpose person tracking method should be able to accommodate different sensor configurations, robustly track multiple people in the presence of heavy occlusion and recognize people without necessarily seeing their faces. The common practice in robotics research is to develop a person tracking method from scratch for a specific purpose and sensor suite or to use a third party tracker as a black-box. We think that as a community we should set common standards and build on previous efforts.
+
+Another significant limitation of the work in this thesis is the lack of thorough validation and evaluation of the designed navigation behaviors. These behaviors should be assessed both from a technical point of view and from a user experience perspective. The technical assessment is easier to do, as simulations and quantitative measures could be used for evaluating navigation behaviors. Apart from building an accurate theoretical model, the real performance of the robot behavior needs to be taken into account especially for a complex mobile robot system moving in dynamic environments and situations. User studies can be designed to quantify the user experience that can not be measured from technical assessment. Even though user studies gives an initial opinion about a design, they do not capture the user experience of a long-term interaction with a product. Therefore we ultimately need to have the robots in the field to have an realistic opinion about the behavior design. One way of improving the robot behaviors could be a fast design iteration using feedback from early adopters of a the mobile robot product.
+
+We designed navigation behaviors such that there is only an implicit interaction between the robot and humans during the navigation. The robot signaled its intention only through motion and did not explicitly communicate with people. However, additional modalities such as speech and gaze could be utilized to complement the motions of the robot. 
+
+Algorithms and behaviors presented in this thesis used some fixed parameters. Most of the time, these parameters were determined empirically and with trial-and-error experiments. However, this is not the best methodology to tune the parameters. One can use data science tools such as machine learning to tune the parameters of the system. Machine learning could also be used for a wider range of behaviors, such as to learn socially acceptable paths or behaviors or to adapt to specific user preferences.
+
+In this thesis, we studied a number of navigation behaviors including point-to-point navigation, person following, guidance. We delved more into the person following by studying at specific scenarios that could be encountered person following: passing doors, joining a group and landmark labeling. The choice of which scenarios are worthy to address was guided by our initial tests. For example, as we were testing the Tour Scenario, the guide person had to scramble to adjust his own location so that the robot could see both the landmark and the user. Although we think the scenarios we studied are essential for person following, it is likely that user studies or real use could reveal that different following behaviors are needed. Furthermore, the tour guide robot and situation aware following was implemented using a state machine, which requires a pre-defined event to happen to change the behavior. Although state machines are easy to use because of their simplicity in representation, more sophisticated architectures could be used going forward such as subsumption, hierarchical task planning or petri nets.
+
+The hardest part of the research that went into this thesis was the system integration and implementation. A great deal of work went to get the robot behaviors right and to make all the different modules work at the same time. Robots fail and fail often. Robots has to operate with reasonable robustness under dynamic conditions in real-world operation. Robotics research should be complemented with solid engineering to create great robot products.
 
 \section{Final Remarks}
 

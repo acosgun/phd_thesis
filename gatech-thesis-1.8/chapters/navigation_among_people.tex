@@ -200,7 +200,7 @@ where d is the distance to the closest human, H is all humans, $\mu_h = (|x - h.
  
 \textbf{Disturbance cost:} This cost is aimed to represent the cases where the robot potentially disturbs the interaction of a group of humans. For example, if two people are facing each other and talking, then the robot should not cross between them.  We model this with a disturbance cost that is introduced if a path crosses between two people. We do not detect if there actually is conversation between the people, but estimate the disturbance cost using body poses of agents. This cost increases if body orientations of two people are facing each other and is inversely proportional on the distance between the two humans.
 
-For each step taken in the grid, we check if the line segment from the current position to the  projected position intersects a line segment between all pairs of humans. To illustrate, let's assume the robot crosses the line between human A and human B in Figure~\ref{fig:disturbance}. 
+For each step taken in the grid, we check if the line segment from the current position to the  projected position intersects a line segment between all pairs of humans. To illustrate, let's assume the robot crosses the line between human A and human B in Figure~\ref{fig:disturbance1}. 
 
 The disturbance cost is calculated as:
 \begin{align} 
@@ -210,23 +210,23 @@ f(d)&=\frac{1}{d}-\frac{1}{dmax_{disturbance}}
 \end{split} 
 \end{align}
 
-where all the vectors are normalized and $dmax_{disturbance}$ is the maximum distance between the humans that returns a disturbance cost. Figure~\ref{fig:disturbance_ex} illustrates several examples of disturbance costs with $dmax_{disturbance}=3$ meters.
+where all the vectors are normalized and $dmax_{disturbance}$ is the maximum distance between the humans that returns a disturbance cost. Figure~\ref{fig:disturbance2} illustrates several examples of disturbance costs with $dmax_{disturbance}=3$ meters.
 
 \begin{figure}[ht!]
 \centering
 %
         \subfigure[]{%
-            \label{fig:disturbance}
+            \label{fig:disturbance1}
             \includegraphics[width=0.32\textwidth]{pics/disturbance_crop}
         }%
         \subfigure[]{%
-           \label{fig:disturbance_ex}
+           \label{fig:disturbance2}
            \includegraphics[width=0.4\textwidth]{pics/disturbance_ex_crop}
         }        
     \caption{%
 	Disturbance costs in different human-human configurations and distances is shown. A path that crosses the dashed lines incurs the disturbance cost calculated on the right side of the table shown in b)
      }%
-   \label{fig:sim}
+   \label{fig:disturbance}
    \vspace{-0.2cm}
 \end{figure}
 
@@ -299,7 +299,7 @@ In this section, we provide qualitative results both in simulation and on the re
 \subsubsection{Simulation}
 \label{sec:navigation_results_simulation}
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
 \includegraphics[width=0.5\textwidth]{pics/room_sol_crop}
 \caption{A solution is shown to the "Room Problem". The robot is outside a room and the goal pose is inside the room. Traditional planners can not solve the problem because two people are blocking the doorway. Our planner generates a tentative path, with the initial global plan shown in green and the dynamic refinements are shown in orange.}
@@ -381,27 +381,27 @@ We used a the mobile robot platform Segway RMP-200 for experiments on the real s
 \centering
 %
         \subfigure[]{%
-            \label{fig:corridor1}
+            \label{fig:kitchen1}
             \includegraphics[width=0.6\columnwidth/2]{pics/kitchen1_crop}
         }%
         \subfigure[]{%
-           \label{fig:corridor3}
+           \label{fig:kitchen2}
            \includegraphics[width=0.6\columnwidth/2]{pics/kitchen3_crop}
         }
 \subfigure[]{%
-           \label{fig:corridor4}
+           \label{fig:kitchen3}
            \includegraphics[width=0.6\columnwidth/2]{pics/kitchen4_crop}
         }        
 \subfigure[]{%
-            \label{fig:corridor1}
+            \label{fig:kitchen4}
             \includegraphics[width=0.6\columnwidth/2]{pics/kitchen5_crop}
         }%
         \subfigure[]{%
-           \label{fig:corridor3}
+           \label{fig:kitchen5}
            \includegraphics[width=0.6\columnwidth/2]{pics/kitchen6_crop}
         }
 \subfigure[]{%
-           \label{fig:corridor4}
+           \label{fig:kitchen6}
            \includegraphics[width=0.6\columnwidth/2]{pics/kitchen7_crop}
         }
         
@@ -425,7 +425,7 @@ In this chapter so far, we studied navigation planning that aims to generate hum
 
 In this section, we introduce the concept of speed maps that sets the speed limits for mobile robots in an environment. We claim that usage of such speed maps make the robots safer and potentially more efficient. The speed map designed for the second floor of the College of Computing building at Georgia Tech is shown in Figure \ref{fig:speed_map_irim}.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
 \includegraphics[width=0.6\textwidth]{pics/intro}
 \caption{A speed map designed for the IRIM Lab at Georgia Tech is shown. The robot has to be relatively slow in red zones, can have moderate speed in yellow zones and is allowed to move relatively faster in green zones.}
